@@ -9,9 +9,9 @@ import {Login} from './screens/Login.screen';
 export const App: React.FC = () => {
   return (
     <NavigationContainer>
-      <LoginOnlySocial />
+      {/* <LoginOnlySocial /> */}
       {/* <Login /> q */}
-      {/* <BottomTabsNavigator /> */}
+      <BottomTabsNavigator />
     </NavigationContainer>
   );
 };
