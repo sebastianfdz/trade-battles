@@ -43,3 +43,10 @@ exports.deleteTransaction = (id) => {
 	);
 	return { result: `Transaction with id ${id} was succesfully deleted` };
 };
+
+exports.filterTransactionsByUserIdBattleId = async (user_id, battle_id) => {
+	const result = await pool.query(
+		`SELECT * FROM ${table_name} WHERE battle_id = '${battle_id}' AND user_id = '${user_id}'`
+	);
+	return result;
+};
