@@ -1,5 +1,5 @@
 import React from 'react';
-import {theme} from '../themes';
+import {theme} from '../shared/themes';
 import {
   StyleSheet,
   Text,

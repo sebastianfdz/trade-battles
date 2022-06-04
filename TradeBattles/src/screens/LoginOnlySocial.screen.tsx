@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import {CustomInput} from '../components/CustomInput.component';
 import {CustomButton} from '../components/CustomButton.component';
-import {theme} from '../themes';
+import {theme} from '../shared/themes';
 const googleImageSource = require('../../assets/images/Google_logo.png');
 const facebookImageSource = require('../../assets/images/Facebook_logo.png');
 const appleImageSource = require('../../assets/images/Apple_logo.png');

@@ -1,6 +1,6 @@
 import React, {SetStateAction} from 'react';
 import {StyleSheet, View, TextInput, useWindowDimensions} from 'react-native';
-import {theme} from '../themes';
+import {theme} from '../shared/themes';
 
 type CustomInputProps = {
   value: string;

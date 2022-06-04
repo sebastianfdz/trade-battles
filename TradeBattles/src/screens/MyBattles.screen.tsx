@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {StyleSheet, View, Text, ScrollView, FlatList} from 'react-native';
 import {ApiClient} from '../services/ApiClient.service';
-import {theme} from '../themes';
+import {theme} from '../shared/themes';
 
 type Battle = {
   battle_id: string;
@@ -34,9 +34,9 @@ type Transaction = {
 export const MyBattles: React.FC = () => {
   const [myBattles, setMyBattles] = useState<Battle[]>([]);
 
-  ApiClient.getMyBattles('c3e56754-7abb-43d8-811d-52186035e1be')
-    .then(res => res.json())
-    .then(data => setMyBattles(data));
+  // ApiClient.getMyBattles('c3e56754-7abb-43d8-811d-52186035e1be')
+  //   .then(res => res.json())
+  //   .then(data => setMyBattles(data));
 
   // console.warn(users);
   return (
