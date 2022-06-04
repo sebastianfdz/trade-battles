@@ -51,3 +51,17 @@ exports.deleteUser = async (req, res) => {
 		res.sendStatus(500);
 	}
 };
+
+exports.getUserPortfolio = async (req, res) => {
+	try {
+		const userPortfolio = await users_model.getUserPortfolio(
+			req.params["user_id"],
+			req.params["battle_id"]
+		);
+		res.send(userPortfolio);
+		res.status(200);
+	} catch (error) {
+		console.error(error);
+		res.sendStatus(500);
+	}
+};

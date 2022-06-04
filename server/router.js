@@ -23,5 +23,9 @@ router.get("/users/:id", users_controller.getUser);
 router.post("/users", users_controller.postUser);
 router.put("/users/:id", users_controller.updateUser);
 router.delete("/users/:id", users_controller.deleteUser);
+router.get(
+	"/users/portfolio/:user_id/:battle_id",
+	users_controller.getUserPortfolio
+);
 
 module.exports = router;

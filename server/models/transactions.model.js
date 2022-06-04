@@ -46,7 +46,7 @@ exports.deleteTransaction = (id) => {
 
 exports.filterTransactionsByUserIdBattleId = async (user_id, battle_id) => {
 	const result = await pool.query(
-		`SELECT * FROM ${table_name} WHERE battle_id = '${battle_id}' AND user_id = '${user_id}'`
+		`SELECT * FROM ${table_name} WHERE battle_id = '${battle_id}' AND user_id = '${user_id}' ORDER BY symbol ASC`
 	);
 	return result;
 };
