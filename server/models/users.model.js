@@ -46,6 +46,14 @@ exports.getUserPortfolio = async (user_id, battle_id) => {
 	const userPortfolio = [];
 	const uniqueSymbols = {};
 
+	for (let i = 0; i < transactionsArray.length; i++) {
+		if (!uniqueSymbols[transactionsArray[i].symbol]) {
+			uniqueSymbols[transactionsArray[i].symbol] = true;
+		}
+	}
+
+	console.log(Object.keys(uniqueSymbols));
+
 	let stock = {
 		price: 0,
 		symbol: "",
@@ -55,56 +63,54 @@ exports.getUserPortfolio = async (user_id, battle_id) => {
 		gain_loss: 0,
 	};
 
+	let key = 0;
+	let currentSymbol = Object.keys(uniqueSymbols)[key];
 	for (let i = 0; i < transactionsArray.length; i++) {
-		const current_stock = transactionsArray[i];
-		if (uniqueSymbols[current_stock.symbol]) {
-			current_stock.action === "BUY"
-				? ((stock.quantity += Number(current_stock.quantity)),
-				  (stock.averageCost =
-						(stock.averageCost * (stock.quantity - current_stock.quantity) +
-							Number(current_stock.price) * Number(current_stock.quantity)) /
-						stock.quantity))
-				: ((stock.quantity -= Number(current_stock.quantity)),
-				  (stock.gain_loss +=
-						(Number(current_stock.price) - stock.averageCost) *
-						Number(current_stock.quantity)));
-
-			stock.symbol = current_stock.symbol;
-		} else {
+		let currentStock = transactionsArray[i];
+		console.log(currentStock);
+		if (currentStock.symbol !== currentSymbol) {
+			// stock changed...
+			// push stock to userPortfolio
 			userPortfolio.push(stock);
+			// set stock to default
 			stock = {
-				price: 1000,
+				price: 0,
 				symbol: "",
 				change: 0,
 				quantity: 0,
 				averageCost: 0,
 				gain_loss: 0,
 			};
-			current_stock.action === "BUY"
-				? ((stock.quantity += Number(current_stock.quantity)),
-				  (stock.averageCost =
-						(stock.averageCost * (stock.quantity - current_stock.quantity) +
-							Number(current_stock.price) * Number(current_stock.quantity)) /
-						stock.quantity))
-				: ((stock.quantity -= Number(current_stock.quantity)),
-				  (stock.gain_loss +=
-						(Number(current_stock.price) - stock.averageCost) *
-						Number(current_stock.quantity)));
 
-			stock.symbol = current_stock.symbol;
-			uniqueSymbols[current_stock.symbol] = true;
-			if (i >= transactionsArray.length - 1) {
-				userPortfolio.push(stock);
-			}
+			key++;
+			currentSymbol = Object.keys(uniqueSymbols)[key];
+		}
+
+		// stock remains the same
+		stock.symbol = currentStock.symbol;
+		if (currentStock.action === "BUY") {
+			let tempQuantity = stock.quantity;
+			stock.quantity += Number(currentStock.quantity);
+			console.log(stock.symbol, stock.quantity);
+			let tempAvCost = stock.averageCost;
+
+			stock.averageCost =
+				(tempQuantity * tempAvCost +
+					Number(currentStock.quantity) * Number(currentStock.price)) /
+				stock.quantity;
+		} else {
+			stock.quantity -= Number(currentStock.quantity);
+			console.log(stock.symbol, stock.quantity);
+			stock.gain_loss +=
+				(currentStock.price - stock.averageCost) * currentStock.quantity; // TODO -> CHECK NUMBERS
+		}
+
+		if (key >= Object.keys(uniqueSymbols).length - 1 && !userPortfolio[key]) {
+			userPortfolio.push(stock);
 		}
 	}
 
-	return userPortfolio.slice(1);
-	// price: number;
-	// symbol: string;
-	// change: number;
-	// quantity: number;
-	// averageCost: number;
+	return userPortfolio;
 };
 
 exports.updateUser = async (id) => {};

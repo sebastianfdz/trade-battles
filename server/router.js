@@ -2,6 +2,7 @@ const router = require("express").Router();
 const transactions_controller = require("./controllers/transactions.controller");
 const battles_controller = require("./controllers/battles.controller");
 const users_controller = require("./controllers/users.controller");
+const quote_controller = require("./controllers/quotes.controller");
 
 // Transactions
 router.get("/transactions", transactions_controller.getAllTransactions);
@@ -27,5 +28,8 @@ router.get(
 	"/users/portfolio/:user_id/:battle_id",
 	users_controller.getUserPortfolio
 );
+
+// Quote
+router.get("/quote/:symbol", quote_controller.getQuote);
 
 module.exports = router;
