@@ -38,13 +38,13 @@ export const BattlePortfolio: React.FC = () => {
     setCurrentUserPortfolio(portfolio);
   }, []);
   return (
-    <View style={{backgroundColor: theme.light_mode_white}}>
+    <View style={{flex: 1, backgroundColor: theme.light_mode_white}}>
       <BattlePortfolioHeader />
       <TextInput style={styles.input} placeholder="Search..."></TextInput>
       {currentUserPortfolio[0].price === 0 ? (
         <Text style={{alignSelf: 'center'}}>Loading...</Text>
       ) : (
-        <View>
+        <View style={{flex: 1}}>
           <FlatList
             data={currentUserPortfolio}
             renderItem={({item}: {item: PortfolioStock}) => {

@@ -1,12 +1,24 @@
 import React from 'react';
-import {View, Text, StyleSheet, Image} from 'react-native';
+import {View, Text, StyleSheet, Image, Pressable} from 'react-native';
 import {theme} from '../shared/themes';
 import type {Stock} from '../shared/Types';
 import {PortfolioStock} from '../shared/Types';
+import {useNavigation} from '@react-navigation/native';
+import type {ProfileScreenNavigationProp} from '../shared/Types';
 
 export const PortfolioStockCard: React.FC<PortfolioStock> = ({stock}) => {
+  // console.warn(stock.quote['symbol']);
+
+  const navigation = useNavigation<ProfileScreenNavigationProp>();
+
   return (
-    <View style={styles.container}>
+    <Pressable
+      style={styles.container}
+      onPress={() => {
+        navigation.navigate('BuySellStock', {
+          stock: stock.quote,
+        });
+      }}>
       <View style={styles.logo_container}>
         <Image
           style={styles.logo}
@@ -27,7 +39,7 @@ export const PortfolioStockCard: React.FC<PortfolioStock> = ({stock}) => {
         <Text style={styles.price}>${stock.price.toFixed(2)}</Text>
         <Text style={styles.owned}>{stock.quantity} owned</Text>
       </View>
-    </View>
+    </Pressable>
   );
 };
 

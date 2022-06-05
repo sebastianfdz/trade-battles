@@ -5,13 +5,15 @@ import {BottomTabsNavigator} from './screens/BottomTabs.navigator';
 import {LoginOnlySocial} from './screens/LoginOnlySocial.screen';
 import {Login} from './screens/Login.screen';
 import {PortfolioStockCard} from './components/PortfolioStockCard.component';
+import {Navigation} from './components/Navigator.navigation';
 
 export const App: React.FC = () => {
   return (
     <NavigationContainer>
       {/* <LoginOnlySocial /> */}
       {/* <Login /> q */}
-      <BottomTabsNavigator />
+      <Navigation />
+      {/* <BottomTabsNavigator /> */}
     </NavigationContainer>
   );
 };
