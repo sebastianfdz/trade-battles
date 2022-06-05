@@ -3,6 +3,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {MyBattles} from './MyBattles.screen';
 import {PortfolioStockCard} from '../components/PortfolioStockCard.component';
 import {BattlePortfolio} from './BattlePortfolio.screen';
+import {LoginOnlySocial} from './LoginOnlySocial.screen';
 
 const BottomTabs = createBottomTabNavigator();
 export const BottomTabsNavigator: React.FC = () => {
@@ -10,6 +11,7 @@ export const BottomTabsNavigator: React.FC = () => {
     <BottomTabs.Navigator screenOptions={{headerShown: false}}>
       <BottomTabs.Screen name="Porfolio" component={BattlePortfolio} />
       <BottomTabs.Screen name="MyBattles" component={MyBattles} />
+      <BottomTabs.Screen name="LoginOnlySocial" component={LoginOnlySocial} />
     </BottomTabs.Navigator>
   );
 };

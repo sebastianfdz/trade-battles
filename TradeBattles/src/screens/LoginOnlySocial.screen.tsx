@@ -6,28 +6,65 @@ import {
   useWindowDimensions,
   ScrollView,
 } from 'react-native';
-import {CustomInput} from '../components/CustomInput.component';
 import {CustomButton} from '../components/CustomButton.component';
 import {theme} from '../shared/themes';
 const googleImageSource = require('../../assets/images/Google_logo.png');
 const facebookImageSource = require('../../assets/images/Facebook_logo.png');
 const appleImageSource = require('../../assets/images/Apple_logo.png');
+import auth from '@react-native-firebase/auth';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import {appleAuth} from '@invertase/react-native-apple-authentication';
+
+GoogleSignin.configure({
+  scopes: ['https://www.googleapis.com/auth/drive.readonly'], // [Android] what API you want to access on behalf of the user, default is email and profile
+  webClientId:
+    '590254695836-9ai733i10c8phjeh71t0e5vp0hctm905.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
+});
 
 const logoSrc = require('../../assets/images/Placeholder_logo.png');
 
 export const LoginOnlySocial: React.FC = () => {
   const {height} = useWindowDimensions();
 
-  const onSignInWithGooglePressed = () => {
-    console.warn('Google Sign In');
+  const onSignInWithGooglePressed = async () => {
+    try {
+      const {idToken} = await GoogleSignin.signIn();
+
+      const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+      console.warn('Google Sign In');
+      return auth().signInWithCredential(googleCredential);
+    } catch (error) {
+      console.warn(error);
+    }
   };
 
   const onSignInWithFacebookPressed = () => {
-    console.warn('Google Sign In');
+    console.warn('Facebook Sign In');
   };
 
-  const onSignInWithApplePressed = () => {
-    console.warn('Google Sign In');
+  const onSignInWithApplePressed = async () => {
+    try {
+      console.warn(appleAuth.isSupported);
+
+      const appleAuthRequestResponse = await appleAuth.performRequest({
+        requestedOperation: appleAuth.Operation.LOGIN,
+        requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+      });
+
+      // get current authentication state for user
+      // /!\ This method must be tested on a real device. On the iOS simulator it always throws an error.
+      const credentialState = await appleAuth.getCredentialStateForUser(
+        appleAuthRequestResponse.user,
+      );
+
+      // use credentialState response to ensure the user is authenticated
+      if (credentialState === appleAuth.State.AUTHORIZED) {
+        // user is authenticated
+      }
+    } catch (error) {
+      console.warn(error);
+    }
+    console.warn('Apple Sign In');
   };
 
   return (
@@ -43,21 +80,21 @@ export const LoginOnlySocial: React.FC = () => {
           text="Sign In with Google"
           onPress={onSignInWithGooglePressed}
           type="PRIMARY"
-          backgroundColor={theme.primary_grey}
+          backgroundColor={theme.greyPrimary}
           icon={googleImageSource}
         />
         <CustomButton
           text="Sign In with Facebook"
           onPress={onSignInWithFacebookPressed}
           type="PRIMARY"
-          backgroundColor={theme.primary_grey}
+          backgroundColor={theme.greyPrimary}
           icon={facebookImageSource}
         />
         <CustomButton
           text="Sign In with Apple"
           onPress={onSignInWithApplePressed}
           type="PRIMARY"
-          backgroundColor={theme.primary_grey}
+          backgroundColor={theme.greyPrimary}
           icon={appleImageSource}
         />
       </View>
