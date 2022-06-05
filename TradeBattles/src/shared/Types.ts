@@ -26,4 +26,5 @@ export type PortfolioStock = {
   change: number;
   quantity: number;
   averageCost: number;
+  quote?: Stock;
 };

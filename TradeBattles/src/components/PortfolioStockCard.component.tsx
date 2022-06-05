@@ -16,7 +16,13 @@ export const PortfolioStockCard: React.FC<PortfolioStock> = ({stock}) => {
         />
       </View>
       <Text style={styles.text}>{stock.symbol}</Text>
-      <Text style={styles.change}>{stock.change}%</Text>
+      <Text
+        style={[
+          styles.change,
+          {color: stock.change > 0 ? theme.primary_green : theme.primary_red},
+        ]}>
+        {stock.change.toFixed(2)}%
+      </Text>
       <View style={styles.price_owned}>
         <Text style={styles.price}>${stock.price.toFixed(2)}</Text>
         <Text style={styles.owned}>{stock.quantity} owned</Text>
@@ -53,7 +59,6 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   change: {
-    color: theme.primary_green,
     fontWeight: '700',
   },
   price_owned: {
