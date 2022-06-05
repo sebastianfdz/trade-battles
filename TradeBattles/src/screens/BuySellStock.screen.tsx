@@ -1,15 +1,24 @@
 import React from 'react';
 import {StyleSheet, View, Text, Image, Pressable} from 'react-native';
 import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
-import {RootStackParamList} from '../components/Navigator.navigation';
-const backIconSrc = require('../../assets/icons/go_back_icon_black.png');
+import {RootStackParamList} from '../shared/Types';
 import type {ProfileScreenNavigationProp} from '../shared/Types';
 import {theme} from '../shared/themes';
+import {useState} from 'react';
+import {useEffect} from 'react';
+
+const backIconSrc = require('../../assets/icons/go_back_icon_black.png');
 
 export const BuySellStock: React.FC = () => {
   const route = useRoute<RouteProp<RootStackParamList, 'BuySellStock'>>();
   const navigation = useNavigation<ProfileScreenNavigationProp>();
-  const {stock} = route.params;
+  const {stock, shares_owned} = route.params;
+
+  const [quantityAvailable, setQuantityAvailable] = useState(0);
+  const [quantitySelected, setQuantitySelected] = useState(0);
+  useEffect(() => {
+    setQuantityAvailable(shares_owned);
+  }, [quantitySelected]);
 
   const return_color =
     stock.changePercent > 0 ? theme.primary_green : theme.primary_red;
@@ -76,11 +85,38 @@ export const BuySellStock: React.FC = () => {
       </View>
       {/* -------------------------------------------------------BUY QUANTITY----------------------------------------------------------- */}
       <View
-        style={{alignSelf: 'center', justifyContent: 'center', marginTop: 50}}>
-        <Text>-------------------------</Text>
-        <Text style={{alignSelf: 'center'}}>HERE YOU BUY</Text>
-        <Text>-------------------------</Text>
+        style={{
+          flexDirection: 'row',
+          alignSelf: 'center',
+          justifyContent: 'center',
+          marginTop: 50,
+        }}>
+        <Text style={{alignSelf: 'center'}}>{stock.close}</Text>
+        <Text>{quantitySelected}</Text>
+        <View>
+          <Pressable
+            onPress={() => {
+              if (quantitySelected < quantityAvailable) {
+                setQuantitySelected(prevState => prevState + 1);
+              }
+            }}
+            style={styles.qty}>
+            <Text>+</Text>
+          </Pressable>
+          <Pressable
+            onPress={() => {
+              if (quantitySelected > 0) {
+                setQuantitySelected(prevState => prevState - 1);
+              }
+            }}
+            style={styles.qty}>
+            <Text>-</Text>
+          </Pressable>
+        </View>
       </View>
+      <Text style={{alignSelf: 'center'}}>
+        {quantityAvailable} available to sell
+      </Text>
       {/* -------------------------------------------------------BUY / SELL BUTTONS----------------------------------------------------------- */}
       <View
         style={{
@@ -109,7 +145,6 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 15,
-    // marginLeft: 20,
   },
   logo: {
     width: 40,
@@ -123,6 +158,7 @@ const styles = StyleSheet.create({
   price: {
     fontSize: 50,
     fontWeight: '700',
+    marginBottom: 50,
   },
   change_container: {
     flexDirection: 'row',
@@ -140,5 +176,9 @@ const styles = StyleSheet.create({
 
     fontSize: 30,
     fontWeight: '600',
+  },
+  qty: {
+    padding: 5,
+    backgroundColor: 'red',
   },
 });

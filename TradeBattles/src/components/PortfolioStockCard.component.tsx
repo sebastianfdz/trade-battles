@@ -17,6 +17,7 @@ export const PortfolioStockCard: React.FC<PortfolioStock> = ({stock}) => {
       onPress={() => {
         navigation.navigate('BuySellStock', {
           stock: stock.quote,
+          shares_owned: stock.quantity,
         });
       }}>
       <View style={styles.logo_container}>

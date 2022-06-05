@@ -1,5 +1,4 @@
 import type {StackNavigationProp} from '@react-navigation/stack';
-import type {RootStackParamList} from '../components/Navigator.navigation';
 
 export type Stock = {
   open: number;
@@ -30,6 +29,16 @@ export type PortfolioStock = {
   quantity: number;
   averageCost: number;
   quote?: Stock;
+};
+
+export type RootStackParamList = {
+  Home: undefined;
+  BattlePortfolio: undefined;
+  BuySellStock: {
+    stock: Stock;
+    shares_owned: number;
+  };
+  Login: undefined;
 };
 
 export type ProfileScreenNavigationProp =

@@ -2,18 +2,9 @@ import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {BattlePortfolio} from '../screens/BattlePortfolio.screen';
 import {BuySellStock} from '../screens/BuySellStock.screen';
-import {Stock} from '../shared/Types';
 import {BottomTabsNavigator} from '../screens/BottomTabs.navigator';
 import {LoginOnlySocial} from '../screens/LoginOnlySocial.screen';
-
-export type RootStackParamList = {
-  Home: undefined;
-  BattlePortfolio: undefined;
-  BuySellStock: {
-    stock: Stock;
-  };
-  Login: undefined;
-};
+import {RootStackParamList} from '../shared/Types';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
