@@ -37,9 +37,54 @@ export type RootStackParamList = {
   BuySellStock: {
     stock: Stock;
     shares_owned: number;
+    average_cost: number;
+    battle_id: string;
+    user_id: string;
   };
   Login: undefined;
 };
 
 export type ProfileScreenNavigationProp =
   StackNavigationProp<RootStackParamList>;
+
+export type User = {
+  idToken: string;
+  scopes: string[];
+  serverAuthCode: string;
+  user: {
+    email: string;
+    familyName: string;
+    givenName: string;
+    id: string;
+    name: string;
+    photo: string;
+  };
+};
+
+export type Battle = {
+  battle_id: string;
+  battle_members: BattleMember[];
+  start_date_timestamp: string;
+  end_date_timestamp: string;
+  battle_name: string;
+};
+
+export type BattleMember = {
+  user_id: string;
+  first_name: string;
+  last_name: string;
+  username: string;
+  battles: string[];
+  transactions: Transaction[];
+};
+
+export type Transaction = {
+  transaction_id: string;
+  battle_id: string;
+  user_id: string;
+  action: string;
+  symbol: string;
+  price: number;
+  quantity: number;
+  transaction_timestamp: string;
+};

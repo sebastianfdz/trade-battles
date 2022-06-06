@@ -13,11 +13,13 @@ export const BattlePortfolio: React.FC = () => {
     PortfolioStock[]
   >([{price: 0, symbol: '', change: 0, quantity: 0, averageCost: 0}]);
 
+  const userid = 'c3e56754-7abb-43d8-811d-52186035e1be';
+  const battleid = 'cb08e42a-1b5c-48ba-85ff-fdba5fcf8ca6';
   useEffect(() => {
     // const setPortfolio = async () => {
     //   await ApiClient.getUserPortfolio(
-    //     'c3e56754-7abb-43d8-811d-52186035e1be',
-    //     'cb08e42a-1b5c-48ba-85ff-fdba5fcf8ca6',
+    //     userid,
+    //     battleid,
     //   ).then(res => {
     //     const portfolio: PortfolioStock[] = [];
     //     res.data.forEach(el => {
@@ -48,7 +50,13 @@ export const BattlePortfolio: React.FC = () => {
           <FlatList
             data={currentUserPortfolio}
             renderItem={({item}: {item: PortfolioStock}) => {
-              return <PortfolioStockCard stock={item} />;
+              return (
+                <PortfolioStockCard
+                  battleid={battleid}
+                  userid={userid}
+                  stock={item}
+                />
+              );
             }}
           />
         </View>

@@ -14,6 +14,7 @@ const appleImageSource = require('../../assets/images/Apple_logo.png');
 import auth from '@react-native-firebase/auth';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {appleAuth} from '@invertase/react-native-apple-authentication';
+import type {User} from '../shared/Types';
 
 GoogleSignin.configure({
   scopes: ['https://www.googleapis.com/auth/drive.readonly'], // [Android] what API you want to access on behalf of the user, default is email and profile
@@ -24,14 +25,20 @@ GoogleSignin.configure({
 const logoSrc = require('../../assets/images/Placeholder_logo.png');
 
 export const LoginOnlySocial: React.FC = () => {
+  const [user, setUser] = useState('');
   const {height} = useWindowDimensions();
 
   const onSignInWithGooglePressed = async () => {
     try {
-      const {idToken} = await GoogleSignin.signIn();
+      const usergoogle = await GoogleSignin.signIn();
 
-      const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-      console.warn('Google Sign In');
+      // if (usergoogle) {
+      //   setUser(JSON.stringify(usergoogle));
+      // }
+      const googleCredential = auth.GoogleAuthProvider.credential(
+        usergoogle.idToken,
+      );
+      console.warn(usergoogle, 'user');
       return auth().signInWithCredential(googleCredential);
     } catch (error) {
       console.warn(error);

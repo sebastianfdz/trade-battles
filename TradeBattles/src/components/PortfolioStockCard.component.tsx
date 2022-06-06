@@ -6,9 +6,12 @@ import {PortfolioStock} from '../shared/Types';
 import {useNavigation} from '@react-navigation/native';
 import type {ProfileScreenNavigationProp} from '../shared/Types';
 
-export const PortfolioStockCard: React.FC<PortfolioStock> = ({stock}) => {
+export const PortfolioStockCard: React.FC<PortfolioStock> = ({
+  stock,
+  battleid,
+  userid,
+}) => {
   // console.warn(stock.quote['symbol']);
-
   const navigation = useNavigation<ProfileScreenNavigationProp>();
 
   return (
@@ -18,6 +21,9 @@ export const PortfolioStockCard: React.FC<PortfolioStock> = ({stock}) => {
         navigation.navigate('BuySellStock', {
           stock: stock.quote,
           shares_owned: stock.quantity,
+          average_cost: stock.averageCost,
+          battle_id: battleid,
+          user_id: userid,
         });
       }}>
       <View style={styles.logo_container}>
