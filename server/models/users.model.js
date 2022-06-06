@@ -11,27 +11,21 @@ exports.getUser = (id) => {
 	const user = pool.query(
 		`SELECT * FROM ${table_name} WHERE user_id = '${id}'`
 	);
-	return user;
+	return user.rows;
 };
 exports.createUser = async (user) => {
-	const existingUsers = await pool.query(
-		`SELECT * FROM ${table_name} WHERE username = '${user.username}'`
-	);
+	console.log("inside create");
 
-	if (existingUsers.rows.length) {
-		throw new Error("Username already exists");
-	} else {
-		const sql = `INSERT INTO ${table_name} (user_id, first_name, last_name, username, battles) VALUES ($1,$2,$3,$4,$5)`;
-		const values = [
-			v4(),
-			user.first_name,
-			user.last_name,
-			user.username,
-			user.battles,
-		];
-		pool.query(sql, values);
-		return user;
-	}
+	const sql = `INSERT INTO ${table_name} (user_id, first_name, last_name, photo, email) VALUES ($1,$2,$3,$4,$5)`;
+	const values = [
+		user.id,
+		user.givenName,
+		user.familyName,
+		user.photo,
+		user.email,
+	];
+	pool.query(sql, values);
+	return user;
 };
 
 exports.getUserPortfolio = async (user_id, battle_id) => {

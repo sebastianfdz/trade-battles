@@ -13,7 +13,7 @@ exports.getAllUsers = async (req, res) => {
 exports.getUser = async (req, res) => {
 	try {
 		const user = await users_model.getUser(req.params["id"]);
-		res.send(user.rows);
+		res.send(user);
 		res.status(200);
 	} catch (error) {
 		console.error(error);
