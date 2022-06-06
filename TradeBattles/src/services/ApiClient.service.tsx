@@ -1,6 +1,7 @@
 import type {PortfolioStock} from '../shared/Types';
 import axios from 'axios';
-import {Stock} from '../shared/Types';
+import type {Stock} from '../shared/Types';
+import type {User} from '../shared/Types';
 
 export const ApiClient = {
   getMyBattles: async (user_id: string) => {
@@ -22,6 +23,21 @@ export const ApiClient = {
       `http://localhost:3000/quote/${ticker}`,
     );
     return quote;
+  },
+
+  getUserById: async (id: string) => {
+    const user = await axios.get<User>(`http://localhost:3000/users/${id}`);
+    return user;
+  },
+
+  createUser: async (user: User) => {
+    axios.post('http://localhost:3000/users/', {
+      id: user.id,
+      givenName: user.givenName,
+      familyName: user.familyName,
+      photo: user.photo,
+      email: user.email,
+    });
   },
 
   postTransaction: async (

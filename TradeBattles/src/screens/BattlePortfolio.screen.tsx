@@ -40,7 +40,8 @@ export const BattlePortfolio: React.FC = () => {
     setCurrentUserPortfolio(portfolio);
   }, []);
   return (
-    <View style={{flex: 1, backgroundColor: theme.light_mode_white}}>
+    <View
+      style={{flex: 1, backgroundColor: theme.light_mode_white, padding: 10}}>
       <BattlePortfolioHeader />
       <TextInput style={styles.input} placeholder="Search..."></TextInput>
       {currentUserPortfolio[0].price === 0 ? (
@@ -48,6 +49,7 @@ export const BattlePortfolio: React.FC = () => {
       ) : (
         <View style={{flex: 1}}>
           <FlatList
+            showsVerticalScrollIndicator={false}
             data={currentUserPortfolio}
             renderItem={({item}: {item: PortfolioStock}) => {
               return (
@@ -67,7 +69,7 @@ export const BattlePortfolio: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     marginTop: 50,
-    padding: 20,
+    padding: 10,
   },
   input: {
     width: 200,

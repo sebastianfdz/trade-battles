@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
   StyleSheet,
   View,
@@ -7,7 +7,9 @@ import {
   Dimensions,
   SafeAreaView,
   Animated,
+  Pressable,
 } from 'react-native';
+import {useUserContext} from '../App.provider';
 import {ApiClient} from '../services/ApiClient.service';
 import {theme} from '../shared/themes';
 import type {Battle, BattleMember, Transaction} from '../shared/Types';
@@ -21,7 +23,7 @@ const SPACE_BETWEEN_BATTLES = 15;
 export const MyBattles: React.FC = () => {
   const [myBattles, setMyBattles] = useState<Battle[]>([]);
   const scrollX = React.useRef(new Animated.Value(0)).current;
-
+  const userContext = useUserContext();
   useEffect(() => {
     ApiClient.getMyBattles('c3e56754-7abb-43d8-811d-52186035e1be').then(res =>
       setMyBattles(res.data),
@@ -41,14 +43,14 @@ export const MyBattles: React.FC = () => {
         horizontal={true}
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{
-          paddingTop: 120,
+          paddingTop: 100,
           paddingBottom: 100,
           marginHorizontal: LATERAL_SPACE,
         }}
         decelerationRate={0}
         snapToInterval={CONTAINER_SIZE}
         scrollEventThrottle={16}
-        data={dummy}
+        data={myBattles}
         renderItem={({item, index}) => {
           const inputRange = [
             (index - 1) * CONTAINER_SIZE,
@@ -67,20 +69,68 @@ export const MyBattles: React.FC = () => {
               <Animated.View
                 style={{
                   marginHorizontal: SPACE_BETWEEN_BATTLES,
-                  // padding: SPACE_BETWEEN_BATTLES,
-                  // backgroundColor: 'white',
                   alignItems: 'center',
                   justifyContent: 'center',
                   transform: [{translateY}],
                 }}>
-                <Text style={{marginBottom: 30}}>Battle Name</Text>
                 <View
                   style={{
-                    backgroundColor: theme.primary_green,
+                    backgroundColor: theme.greyPrimary,
                     width: '100%',
                     height: '100%',
                     borderRadius: 34,
-                  }}></View>
+                    shadowColor: 'black',
+                    shadowOffset: {
+                      width: 0,
+                      height: 2,
+                    },
+                    shadowRadius: 3,
+                    shadowOpacity: 0.2,
+                  }}>
+                  <View
+                    style={{
+                      backgroundColor: theme.primary_yellow,
+                      height: 150,
+                      borderTopStartRadius: 34,
+                      borderTopEndRadius: 34,
+                    }}>
+                    <Text style={styles.header_small}>Battle Name</Text>
+                    <View
+                      style={{
+                        borderBottomWidth: 0.3,
+                        borderBottomColor: theme.colorPrimary,
+                        width: '60%',
+                        paddingBottom: 3,
+                        marginBottom: 3,
+                        alignSelf: 'center',
+                      }}>
+                      <Text
+                        style={{
+                          alignSelf: 'center',
+                          marginTop: 15,
+                          fontSize: 12,
+                        }}>
+                        Value of Portfolio
+                      </Text>
+                    </View>
+                    <Text
+                      style={{
+                        alignSelf: 'center',
+                        fontSize: 25,
+                      }}>
+                      $128,462.10
+                    </Text>
+                  </View>
+                  <Pressable
+                    onPress={() => console.warn(userContext.user.name)}
+                    style={{
+                      width: '100%',
+                      height: 50,
+                      backgroundColor: theme.primary_green,
+                    }}>
+                    <Text>Let me see thatuser</Text>
+                  </Pressable>
+                </View>
               </Animated.View>
             </View>
           );
@@ -94,75 +144,25 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: theme.light_mode_white,
   },
   header: {
     fontSize: 30,
     fontWeight: '700',
+    marginTop: 50,
+  },
+  header_small: {
+    fontSize: 25,
+    fontWeight: '700',
+    marginTop: 30,
+    alignSelf: 'center',
   },
   battle: {
     width: '100%',
     height: CONTAINER_SIZE * 1.2,
     resizeMode: 'cover',
     borderRadius: 24,
-    // margin: 0,
-    // marginBottom: 10,
   },
 });
-
-{
-  /* <Text style={{marginTop: 50, fontSize: 40, fontWeight: '700'}}>
-        My Battles
-      </Text>
-      {myBattles.map(battle => (
-        <ScrollView horizontal={true}>
-          <View style={styles.header_container}>
-            <Text style={styles.header}>{battle.battle_name}</Text>
-            <Text>$ 8,341.33</Text>
-          </View>
-          <View style={styles.body_container}>
-            {battle.battle_members.map(member => (
-              <View>
-                <Text>
-                  {member.first_name} {member.last_name}
-                </Text>
-              </View>
-            ))}
-          </View>
-        </ScrollView>
-      ))}*/
-}
-
-// header: {
-//   fontSize: 30,
-//   fontWeight: '700',
-// },
-// header_container: {
-//   backgroundColor: theme.primary_yellow,
-//   borderTopLeftRadius: 50,
-//   borderTopRightRadius: 50,
-//   justifyContent: 'center',
-//   alignItems: 'center',
-//   alignSelf: 'center',
-//   width: 275,
-//   marginTop: 50,
-//   height: 150,
-// },
-// body_container: {
-//   backgroundColor: theme.greyPrimary,
-//   borderBottomLeftRadius: 50,
-//   borderBottomRightRadius: 50,
-//   justifyContent: 'center',
-//   alignItems: 'center',
-//   alignSelf: 'center',
-//   width: 275,
-//   height: 300,
-//   shadowColor: 'black',
-//   shadowOffset: {
-//     width: 0,
-//     height: 10,
-//   },
-//   shadowRadius: 5,
-//   shadowOpacity: 0.1,
-// },
 
 // props to https://www.youtube.com/watch?v=hD5Hi_XG4lc for the carrousell animation

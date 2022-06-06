@@ -48,17 +48,12 @@ export type ProfileScreenNavigationProp =
   StackNavigationProp<RootStackParamList>;
 
 export type User = {
-  idToken: string;
-  scopes: string[];
-  serverAuthCode: string;
-  user: {
-    email: string;
-    familyName: string;
-    givenName: string;
-    id: string;
-    name: string;
-    photo: string;
-  };
+  id: string;
+  name: string | null;
+  email: string;
+  photo: string | null;
+  familyName: string | null;
+  givenName: string | null;
 };
 
 export type Battle = {

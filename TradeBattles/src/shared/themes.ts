@@ -1,5 +1,3 @@
-import {useContext} from 'react';
-
 const darkmode = false;
 
 export const theme = {

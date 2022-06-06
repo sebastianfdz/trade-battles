@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, createContext} from 'react';
 import {
   StyleSheet,
   View,
@@ -15,6 +15,8 @@ import auth from '@react-native-firebase/auth';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {appleAuth} from '@invertase/react-native-apple-authentication';
 import type {User} from '../shared/Types';
+import {useUserContext} from '../App.provider';
+import {ApiClient} from '../services/ApiClient.service';
 
 GoogleSignin.configure({
   scopes: ['https://www.googleapis.com/auth/drive.readonly'], // [Android] what API you want to access on behalf of the user, default is email and profile
@@ -25,20 +27,20 @@ GoogleSignin.configure({
 const logoSrc = require('../../assets/images/Placeholder_logo.png');
 
 export const LoginOnlySocial: React.FC = () => {
-  const [user, setUser] = useState('');
+  const userContext = useUserContext();
   const {height} = useWindowDimensions();
 
   const onSignInWithGooglePressed = async () => {
     try {
-      const usergoogle = await GoogleSignin.signIn();
-
-      // if (usergoogle) {
-      //   setUser(JSON.stringify(usergoogle));
-      // }
-      const googleCredential = auth.GoogleAuthProvider.credential(
-        usergoogle.idToken,
-      );
-      console.warn(usergoogle, 'user');
+      const {user, idToken} = await GoogleSignin.signIn();
+      const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+      // console.warn(user, 'user');
+      userContext.handleSetUser(user);
+      const dbUser = await ApiClient.getUserById(user.id);
+      console.warn(dbUser.data, 'DBUSER');
+      if (!dbUser.data) {
+        ApiClient.createUser(user);
+      }
       return auth().signInWithCredential(googleCredential);
     } catch (error) {
       console.warn(error);
