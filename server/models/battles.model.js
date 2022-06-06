@@ -37,7 +37,8 @@ exports.getMyBattles = async (user_id) => {
 };
 
 exports.createBattle = (battle) => {
-	const sql = `INSERT INTO ${table_name} (battle_id, battle_members, start_date_timestamp, end_date_timestamp, battle_name) VALUES ($1,$2,$3,$4,$5)`;
+	// const sql = `INSERT INTO ${table_name} (battle_id, battle_members, start_date_timestamp, end_date_timestamp, battle_name) VALUES ($1,$2,$3,$4,$5)`;
+	const sql = "CALL create_battle($1,$2,$3,$4,$5)";
 	const values = [
 		v4(),
 		battle.battle_members,

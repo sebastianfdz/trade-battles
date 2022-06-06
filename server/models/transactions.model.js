@@ -22,7 +22,7 @@ exports.getTransaction = (id) => {
 };
 
 exports.createTransaction = (transaction) => {
-	const sql = `INSERT INTO ${table_name} (transaction_id, battle_id, user_id, transaction_timestamp, action, symbol, price, quantity) VALUES($1,$2,$3,$4,$5,$6,$7,$8)`;
+	const sql = `CALL create_transaction($1,$2,$3,$4,$5,$6,$7,$8)`;
 	const values = [
 		v4(),
 		transaction.battle_id,
@@ -30,10 +30,11 @@ exports.createTransaction = (transaction) => {
 		Date.now(),
 		transaction.action,
 		transaction.symbol,
-		transaction.price,
-		transaction.quantity,
+		parseFloat(transaction.price),
+		parseInt(transaction.quantity),
 	];
 
+	console.log("transaction posted");
 	return pool.query(sql, values);
 };
 
@@ -48,5 +49,9 @@ exports.filterTransactionsByUserIdBattleId = async (user_id, battle_id) => {
 	const result = await pool.query(
 		`SELECT * FROM ${table_name} WHERE battle_id = '${battle_id}' AND user_id = '${user_id}' ORDER BY symbol,action ASC`
 	);
+
 	return result;
+	// const sql = "CALL filterTransactions($1,$2)";
+	// const values = [user_id, battle_id];
+	// return pool.query(sql, values);
 };
