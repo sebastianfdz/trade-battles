@@ -5,10 +5,12 @@ const user_model = require("./users.model");
 const transaction_model = require("./transactions.model");
 
 exports.getMyBattles = async (user_id) => {
+	console.log(user_id);
 	const allBattles = await pool.query(`SELECT * FROM ${table_name}`);
 	const myBattles = allBattles.rows.filter((battle) =>
 		battle.battle_members.includes(user_id)
 	);
+	console.log(myBattles);
 
 	if (myBattles.length === 0) throw new Error("No battles found for this user");
 
@@ -17,7 +19,7 @@ exports.getMyBattles = async (user_id) => {
 		const battleMembers = [];
 		for (let member of myBattles[battleIdx].battle_members) {
 			const member_obj = await user_model.getUser(member);
-			battleMembers.push(...member_obj.rows);
+			battleMembers.push(...member_obj);
 		}
 		myBattles[battleIdx].battle_members = battleMembers;
 	}

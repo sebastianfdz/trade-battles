@@ -7,8 +7,8 @@ exports.getAllUsers = () => {
 	const users = pool.query(`SELECT * FROM ${table_name}`);
 	return users;
 };
-exports.getUser = (id) => {
-	const user = pool.query(
+exports.getUser = async (id) => {
+	const user = await pool.query(
 		`SELECT * FROM ${table_name} WHERE user_id = '${id}'`
 	);
 	return user.rows;
