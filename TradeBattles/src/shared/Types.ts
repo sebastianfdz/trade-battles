@@ -68,7 +68,8 @@ export type BattleMember = {
   user_id: string;
   first_name: string;
   last_name: string;
-  username: string;
+  email: string;
+  photo: string;
   battles: string[];
   transactions: Transaction[];
 };

@@ -11,6 +11,7 @@ import {ApiClient} from '../services/ApiClient.service';
 import {theme} from '../shared/themes';
 import type {Battle} from '../shared/Types';
 import {BattleCard} from '../components/BattleCard.component';
+import {useUserContext} from '../App.provider';
 
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
@@ -20,8 +21,10 @@ export const MyBattles: React.FC = () => {
   const [myBattles, setMyBattles] = useState<Battle[]>([]);
   const scrollX = React.useRef(new Animated.Value(0)).current;
 
+  const userContext = useUserContext();
+  console.warn(userContext.user.id);
   useEffect(() => {
-    ApiClient.getMyBattles('c3e56754-7abb-43d8-811d-52186035e1be').then(res =>
+    ApiClient.getMyBattles(userContext.user.id).then(res =>
       setMyBattles(res.data),
     );
   }, []);
@@ -66,7 +69,10 @@ export const MyBattles: React.FC = () => {
                   justifyContent: 'center',
                   transform: [{translateY}],
                 }}>
-                <BattleCard />
+                <BattleCard
+                  battle_name={item.battle_name}
+                  battle_members={item.battle_members}
+                />
               </Animated.View>
             </View>
           );
