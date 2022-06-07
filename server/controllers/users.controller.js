@@ -31,10 +31,13 @@ exports.postUser = async (req, res) => {
 		res.sendStatus(500);
 	}
 };
-exports.updateUser = async (req, res) => {
+exports.addBattleToUser = async (req, res) => {
 	try {
-		const user = await users_model.updateUser(req.params["id"]);
-		res.send(user);
+		const user = await users_model.addBattleToUser(
+			req.params["user_id"],
+			req.params["battle_id"]
+		);
+		res.send({ status: "Update succesful" });
 		res.status(200);
 	} catch (error) {
 		console.error(error);

@@ -16,13 +16,15 @@ exports.getUser = async (id) => {
 exports.createUser = async (user) => {
 	console.log("inside create");
 
-	const sql = `INSERT INTO ${table_name} (user_id, first_name, last_name, photo, email) VALUES ($1,$2,$3,$4,$5)`;
+	const sql = `INSERT INTO ${table_name} (user_id, first_name, last_name, photo, email, transactions, battles) VALUES ($1,$2,$3,$4,$5,$6,$7)`;
 	const values = [
-		user.id,
+		user.id ? user.id : v4(),
 		user.givenName,
 		user.familyName,
 		user.photo,
 		user.email,
+		[],
+		[],
 	];
 	pool.query(sql, values);
 	return user;
@@ -107,5 +109,10 @@ exports.getUserPortfolio = async (user_id, battle_id) => {
 	return userPortfolio;
 };
 
-exports.updateUser = async (id) => {};
+exports.addBattleToUser = async (id, battle) => {
+	const user = await pool.query(
+		`UPDATE ${table_name} SET battles = array_append(battles, '${battle}') WHERE user_id  = '${id}'`
+	);
+	return user;
+};
 exports.deleteUser = async (id) => {};

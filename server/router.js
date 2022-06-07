@@ -22,7 +22,10 @@ router.post("/battles", battles_controller.postBattle);
 router.get("/users", users_controller.getAllUsers);
 router.get("/users/:id", users_controller.getUser);
 router.post("/users", users_controller.postUser);
-router.put("/users/:id", users_controller.updateUser);
+router.put(
+	"/users/add/battle/:user_id/:battle_id",
+	users_controller.addBattleToUser
+);
 router.delete("/users/:id", users_controller.deleteUser);
 router.get(
 	"/users/portfolio/:user_id/:battle_id",
