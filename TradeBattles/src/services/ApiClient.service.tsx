@@ -30,6 +30,17 @@ export const ApiClient = {
     return user;
   },
 
+  handleSignIn: async (user: User) => {
+    const dbUser = await ApiClient.getUserById(user.id);
+
+    if (!dbUser.data) {
+      ApiClient.createUser(user);
+      console.warn('User succesfully created');
+    } else {
+      console.warn('User succesfully logged in');
+    }
+  },
+
   createUser: async (user: User) => {
     axios.post('http://localhost:3000/users/', {
       id: user.id,

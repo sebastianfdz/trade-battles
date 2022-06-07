@@ -7,8 +7,8 @@ export type Stock = {
   changePercent: number;
   currency: string;
   companyName: string;
-  iexAskPrice: number;
-  iexBidPrice: number;
+  iexAskPrice: number | null;
+  iexBidPrice: number | null;
   symbol: string;
   peRatio: number;
   ytdChange: number;
@@ -17,7 +17,7 @@ export type Stock = {
   previousClose: number;
   low: number;
   high: number;
-  iexRealtimePrice: number;
+  iexRealtimePrice: number | null;
   primaryExchange: string;
   isUSMarketOpen: boolean;
 };
@@ -28,7 +28,7 @@ export type PortfolioStock = {
   change: number;
   quantity: number;
   averageCost: number;
-  quote?: Stock;
+  quote: Stock;
 };
 
 export type RootStackParamList = {

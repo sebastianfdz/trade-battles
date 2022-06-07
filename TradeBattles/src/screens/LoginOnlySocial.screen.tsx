@@ -34,13 +34,10 @@ export const LoginOnlySocial: React.FC = () => {
     try {
       const {user, idToken} = await GoogleSignin.signIn();
       const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-      // console.warn(user, 'user');
+
       userContext.handleSetUser(user);
-      const dbUser = await ApiClient.getUserById(user.id);
-      console.warn(dbUser.data, 'DBUSER');
-      if (!dbUser.data) {
-        ApiClient.createUser(user);
-      }
+      ApiClient.handleSignIn(user);
+
       return auth().signInWithCredential(googleCredential);
     } catch (error) {
       console.warn(error);

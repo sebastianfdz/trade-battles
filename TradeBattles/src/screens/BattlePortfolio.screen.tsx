@@ -6,12 +6,41 @@ import {PortfolioStock} from '../shared/Types';
 import {ApiClient} from '../services/ApiClient.service';
 import {theme} from '../shared/themes';
 import {BattlePortfolioHeader} from '../components/BattlePortfolioHeader.component';
-import portfolio from '../portfolio.json';
+const {portfolio} = require('../portfolio.ts');
+
+const initialPortfolioState = {
+  price: 0,
+  symbol: '',
+  change: 0,
+  quantity: 0,
+  averageCost: 0,
+  quote: {
+    open: 0,
+    close: 0,
+    change: 0,
+    changePercent: 0,
+    currency: '',
+    companyName: '',
+    iexAskPrice: 0,
+    iexBidPrice: 0,
+    symbol: '',
+    peRatio: 0,
+    ytdChange: 0,
+    week52High: 0,
+    week52Low: 0,
+    previousClose: 0,
+    low: 0,
+    high: 0,
+    iexRealtimePrice: 0,
+    primaryExchange: '',
+    isUSMarketOpen: false,
+  },
+};
 
 export const BattlePortfolio: React.FC = () => {
   const [currentUserPortfolio, setCurrentUserPortfolio] = useState<
     PortfolioStock[]
-  >([{price: 0, symbol: '', change: 0, quantity: 0, averageCost: 0}]);
+  >([initialPortfolioState]);
 
   const userid = 'c3e56754-7abb-43d8-811d-52186035e1be';
   const battleid = 'cb08e42a-1b5c-48ba-85ff-fdba5fcf8ca6';
@@ -45,7 +74,7 @@ export const BattlePortfolio: React.FC = () => {
       <BattlePortfolioHeader />
       <TextInput style={styles.input} placeholder="Search..."></TextInput>
       {currentUserPortfolio[0].price === 0 ? (
-        <Text style={{alignSelf: 'center'}}>Loading...</Text>
+        <Text style={{alignSelf: 'center'}}>Loading...</Text> // TODO -> Refactor to spinner
       ) : (
         <View style={{flex: 1}}>
           <FlatList

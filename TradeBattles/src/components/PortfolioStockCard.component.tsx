@@ -6,12 +6,11 @@ import {PortfolioStock} from '../shared/Types';
 import {useNavigation} from '@react-navigation/native';
 import type {ProfileScreenNavigationProp} from '../shared/Types';
 
-export const PortfolioStockCard: React.FC<PortfolioStock> = ({
-  stock,
-  battleid,
-  userid,
-}) => {
-  // console.warn(stock.quote['symbol']);
+export const PortfolioStockCard: React.FC<{
+  stock: PortfolioStock;
+  battleid: string;
+  userid: string;
+}> = ({stock, battleid, userid}) => {
   const navigation = useNavigation<ProfileScreenNavigationProp>();
 
   return (
@@ -26,14 +25,13 @@ export const PortfolioStockCard: React.FC<PortfolioStock> = ({
           user_id: userid,
         });
       }}>
-      <View style={styles.logo_container}>
-        <Image
-          style={styles.logo}
-          source={{
-            uri: `https://storage.googleapis.com/iexcloud-hl37opg/api/logos/${stock.symbol}.png`,
-          }}
-        />
-      </View>
+      <Image
+        style={styles.logo_container}
+        source={{
+          uri: `https://storage.googleapis.com/iexcloud-hl37opg/api/logos/${stock.symbol}.png`,
+        }}
+      />
+
       <Text style={styles.text}>{stock.symbol}</Text>
       <Text
         style={[
@@ -65,10 +63,7 @@ const styles = StyleSheet.create({
     height: 30,
     width: 30,
   },
-  logo: {
-    height: '100%',
-    width: '100%',
-  },
+
   text: {
     color: theme.colorPrimary,
   },
