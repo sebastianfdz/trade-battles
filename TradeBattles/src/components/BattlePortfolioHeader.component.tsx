@@ -1,12 +1,14 @@
 import React from 'react';
 import {Text, View, StyleSheet} from 'react-native';
 import {theme} from '../shared/themes';
+import {Battle} from '../shared/Types';
 
-export const BattlePortfolioHeader: React.FC = () => {
+export const BattlePortfolioHeader: React.FC<{battle: Battle}> = ({battle}) => {
+  console.warn(battle);
   return (
     <View style={styles.container}>
       <View style={styles.portfolio_header_container}>
-        <Text style={styles.title}>Battle Name</Text>
+        <Text style={styles.title}>{battle.battle_name}</Text>
         <Text style={styles.available_capital}>$98,348.34</Text>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Text style={styles.return_money}>$8,233.92</Text>

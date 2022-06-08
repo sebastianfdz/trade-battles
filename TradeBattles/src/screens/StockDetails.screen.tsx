@@ -1,19 +1,16 @@
 import React from 'react';
 import {StyleSheet, View, Text, Image, Pressable} from 'react-native';
-import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
+import {RouteProp, useRoute} from '@react-navigation/native';
 import {RootStackParamList} from '../shared/Types';
-import type {ProfileScreenNavigationProp} from '../shared/Types';
 import {useState} from 'react';
 import {useEffect} from 'react';
 import {ApiClient} from '../services/ApiClient.service';
 import {StockDetailsInfo} from '../components/StockDetailsInfo.component';
 import {StockDetailsBuySell} from '../components/StockDetailsBuySell.component';
 import {GoBack} from '../components/GoBack.component';
-const backIconSrc = require('../../assets/icons/go_back_icon_black.png');
 
 export const StockDetails: React.FC = ({}) => {
   const route = useRoute<RouteProp<RootStackParamList, 'BuySellStock'>>();
-  const navigation = useNavigation<ProfileScreenNavigationProp>();
   const {stock, shares_owned, average_cost, battle_id, user_id} = route.params;
   const [quantityAvailable, setQuantityAvailable] = useState(0);
   const [quantitySelected, setQuantitySelected] = useState(0);

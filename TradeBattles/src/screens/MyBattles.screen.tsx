@@ -19,17 +19,16 @@ const BATTLE_CONTAINER = width * 0.7;
 
 export const MyBattles: React.FC = () => {
   const [myBattles, setMyBattles] = useState<Battle[]>([]);
-  const scrollX = React.useRef(new Animated.Value(0)).current;
 
   const userContext = useUserContext();
 
-  console.warn(userContext.user);
   useEffect(() => {
     ApiClient.getMyBattles(
       userContext.user.id ? userContext.user.id : '110660774589450165950',
     ).then(res => setMyBattles(res.data));
   }, []);
 
+  const scrollX = React.useRef(new Animated.Value(0)).current;
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.header}>My Battles</Text>
@@ -63,7 +62,7 @@ export const MyBattles: React.FC = () => {
           });
           return (
             <View
-              // key={item.battle_id}
+              key={item.battle_id}
               style={{width: BATTLE_CONTAINER, height: height * 0.5}}>
               <Animated.View
                 style={{
@@ -73,9 +72,8 @@ export const MyBattles: React.FC = () => {
                   transform: [{translateY}],
                 }}>
                 <BattleCard
-                  battle_id={item.battle_id}
-                  battle_name={item.battle_name}
-                  battle_members={item.battle_members}
+                  key={item.battle_id + item.battle_members}
+                  battle={item}
                 />
               </Animated.View>
             </View>

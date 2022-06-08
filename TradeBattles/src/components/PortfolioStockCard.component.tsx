@@ -13,6 +13,7 @@ export const PortfolioStockCard: React.FC<{
 }> = ({stock, battleid, userid}) => {
   const navigation = useNavigation<ProfileScreenNavigationProp>();
 
+  console.warn(stock);
   return (
     <Pressable
       style={styles.container}

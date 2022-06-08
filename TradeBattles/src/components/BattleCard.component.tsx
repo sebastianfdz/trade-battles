@@ -3,32 +3,31 @@ import {Text, View, Image, StyleSheet, Pressable} from 'react-native';
 import {theme} from '../shared/themes';
 import {useUserContext} from '../App.provider';
 import {BattleCardHeader} from './BattleCardHeader.component';
-import {BattleMember} from '../shared/Types';
+import {Battle, BattleMember} from '../shared/Types';
 import {useNavigation} from '@react-navigation/native';
 import {ProfileScreenNavigationProp} from '../shared/Types';
 
 export const BattleCard: React.FC<{
-  battle_name: string;
-  battle_members: BattleMember[];
-  battle_id: string;
-}> = ({battle_name, battle_members, battle_id}) => {
+  battle: Battle;
+}> = ({battle}) => {
   const userContext = useUserContext();
   const navigation = useNavigation<ProfileScreenNavigationProp>();
   return (
     <Pressable
       onPress={() => {
         navigation.navigate('BattlePortfolio', {
-          battle_id: battle_id,
+          battle: battle,
           user_id: userContext.user.id,
         });
       }}
       style={styles.container}>
-      <BattleCardHeader battle_name={battle_name} />
+      <BattleCardHeader battle_name={battle.battle_name} />
 
       <Text>Current user: {userContext.user.name}</Text>
-      {battle_members.map(member => {
+      {battle.battle_members.map(member => {
         return (
           <View
+            key={member.user_id}
             style={{
               flexDirection: 'row',
               alignItems: 'center',
@@ -36,6 +35,7 @@ export const BattleCard: React.FC<{
               paddingHorizontal: 10,
             }}>
             <Image
+              key={member.user_id + member.photo}
               style={{width: 30, height: 30, borderRadius: 50, marginRight: 10}}
               source={{uri: member.photo}}
             />

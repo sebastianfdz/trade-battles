@@ -8,13 +8,14 @@ import {
 } from 'react-native';
 import {CustomButton} from '../components/CustomButton.component';
 import {theme} from '../shared/themes';
-const googleImageSource = require('../../assets/images/Google_logo.png');
-const facebookImageSource = require('../../assets/images/Facebook_logo.png');
-const appleImageSource = require('../../assets/images/Apple_logo.png');
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {appleAuth} from '@invertase/react-native-apple-authentication';
 import {useUserContext} from '../App.provider';
 import {ApiClient} from '../services/ApiClient.service';
+
+const googleImageSource = require('../../assets/images/Google_logo.png');
+const facebookImageSource = require('../../assets/images/Facebook_logo.png');
+const appleImageSource = require('../../assets/images/Apple_logo.png');
 
 GoogleSignin.configure({
   scopes: ['https://www.googleapis.com/auth/drive.readonly'], // [Android] what API you want to access on behalf of the user, default is email and profile
@@ -50,30 +51,7 @@ export const LoginOnlySocial: React.FC = () => {
     });
   };
 
-  const onSignInWithApplePressed = async () => {
-    try {
-      console.warn(appleAuth.isSupported);
-
-      const appleAuthRequestResponse = await appleAuth.performRequest({
-        requestedOperation: appleAuth.Operation.LOGIN,
-        requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
-      });
-
-      // get current authentication state for user
-      // /!\ This method must be tested on a real device. On the iOS simulator it always throws an error.
-      const credentialState = await appleAuth.getCredentialStateForUser(
-        appleAuthRequestResponse.user,
-      );
-
-      // use credentialState response to ensure the user is authenticated
-      if (credentialState === appleAuth.State.AUTHORIZED) {
-        // user is authenticated
-      }
-    } catch (error) {
-      console.error(error);
-    }
-    console.warn('Apple Sign In');
-  };
+  const onSignInWithApplePressed = async () => {};
 
   return (
     <ScrollView>

@@ -1,15 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import {
-  StyleSheet,
-  View,
-  Text,
-  FlatList,
-  TextInput,
-  Pressable,
-} from 'react-native';
+import {StyleSheet, View, Text, FlatList, TextInput} from 'react-native';
 import {PortfolioStockCard} from '../components/PortfolioStockCard.component';
-import {Stock} from '../shared/Types';
-import {PortfolioStock} from '../shared/Types';
+import {Battle, PortfolioStock} from '../shared/Types';
 import {ApiClient} from '../services/ApiClient.service';
 import {theme} from '../shared/themes';
 import {BattlePortfolioHeader} from '../components/BattlePortfolioHeader.component';
@@ -44,7 +36,8 @@ const initialPortfolioState = {
     iexRealtimePrice: 0,
     primaryExchange: '',
     isUSMarketOpen: false,
-    iexClose: 0,
+    // iexClose: 0,
+    latestPrice: 0,
   },
 };
 
@@ -55,22 +48,18 @@ export const BattlePortfolio: React.FC = () => {
 
   const route = useRoute<RouteProp<RootStackParamList, 'BattlePortfolio'>>();
 
-  let user_id = '110660774589450165950';
-  let battle_id = '65c823fa-de56-48f8-b4a0-3a94b5640b59';
-  console.warn(route.params, 'ROUTE PARAMS BATTLE PORTFOLIO');
-  route.params ? ({battle_id, user_id} = route.params) : undefined;
+  const {battle, user_id} = route.params;
 
   useEffect(() => {
     const setPortfolio = async () => {
-      await ApiClient.getUserPortfolio(user_id, battle_id).then(res => {
+      await ApiClient.getUserPortfolio(user_id, battle.battle_id).then(res => {
         const portfolio: PortfolioStock[] = [];
-        res.data.forEach((el, index) => {
+        res.data.forEach(el => {
           ApiClient.getQuote(el.symbol).then(res => {
-            el.price = res.data.close ? res.data.close : res.data.iexClose;
+            el.price = res.data.close ? res.data.close : res.data.latestPrice;
             el.change = ((el.price - el.averageCost) / el.averageCost) * 100;
             el.quote = res.data;
             portfolio.push(el);
-            // console.warn(portfolio, 'index' + index);
             setCurrentUserPortfolio(portfolio);
           });
         });
@@ -86,7 +75,7 @@ export const BattlePortfolio: React.FC = () => {
       <GoBack />
       <View
         style={{flex: 1, backgroundColor: theme.light_mode_white, padding: 10}}>
-        <BattlePortfolioHeader />
+        <BattlePortfolioHeader battle={battle} />
         <TextInput style={styles.input} placeholder="Search..."></TextInput>
         {currentUserPortfolio[0].price === 0 ? (
           <Text style={{alignSelf: 'center'}}>Loading...</Text> // TODO -> Refactor to spinner
@@ -100,7 +89,7 @@ export const BattlePortfolio: React.FC = () => {
               renderItem={({item}: {item: PortfolioStock}) => {
                 return (
                   <PortfolioStockCard
-                    battleid={battle_id}
+                    battleid={battle.battle_id}
                     userid={user_id}
                     stock={item}
                   />
