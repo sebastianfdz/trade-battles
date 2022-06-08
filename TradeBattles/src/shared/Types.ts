@@ -20,6 +20,7 @@ export type Stock = {
   iexRealtimePrice: number | null;
   primaryExchange: string;
   isUSMarketOpen: boolean;
+  iexClose: number;
 };
 
 export type PortfolioStock = {
@@ -33,7 +34,10 @@ export type PortfolioStock = {
 
 export type RootStackParamList = {
   Home: undefined;
-  BattlePortfolio: undefined;
+  BattlePortfolio: {
+    battle_id: string;
+    user_id: string;
+  };
   BuySellStock: {
     stock: Stock;
     shares_owned: number;
@@ -41,7 +45,11 @@ export type RootStackParamList = {
     battle_id: string;
     user_id: string;
   };
-  Login: undefined;
+
+  LoginOnlySocial: undefined;
+  MyBattles: {
+    user_id: string;
+  };
 };
 
 export type ProfileScreenNavigationProp =

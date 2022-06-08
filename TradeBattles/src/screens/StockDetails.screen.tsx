@@ -8,7 +8,7 @@ import {useEffect} from 'react';
 import {ApiClient} from '../services/ApiClient.service';
 import {StockDetailsInfo} from '../components/StockDetailsInfo.component';
 import {StockDetailsBuySell} from '../components/StockDetailsBuySell.component';
-
+import {GoBack} from '../components/GoBack.component';
 const backIconSrc = require('../../assets/icons/go_back_icon_black.png');
 
 export const StockDetails: React.FC = ({}) => {
@@ -40,11 +40,7 @@ export const StockDetails: React.FC = ({}) => {
 
   return (
     <View>
-      <Pressable
-        onPress={() => navigation.goBack()}
-        style={{padding: 15, marginTop: 60}}>
-        <Image style={styles.back} source={backIconSrc} />
-      </Pressable>
+      <GoBack />
       <View style={styles.container}>
         <StockDetailsInfo
           stock={stock}

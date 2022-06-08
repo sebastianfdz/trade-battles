@@ -11,7 +11,6 @@ export const BottomTabsNavigator: React.FC = () => {
     <BottomTabs.Navigator screenOptions={{headerShown: false}}>
       <BottomTabs.Screen name="Porfolio" component={BattlePortfolio} />
       <BottomTabs.Screen name="MyBattles" component={MyBattles} />
-      <BottomTabs.Screen name="LoginOnlySocial" component={LoginOnlySocial} />
     </BottomTabs.Navigator>
   );
 };

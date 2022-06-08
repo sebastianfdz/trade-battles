@@ -1,17 +1,28 @@
 import React from 'react';
-import {Text, View, Image, StyleSheet} from 'react-native';
+import {Text, View, Image, StyleSheet, Pressable} from 'react-native';
 import {theme} from '../shared/themes';
 import {useUserContext} from '../App.provider';
 import {BattleCardHeader} from './BattleCardHeader.component';
 import {BattleMember} from '../shared/Types';
+import {useNavigation} from '@react-navigation/native';
+import {ProfileScreenNavigationProp} from '../shared/Types';
 
 export const BattleCard: React.FC<{
   battle_name: string;
   battle_members: BattleMember[];
-}> = ({battle_name, battle_members}) => {
+  battle_id: string;
+}> = ({battle_name, battle_members, battle_id}) => {
   const userContext = useUserContext();
+  const navigation = useNavigation<ProfileScreenNavigationProp>();
   return (
-    <View style={styles.container}>
+    <Pressable
+      onPress={() => {
+        navigation.navigate('BattlePortfolio', {
+          battle_id: battle_id,
+          user_id: userContext.user.id,
+        });
+      }}
+      style={styles.container}>
       <BattleCardHeader battle_name={battle_name} />
 
       <Text>Current user: {userContext.user.name}</Text>
@@ -34,7 +45,7 @@ export const BattleCard: React.FC<{
           </View>
         );
       })}
-    </View>
+    </Pressable>
   );
 };
 

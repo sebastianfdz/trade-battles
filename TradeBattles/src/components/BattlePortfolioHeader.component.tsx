@@ -21,7 +21,6 @@ export const BattlePortfolioHeader: React.FC = () => {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 50,
     padding: 20,
   },
   portfolio_header_container: {

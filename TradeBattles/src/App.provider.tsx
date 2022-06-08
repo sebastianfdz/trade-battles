@@ -5,20 +5,23 @@ type UserContextType = {
   user: User;
   handleSetUser: (user: User) => void;
 };
+
+const initialUser = {
+  id: 'DEFAULT',
+  name: '',
+  email: '',
+  photo: '',
+  familyName: '',
+  givenName: '',
+};
+
 const UserContext = createContext<UserContextType>({
-  user: {id: '', name: '', email: '', photo: '', familyName: '', givenName: ''},
+  user: initialUser,
   handleSetUser: () => {},
 });
 
 export const UserProvider: React.FC<any> = ({children}) => {
-  const [user, setUser] = useState<User>({
-    id: '',
-    name: '',
-    email: '',
-    photo: '',
-    familyName: '',
-    givenName: '',
-  });
+  const [user, setUser] = useState<User>(initialUser);
 
   const handleSetUser = (user: User) => {
     setUser(user);
@@ -30,4 +33,5 @@ export const UserProvider: React.FC<any> = ({children}) => {
     </UserContext.Provider>
   );
 };
+
 export const useUserContext = () => useContext(UserContext);

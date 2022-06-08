@@ -22,11 +22,12 @@ export const MyBattles: React.FC = () => {
   const scrollX = React.useRef(new Animated.Value(0)).current;
 
   const userContext = useUserContext();
-  console.warn(userContext.user.id);
+
+  console.warn(userContext.user);
   useEffect(() => {
-    ApiClient.getMyBattles(userContext.user.id).then(res =>
-      setMyBattles(res.data),
-    );
+    ApiClient.getMyBattles(
+      userContext.user.id ? userContext.user.id : '110660774589450165950',
+    ).then(res => setMyBattles(res.data));
   }, []);
 
   return (
@@ -61,7 +62,9 @@ export const MyBattles: React.FC = () => {
             outputRange,
           });
           return (
-            <View style={{width: BATTLE_CONTAINER, height: height * 0.5}}>
+            <View
+              // key={item.battle_id}
+              style={{width: BATTLE_CONTAINER, height: height * 0.5}}>
               <Animated.View
                 style={{
                   marginHorizontal: 15,
@@ -70,6 +73,7 @@ export const MyBattles: React.FC = () => {
                   transform: [{translateY}],
                 }}>
                 <BattleCard
+                  battle_id={item.battle_id}
                   battle_name={item.battle_name}
                   battle_members={item.battle_members}
                 />

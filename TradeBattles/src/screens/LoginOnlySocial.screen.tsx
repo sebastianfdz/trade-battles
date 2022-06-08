@@ -1,4 +1,4 @@
-import React, {useState, createContext} from 'react';
+import React from 'react';
 import {
   StyleSheet,
   View,
@@ -11,10 +11,8 @@ import {theme} from '../shared/themes';
 const googleImageSource = require('../../assets/images/Google_logo.png');
 const facebookImageSource = require('../../assets/images/Facebook_logo.png');
 const appleImageSource = require('../../assets/images/Apple_logo.png');
-import auth from '@react-native-firebase/auth';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {appleAuth} from '@invertase/react-native-apple-authentication';
-import type {User} from '../shared/Types';
 import {useUserContext} from '../App.provider';
 import {ApiClient} from '../services/ApiClient.service';
 
@@ -30,22 +28,26 @@ export const LoginOnlySocial: React.FC = () => {
   const userContext = useUserContext();
   const {height} = useWindowDimensions();
 
+  console.warn(userContext.user, 'USER CONTEXT FROM LOGIN PAGE  ');
   const onSignInWithGooglePressed = async () => {
     try {
-      const {user, idToken} = await GoogleSignin.signIn();
-      const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-
+      const {user} = await GoogleSignin.signIn();
       userContext.handleSetUser(user);
       ApiClient.handleSignIn(user);
-
-      return auth().signInWithCredential(googleCredential);
     } catch (error) {
-      console.warn(error);
+      console.error(error);
     }
   };
 
   const onSignInWithFacebookPressed = () => {
-    console.warn('Facebook Sign In');
+    userContext.handleSetUser({
+      id: 'c3e56754-7abb-43d8-811d-52186035e1be',
+      name: 'Sebastian Fernandez',
+      email: 'sebasfdz@gmail.com',
+      photo: 'https://picsum.photos/200',
+      familyName: 'Sebastian',
+      givenName: 'Fernandez',
+    });
   };
 
   const onSignInWithApplePressed = async () => {
@@ -68,7 +70,7 @@ export const LoginOnlySocial: React.FC = () => {
         // user is authenticated
       }
     } catch (error) {
-      console.warn(error);
+      console.error(error);
     }
     console.warn('Apple Sign In');
   };
