@@ -1,19 +1,19 @@
 import React, {useEffect} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {BottomTabsNavigator} from './BottomTabs.navigator';
-import {RootStackParamList} from '../shared/Types';
+import {LoginStackParamList} from '../shared/Types';
 import {LoginOnlySocial} from '../screens/LoginOnlySocial.screen';
 import {useUserContext} from '../App.provider';
-import {ProfileScreenNavigationProp} from '../shared/Types';
+import {LoginScreenNavigationProp} from '../shared/Types';
 import {useNavigation} from '@react-navigation/native';
 
-const Stack = createNativeStackNavigator<RootStackParamList>();
+const Stack = createNativeStackNavigator<LoginStackParamList>();
 
 export const Navigation: React.FC = () => {
   const userContext = useUserContext();
   // console.warn(userContext.user.id, 'INITIAL USER FROM NAVIGATION');
 
-  const navigation = useNavigation<ProfileScreenNavigationProp>();
+  const navigation = useNavigation<LoginScreenNavigationProp>();
 
   useEffect(() => {
     // hangle login logout usercontext change

@@ -33,13 +33,12 @@ export type PortfolioStock = {
   quote: Stock;
 };
 
-export type RootStackParamList = {
+export type LoginStackParamList = {
   Home: undefined;
-
   LoginOnlySocial: undefined;
 };
 
-export type GeneralStackNavigator = {
+export type RootStackParamList = {
   BattlePortfolio: {
     battle: Battle;
     user_id: string;
@@ -58,6 +57,9 @@ export type GeneralStackNavigator = {
 
 export type ProfileScreenNavigationProp =
   StackNavigationProp<RootStackParamList>;
+
+export type LoginScreenNavigationProp =
+  StackNavigationProp<LoginStackParamList>;
 
 export type User = {
   id: string;
