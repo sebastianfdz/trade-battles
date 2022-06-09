@@ -6,6 +6,8 @@ import {
   Dimensions,
   SafeAreaView,
   Animated,
+  NativeSyntheticEvent,
+  NativeScrollEvent,
 } from 'react-native';
 import {ApiClient} from '../services/ApiClient.service';
 import {theme} from '../shared/themes';
@@ -15,7 +17,7 @@ import {useUserContext} from '../App.provider';
 
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
-const BATTLE_CONTAINER = width * 0.7;
+const BATTLE_CONTAINER = width;
 
 export const MyBattles: React.FC = () => {
   const [myBattles, setMyBattles] = useState<Battle[]>([]);
@@ -29,13 +31,24 @@ export const MyBattles: React.FC = () => {
   }, []);
 
   const scrollX = React.useRef(new Animated.Value(0)).current;
+
+  const [currentBattleIndex, setCurrentBattleIndex] = useState(0);
+
+  const scrollListener = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const totalWidth = event.nativeEvent.layoutMeasurement.width;
+    const xPosition = event.nativeEvent.contentOffset.x;
+    setCurrentBattleIndex(Math.floor(xPosition / totalWidth));
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.header}>My Battles</Text>
       <Animated.FlatList
         onScroll={Animated.event(
           [{nativeEvent: {contentOffset: {x: scrollX}}}],
-          {useNativeDriver: true},
+          {
+            useNativeDriver: true,
+          },
         )}
         horizontal={true}
         showsHorizontalScrollIndicator={false}
@@ -46,6 +59,7 @@ export const MyBattles: React.FC = () => {
         }}
         decelerationRate={0}
         snapToInterval={BATTLE_CONTAINER}
+        onMomentumScrollEnd={scrollListener}
         scrollEventThrottle={16}
         data={myBattles}
         renderItem={({item, index}) => {
@@ -80,6 +94,23 @@ export const MyBattles: React.FC = () => {
           );
         }}
       />
+      <View style={{marginTop: -100, marginBottom: 100, flexDirection: 'row'}}>
+        {myBattles.map((dot, index) => {
+          const backgroundColor =
+            index === currentBattleIndex ? theme.colorPrimary : 'grey';
+          const size = index === currentBattleIndex ? 8 : 7;
+          return (
+            <View
+              style={{
+                backgroundColor: backgroundColor,
+                height: size,
+                width: size,
+                marginHorizontal: 5,
+                borderRadius: 50,
+              }}></View>
+          );
+        })}
+      </View>
     </SafeAreaView>
   );
 };

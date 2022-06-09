@@ -2,6 +2,7 @@ import React from 'react';
 import {View, Text, Image, StyleSheet, Pressable} from 'react-native';
 import {Stock} from '../shared/Types';
 import {theme} from '../shared/themes';
+import {StockSearch} from './StockSearch.component';
 
 export const StockDetailsInfo: React.FC<{
   stock: Stock;
@@ -16,25 +17,7 @@ export const StockDetailsInfo: React.FC<{
     ytdChange > 0 ? theme.primary_green : theme.primary_red;
   return (
     <View>
-      <View>
-        <View
-          style={{
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginBottom: 20,
-          }}>
-          <Image
-            style={[styles.logo, {marginBottom: 20}]}
-            source={{
-              uri: `https://storage.googleapis.com/iexcloud-hl37opg/api/logos/${stock.symbol}.png`,
-            }}
-          />
-          <Text style={styles.title}>{stock.companyName}</Text>
-        </View>
-        <Text style={styles.price}>
-          ${price > 0 ? price : stock.latestPrice}
-        </Text>
-      </View>
+      <StockSearch stock={stock} price={price} />
       {/* -------------------------------------------------------CHANGES----------------------------------------------------------- */}
       <View>
         <View style={styles.change_container}>

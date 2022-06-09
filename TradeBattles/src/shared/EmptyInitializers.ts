@@ -56,3 +56,10 @@ export const PortfolioInitializer: PortfolioStock[] = [
     },
   },
 ];
+
+export const PurchaseOrderInitializer = {
+  quantity: 0,
+  ticker: '',
+  price: 0,
+  action: '',
+};

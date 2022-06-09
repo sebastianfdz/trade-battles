@@ -52,7 +52,7 @@ export const BattleCard: React.FC<{
 const styles = StyleSheet.create({
   container: {
     backgroundColor: theme.greyPrimary,
-    width: '100%',
+    width: '80%',
     height: '100%',
     borderRadius: 34,
     shadowColor: 'black',

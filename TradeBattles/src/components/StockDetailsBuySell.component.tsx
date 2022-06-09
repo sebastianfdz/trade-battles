@@ -2,6 +2,7 @@ import React from 'react';
 import {useState} from 'react';
 import {View, Text, Pressable, StyleSheet, Modal} from 'react-native';
 import {ApiClient} from '../services/ApiClient.service';
+import {PurchaseOrderInitializer} from '../shared/EmptyInitializers';
 import {theme} from '../shared/themes';
 import {Stock} from '../shared/Types';
 import {CustomModal} from './CustomModal';
@@ -11,6 +12,7 @@ export const StockDetailsBuySell: React.FC<{
   quantitySelected: number;
   quantityAvailable: number;
   setQuantitySelected: React.Dispatch<React.SetStateAction<number>>;
+  setQuantityAvailable: React.Dispatch<React.SetStateAction<number>>;
   stock: Stock;
   battle_id: string;
   user_id: string;
@@ -19,13 +21,31 @@ export const StockDetailsBuySell: React.FC<{
   quantitySelected,
   quantityAvailable,
   setQuantitySelected,
+  setQuantityAvailable,
   stock,
   battle_id,
   user_id,
 }) => {
   const [cantSellModal, setCantSellModal] = useState(false);
   const [cantBuySellZeroModal, setCantBuySellZeroModal] = useState(false);
+  const [succesfulPurchaseModal, setSuccesfulPurchaseModal] = useState(false);
+  const [purchaseOrder, setPurchaseOrder] = useState(PurchaseOrderInitializer);
 
+  const buySellApiBody = {
+    battle_id,
+    user_id,
+    symbol: stock.symbol,
+    price: price > 0 ? price : stock.latestPrice,
+    quantity: quantitySelected,
+    action: 'to be defined',
+  };
+
+  const purchaseOrderBody = {
+    quantity: quantitySelected,
+    ticker: stock.companyName,
+    price: price > 0 ? price : stock.latestPrice,
+    action: 'to be defined',
+  };
   return (
     <View>
       <CustomModal
@@ -37,6 +57,15 @@ export const StockDetailsBuySell: React.FC<{
         text="You must select at least one stock"
         viewable={cantBuySellZeroModal}
         setViewable={setCantBuySellZeroModal}
+      />
+      <CustomModal
+        text={`${purchaseOrder.quantity} ${purchaseOrder.ticker} stock${
+          purchaseOrder.quantity > 1 ? 's' : ''
+        } ${
+          purchaseOrder.action === 'BUY' ? 'added to' : 'sold from'
+        } your portfolio at a price of $${purchaseOrder.price}`}
+        viewable={succesfulPurchaseModal}
+        setViewable={setSuccesfulPurchaseModal}
       />
       <View
         style={{
@@ -100,16 +129,19 @@ export const StockDetailsBuySell: React.FC<{
           onPress={() => {
             quantitySelected > quantityAvailable
               ? setCantSellModal(true)
-              : quantitySelected === 0
+              : quantitySelected <= 0
               ? setCantBuySellZeroModal(true)
               : ApiClient.postTransaction({
-                  battle_id,
-                  user_id,
+                  ...buySellApiBody,
                   action: 'SELL',
-                  symbol: stock.symbol,
-                  price: price > 0 ? price : stock.latestPrice,
-                  quantity: quantitySelected,
-                });
+                }),
+              setPurchaseOrder({
+                ...purchaseOrderBody,
+                action: 'SELL',
+              }),
+              setSuccesfulPurchaseModal(true),
+              setQuantityAvailable(prevstate => prevstate - quantitySelected),
+              setQuantitySelected(0);
           }}
           style={[styles.button, {backgroundColor: theme.primary_yellow}]}>
           <Text style={styles.button_text}>Sell</Text>
@@ -118,14 +150,17 @@ export const StockDetailsBuySell: React.FC<{
           style={[styles.button, {backgroundColor: theme.primary_green}]}
           onPress={() =>
             quantitySelected > 0
-              ? ApiClient.postTransaction({
-                  battle_id,
-                  user_id,
+              ? (ApiClient.postTransaction({
+                  ...buySellApiBody,
                   action: 'BUY',
-                  symbol: stock.symbol,
-                  price: price > 0 ? price : stock.latestPrice,
-                  quantity: quantitySelected,
-                })
+                }),
+                setPurchaseOrder({
+                  ...purchaseOrderBody,
+                  action: 'BUY',
+                }),
+                setSuccesfulPurchaseModal(true),
+                setQuantityAvailable(prevstate => prevstate + quantitySelected),
+                setQuantitySelected(0))
               : setCantBuySellZeroModal(true)
           }>
           <Text style={[styles.button_text, {color: 'white'}]}>Buy</Text>
