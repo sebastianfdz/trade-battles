@@ -4,7 +4,6 @@ import {theme} from '../shared/themes';
 import {Battle} from '../shared/Types';
 
 export const BattlePortfolioHeader: React.FC<{battle: Battle}> = ({battle}) => {
-  console.warn(battle);
   return (
     <View style={styles.container}>
       <View style={styles.portfolio_header_container}>

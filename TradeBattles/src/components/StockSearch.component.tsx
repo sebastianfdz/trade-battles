@@ -1,44 +1,153 @@
-import React from 'react';
-import {View, Text, Image, StyleSheet} from 'react-native';
+import React, {useState} from 'react';
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TextInput,
+  Pressable,
+  Dimensions,
+  Button,
+} from 'react-native';
 import {Stock} from '../shared/Types';
+import {stockListForSearch} from '../stockListForSearch';
+import {StockInitializer} from '../shared/EmptyInitializers';
+import {ApiClient} from '../services/ApiClient.service';
+import type {ProfileScreenNavigationProp} from '../shared/Types';
+import {useNavigation} from '@react-navigation/native';
+import {theme} from '../shared/themes';
+import {CustomModal} from './CustomModal';
 
-export const StockSearch: React.FC<{stock: Stock; price: number}> = ({
-  stock,
-  price,
+const SEARCH_TERM_WIDTH = Dimensions.get('window').width * 0.8;
+export const StockSearch: React.FC<{battle_id: string; user_id: string}> = ({
+  battle_id,
+  user_id,
 }) => {
+  const [search, setSearch] = useState('');
+  const [badSearch, setBadSearch] = useState(false);
+  const navigation = useNavigation<ProfileScreenNavigationProp>();
+  const handleSearch = (currentSearch: string) => {
+    setSearch(currentSearch);
+  };
+  const textLengthLimit = 35;
   return (
-    <View>
+    <>
+      <CustomModal
+        text={`'${search}' ticker not found. Try searching for another stock ticker.`}
+        viewable={badSearch}
+        setViewable={setBadSearch}
+      />
       <View
         style={{
-          justifyContent: 'center',
+          flexDirection: 'row',
           alignItems: 'center',
-          marginBottom: 20,
+          alignSelf: 'center',
         }}>
-        <Image
-          style={[styles.logo, {marginBottom: 20}]}
-          source={{
-            uri: `https://storage.googleapis.com/iexcloud-hl37opg/api/logos/${stock.symbol}.png`,
-          }}
+        <TextInput
+          onChangeText={currentSearch => handleSearch(currentSearch)}
+          style={styles.input}
+          placeholder="Search stock market..."
         />
-        <Text style={styles.title}>{stock.companyName}</Text>
+        <Pressable
+          style={{
+            backgroundColor: theme.primary_green,
+            padding: 10,
+            borderRadius: 7,
+          }}
+          onPress={() => {
+            let stock: Stock = StockInitializer;
+            ApiClient.getQuote(search)
+              .then(res => {
+                (stock = res.data),
+                  navigation.navigate('BuySellStock', {
+                    stock: stock,
+                    shares_owned: 0, // TODO -> Refactor to be dynamic with api call
+                    average_cost: 0, // TODO -> Refactor to be dynamic with api call
+                    battle_id,
+                    user_id,
+                  });
+              })
+              .catch(error => {
+                setBadSearch(true);
+              });
+          }}>
+          <Text style={{color: 'white', fontWeight: 'bold'}}>Search</Text>
+        </Pressable>
       </View>
-      <Text style={styles.price}>${price > 0 ? price : stock.latestPrice}</Text>
-    </View>
+      <View style={{alignSelf: 'center'}}>
+        {stockListForSearch
+          .filter(item => {
+            const lowercaseSearch = search.toLowerCase();
+            const lowercaseTicker = item.ticker.toLowerCase();
+            const lowercaseName = item.name.toLowerCase();
+
+            return (
+              lowercaseSearch &&
+              (lowercaseTicker.startsWith(lowercaseSearch) ||
+                lowercaseName.startsWith(lowercaseSearch))
+            );
+          })
+          .slice(0, 10)
+          .map(item => {
+            return (
+              <Pressable
+                onPress={() => {
+                  let stock: Stock = StockInitializer;
+                  ApiClient.getQuote(item.ticker).then(res => {
+                    (stock = res.data),
+                      navigation.navigate('BuySellStock', {
+                        stock: stock,
+                        shares_owned: 0, // TODO -> Refactor to be dynamic with api call
+                        average_cost: 0, // TODO -> Refactor to be dynamic with api call
+                        battle_id,
+                        user_id,
+                      });
+                  });
+                }}
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  borderBottomColor: 'black',
+                  borderBottomWidth: 0.3,
+                  margin: 2,
+                  width: SEARCH_TERM_WIDTH,
+                  alignItems: 'center',
+                  overflow: 'hidden',
+                }}>
+                <Image
+                  style={{
+                    width: 30,
+                    height: 30,
+                    borderRadius: 50,
+                    marginBottom: 5,
+                  }}
+                  source={{
+                    uri: `https://storage.googleapis.com/iexcloud-hl37opg/api/logos/${item.ticker}.png`,
+                  }}
+                />
+                <Text
+                  style={{
+                    fontSize: 15,
+                    marginLeft: 5,
+                    marginBottom: 5,
+                  }}>
+                  {item.name.length > textLengthLimit
+                    ? item.name.substring(0, textLengthLimit - 3) + ' ...'
+                    : item.name}
+                </Text>
+              </Pressable>
+            );
+          })}
+      </View>
+    </>
   );
 };
 const styles = StyleSheet.create({
-  title: {
-    fontSize: 15,
-  },
-  logo: {
-    width: 40,
-    height: 40,
-    borderRadius: 50,
-  },
-  price: {
-    fontSize: 50,
-    fontWeight: '700',
-    marginBottom: 50,
+  input: {
+    width: 200,
+    height: 50,
     alignSelf: 'center',
+    textAlign: 'center',
+    fontSize: 17,
   },
 });

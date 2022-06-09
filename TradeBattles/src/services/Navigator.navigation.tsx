@@ -14,7 +14,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export const Navigation: React.FC = () => {
   const userContext = useUserContext();
-  console.warn(userContext.user.id, 'INITIAL USER FROM NAVIGATION');
+  // console.warn(userContext.user.id, 'INITIAL USER FROM NAVIGATION');
 
   const navigation = useNavigation<ProfileScreenNavigationProp>();
 

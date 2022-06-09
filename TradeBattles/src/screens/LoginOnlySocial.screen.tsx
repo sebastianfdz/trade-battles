@@ -29,7 +29,7 @@ export const LoginOnlySocial: React.FC = () => {
   const userContext = useUserContext();
   const {height} = useWindowDimensions();
 
-  console.warn(userContext.user, 'USER CONTEXT FROM LOGIN PAGE  ');
+  // console.warn(userContext.user, 'USER CONTEXT FROM LOGIN PAGE  ');
   const onSignInWithGooglePressed = async () => {
     try {
       const {user} = await GoogleSignin.signIn();

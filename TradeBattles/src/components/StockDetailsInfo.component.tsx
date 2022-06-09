@@ -17,7 +17,25 @@ export const StockDetailsInfo: React.FC<{
     ytdChange > 0 ? theme.primary_green : theme.primary_red;
   return (
     <View>
-      <StockSearch stock={stock} price={price} />
+      <View>
+        <View
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginBottom: 20,
+          }}>
+          <Image
+            style={[styles.logo, {marginBottom: 20}]}
+            source={{
+              uri: `https://storage.googleapis.com/iexcloud-hl37opg/api/logos/${stock.symbol}.png`,
+            }}
+          />
+          <Text style={styles.title}>{stock.companyName}</Text>
+        </View>
+        <Text style={styles.price}>
+          ${price > 0 ? price : stock.latestPrice}
+        </Text>
+      </View>
       {/* -------------------------------------------------------CHANGES----------------------------------------------------------- */}
       <View>
         <View style={styles.change_container}>
