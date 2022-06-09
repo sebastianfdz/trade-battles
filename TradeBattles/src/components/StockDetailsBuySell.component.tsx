@@ -1,8 +1,10 @@
 import React from 'react';
-import {View, Text, Pressable, StyleSheet} from 'react-native';
+import {useState} from 'react';
+import {View, Text, Pressable, StyleSheet, Modal} from 'react-native';
 import {ApiClient} from '../services/ApiClient.service';
 import {theme} from '../shared/themes';
 import {Stock} from '../shared/Types';
+import {CustomModal} from './CustomModal';
 
 export const StockDetailsBuySell: React.FC<{
   price: number;
@@ -21,8 +23,21 @@ export const StockDetailsBuySell: React.FC<{
   battle_id,
   user_id,
 }) => {
+  const [cantSellModal, setCantSellModal] = useState(false);
+  const [cantBuySellZeroModal, setCantBuySellZeroModal] = useState(false);
+
   return (
     <View>
+      <CustomModal
+        text="Cannot sell more stocks than you own."
+        viewable={cantSellModal}
+        setViewable={setCantSellModal}
+      />
+      <CustomModal
+        text="You must select at least one stock"
+        viewable={cantBuySellZeroModal}
+        setViewable={setCantBuySellZeroModal}
+      />
       <View
         style={{
           flexDirection: 'row',
@@ -53,9 +68,7 @@ export const StockDetailsBuySell: React.FC<{
             <View>
               <Pressable
                 onPress={() => {
-                  // if (quantitySelected < quantityAvailable) {
                   setQuantitySelected(prevState => prevState + 1);
-                  // }
                 }}
                 style={styles.qty}>
                 <Text>+</Text>
@@ -85,30 +98,36 @@ export const StockDetailsBuySell: React.FC<{
         }}>
         <Pressable
           onPress={() => {
-            ApiClient.postTransaction({
-              battle_id,
-              user_id,
-              action: 'SELL',
-              symbol: stock.symbol,
-              price: price > 0 ? price : stock.latestPrice,
-              quantity: quantitySelected,
-            });
+            quantitySelected > quantityAvailable
+              ? setCantSellModal(true)
+              : quantitySelected === 0
+              ? setCantBuySellZeroModal(true)
+              : ApiClient.postTransaction({
+                  battle_id,
+                  user_id,
+                  action: 'SELL',
+                  symbol: stock.symbol,
+                  price: price > 0 ? price : stock.latestPrice,
+                  quantity: quantitySelected,
+                });
           }}
           style={[styles.button, {backgroundColor: theme.primary_yellow}]}>
           <Text style={styles.button_text}>Sell</Text>
         </Pressable>
         <Pressable
           style={[styles.button, {backgroundColor: theme.primary_green}]}
-          onPress={() => {
-            ApiClient.postTransaction({
-              battle_id,
-              user_id,
-              action: 'BUY',
-              symbol: stock.symbol,
-              price: price > 0 ? price : stock.latestPrice,
-              quantity: quantitySelected,
-            });
-          }}>
+          onPress={() =>
+            quantitySelected > 0
+              ? ApiClient.postTransaction({
+                  battle_id,
+                  user_id,
+                  action: 'BUY',
+                  symbol: stock.symbol,
+                  price: price > 0 ? price : stock.latestPrice,
+                  quantity: quantitySelected,
+                })
+              : setCantBuySellZeroModal(true)
+          }>
           <Text style={[styles.button_text, {color: 'white'}]}>Buy</Text>
         </Pressable>
       </View>
