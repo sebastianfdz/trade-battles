@@ -31,7 +31,9 @@ export const StockDetailsInfo: React.FC<{
           />
           <Text style={styles.title}>{stock.companyName}</Text>
         </View>
-        <Text style={styles.price}>${price}</Text>
+        <Text style={styles.price}>
+          ${price > 0 ? price : stock.latestPrice}
+        </Text>
       </View>
       {/* -------------------------------------------------------CHANGES----------------------------------------------------------- */}
       <View>
@@ -83,6 +85,7 @@ const styles = StyleSheet.create({
     fontSize: 50,
     fontWeight: '700',
     marginBottom: 50,
+    alignSelf: 'center',
   },
   change_container: {
     flexDirection: 'row',

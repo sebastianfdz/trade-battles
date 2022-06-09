@@ -9,9 +9,13 @@ import {StockDetailsInfo} from '../components/StockDetailsInfo.component';
 import {StockDetailsBuySell} from '../components/StockDetailsBuySell.component';
 import {GoBack} from '../components/GoBack.component';
 
-export const StockDetails: React.FC = ({}) => {
+export const StockDetails: React.FC = () => {
   const route = useRoute<RouteProp<RootStackParamList, 'BuySellStock'>>();
   const {stock, shares_owned, average_cost, battle_id, user_id} = route.params;
+  // let {stock, symbol} = route.params;
+  // symbol ? (symbol = symbol) : (symbol = '');
+  // stock ? (stock = stock) : (stock = await ApiClient.getQuote(symbol));
+
   const [quantityAvailable, setQuantityAvailable] = useState(0);
   const [quantitySelected, setQuantitySelected] = useState(0);
   const [price, setPrice] = useState(

@@ -1,5 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, View, Text, FlatList, TextInput} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  FlatList,
+  TextInput,
+  Image,
+  Pressable,
+} from 'react-native';
 import {PortfolioStockCard} from '../components/PortfolioStockCard.component';
 import {Battle, PortfolioStock} from '../shared/Types';
 import {ApiClient} from '../services/ApiClient.service';
@@ -9,46 +17,24 @@ import {GoBack} from '../components/GoBack.component';
 import type {RootStackParamList} from '../shared/Types';
 import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
 // const {portfolio} = require('../portfolio.ts');
-
-const initialPortfolioState = {
-  price: 0,
-  symbol: '',
-  change: 0,
-  quantity: 0,
-  averageCost: 0,
-  quote: {
-    open: 0,
-    close: 0,
-    change: 0,
-    changePercent: 0,
-    currency: '',
-    companyName: '',
-    iexAskPrice: 0,
-    iexBidPrice: 0,
-    symbol: '',
-    peRatio: 0,
-    ytdChange: 0,
-    week52High: 0,
-    week52Low: 0,
-    previousClose: 0,
-    low: 0,
-    high: 0,
-    iexRealtimePrice: 0,
-    primaryExchange: '',
-    isUSMarketOpen: false,
-    // iexClose: 0,
-    latestPrice: 0,
-  },
-};
+import {stockListForSearch} from '../stockListForSearch';
+import type {ProfileScreenNavigationProp} from '../shared/Types';
+import {portfolio} from '../portfolio';
+import {Stock} from '../shared/Types';
+import {
+  PortfolioInitializer,
+  StockInitializer,
+} from '../shared/EmptyInitializers';
 
 export const BattlePortfolio: React.FC = () => {
-  const [currentUserPortfolio, setCurrentUserPortfolio] = useState<
-    PortfolioStock[]
-  >([initialPortfolioState]);
+  const [currentUserPortfolio, setCurrentUserPortfolio] =
+    useState<PortfolioStock[]>(PortfolioInitializer);
 
+  const navigation = useNavigation<ProfileScreenNavigationProp>();
   const route = useRoute<RouteProp<RootStackParamList, 'BattlePortfolio'>>();
 
   const {battle, user_id} = route.params;
+  const [search, setSearch] = useState('');
 
   useEffect(() => {
     const setPortfolio = async () => {
@@ -70,13 +56,74 @@ export const BattlePortfolio: React.FC = () => {
 
     // setCurrentUserPortfolio(portfolio);
   }, []);
+
+  const handleSearch = (currentSearch: string) => {
+    // console.warn(currentSearch);
+    setSearch(currentSearch);
+    console.warn(portfolio);
+  };
   return (
     <View style={{flex: 1}}>
       <GoBack />
       <View
         style={{flex: 1, backgroundColor: theme.light_mode_white, padding: 10}}>
         <BattlePortfolioHeader battle={battle} />
-        <TextInput style={styles.input} placeholder="Search..."></TextInput>
+
+        {/* --------------------------------------------------- Search --------------------------------------------------- */}
+        <TextInput
+          onChangeText={currentSearch => handleSearch(currentSearch)}
+          style={styles.input}
+          placeholder="Search..."></TextInput>
+
+        <View style={{alignSelf: 'center'}}>
+          {stockListForSearch
+            .filter(item => {
+              const lowercaseSearch = search.toLowerCase();
+              const lowercaseTicker = item.ticker.toLowerCase();
+              const lowercaseName = item.name.toLowerCase();
+
+              return (
+                lowercaseSearch &&
+                (lowercaseTicker.startsWith(lowercaseSearch) ||
+                  lowercaseName.startsWith(lowercaseSearch))
+              );
+            })
+            .slice(0, 10)
+            .map(item => {
+              return (
+                <Pressable
+                  onPress={() => {
+                    let stock: Stock = StockInitializer;
+                    ApiClient.getQuote(item.ticker).then(res => {
+                      (stock = res.data),
+                        navigation.navigate('BuySellStock', {
+                          stock: stock,
+                          shares_owned: 0,
+                          average_cost: 0,
+                          battle_id: battle.battle_id,
+                          user_id: user_id,
+                        });
+                    });
+                  }}
+                  style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <Image
+                    style={{width: 30, height: 30, borderRadius: 50}}
+                    source={{
+                      uri: `https://storage.googleapis.com/iexcloud-hl37opg/api/logos/${item.ticker}.png`,
+                    }}
+                  />
+                  <Text
+                    style={{
+                      fontSize: 20,
+                    }}>
+                    {item.ticker}
+                  </Text>
+                </Pressable>
+              );
+            })}
+        </View>
+        {/* --------------------------------------------------- Search --------------------------------------------------- */}
+
         {currentUserPortfolio[0].price === 0 ? (
           <Text style={{alignSelf: 'center'}}>Loading...</Text> // TODO -> Refactor to spinner
         ) : (

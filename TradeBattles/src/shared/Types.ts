@@ -45,6 +45,7 @@ export type RootStackParamList = {
     average_cost: number;
     battle_id: string;
     user_id: string;
+    // symbol?: string;
   };
 
   LoginOnlySocial: undefined;
@@ -84,12 +85,12 @@ export type BattleMember = {
 };
 
 export type Transaction = {
-  transaction_id: string;
+  // transaction_id: string;
   battle_id: string;
   user_id: string;
   action: string;
   symbol: string;
   price: number;
   quantity: number;
-  transaction_timestamp: string;
+  // transaction_timestamp: string;
 };

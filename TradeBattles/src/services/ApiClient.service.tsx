@@ -2,6 +2,7 @@ import type {PortfolioStock} from '../shared/Types';
 import axios from 'axios';
 import type {Stock} from '../shared/Types';
 import type {User} from '../shared/Types';
+import type {Transaction} from '../shared/Types';
 
 export const ApiClient = {
   getMyBattles: async (user_id: string) => {
@@ -51,21 +52,14 @@ export const ApiClient = {
     });
   },
 
-  postTransaction: async (
-    battle_id: string,
-    user_id: string,
-    action: string,
-    symbol: string,
-    price: number,
-    quantity: number,
-  ) => {
+  postTransaction: async (transaction: Transaction) => {
     axios.post('http://localhost:3000/transactions', {
-      battle_id: battle_id,
-      user_id: user_id,
-      action: action,
-      symbol: symbol,
-      price: price,
-      quantity: quantity,
+      battle_id: transaction.battle_id,
+      user_id: transaction.user_id,
+      action: transaction.action,
+      symbol: transaction.symbol,
+      price: transaction.price,
+      quantity: transaction.quantity,
     });
   },
 };
