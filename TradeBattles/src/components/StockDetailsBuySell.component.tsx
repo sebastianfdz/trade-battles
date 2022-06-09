@@ -33,7 +33,10 @@ export const StockDetailsBuySell: React.FC<{
         <View>
           <Text style={{marginBottom: 3}}>TOTAL</Text>
           <Text style={{alignSelf: 'center', fontSize: 30}}>
-            ${(price == null ? 0 : price * quantitySelected).toFixed(2)}
+            $
+            {(price > 0 ? price : stock.latestPrice * quantitySelected).toFixed(
+              2,
+            )}
           </Text>
         </View>
         <View>
@@ -50,9 +53,9 @@ export const StockDetailsBuySell: React.FC<{
             <View>
               <Pressable
                 onPress={() => {
-                  if (quantitySelected < quantityAvailable) {
-                    setQuantitySelected(prevState => prevState + 1);
-                  }
+                  // if (quantitySelected < quantityAvailable) {
+                  setQuantitySelected(prevState => prevState + 1);
+                  // }
                 }}
                 style={styles.qty}>
                 <Text>+</Text>
@@ -82,14 +85,14 @@ export const StockDetailsBuySell: React.FC<{
         }}>
         <Pressable
           onPress={() => {
-            ApiClient.postTransaction(
+            ApiClient.postTransaction({
               battle_id,
               user_id,
-              'SELL',
-              stock.symbol,
-              price == null ? 0 : price,
-              quantitySelected,
-            );
+              action: 'SELL',
+              symbol: stock.symbol,
+              price: price > 0 ? price : stock.latestPrice,
+              quantity: quantitySelected,
+            });
           }}
           style={[styles.button, {backgroundColor: theme.primary_yellow}]}>
           <Text style={styles.button_text}>Sell</Text>
@@ -97,14 +100,14 @@ export const StockDetailsBuySell: React.FC<{
         <Pressable
           style={[styles.button, {backgroundColor: theme.primary_green}]}
           onPress={() => {
-            ApiClient.postTransaction(
+            ApiClient.postTransaction({
               battle_id,
               user_id,
-              'BUY',
-              stock.symbol,
-              price == null ? 0 : price,
-              quantitySelected,
-            );
+              action: 'BUY',
+              symbol: stock.symbol,
+              price: price > 0 ? price : stock.latestPrice,
+              quantity: quantitySelected,
+            });
           }}>
           <Text style={[styles.button_text, {color: 'white'}]}>Buy</Text>
         </Pressable>
