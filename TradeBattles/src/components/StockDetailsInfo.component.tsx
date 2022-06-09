@@ -1,8 +1,16 @@
 import React from 'react';
-import {View, Text, Image, StyleSheet, Pressable} from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  Pressable,
+  Dimensions,
+} from 'react-native';
 import {Stock} from '../shared/Types';
 import {theme} from '../shared/themes';
-import {StockSearch} from './StockSearch.component';
+
+const SCREEN_WIDTH = Dimensions.get('window').width;
 
 export const StockDetailsInfo: React.FC<{
   stock: Stock;
@@ -15,8 +23,15 @@ export const StockDetailsInfo: React.FC<{
 
   const return_color_ytd_change =
     ytdChange > 0 ? theme.primary_green : theme.primary_red;
+
   return (
-    <View>
+    <View
+      style={{
+        backgroundColor: theme.greyPrimary,
+        borderRadius: 30,
+        paddingVertical: 15,
+        width: SCREEN_WIDTH * 0.85,
+      }}>
       <View>
         <View
           style={{
@@ -37,11 +52,13 @@ export const StockDetailsInfo: React.FC<{
         </Text>
       </View>
       {/* -------------------------------------------------------CHANGES----------------------------------------------------------- */}
-      <View>
+      <View
+        style={{
+          flexDirection: 'row',
+          alignSelf: 'center',
+        }}>
         <View style={styles.change_container}>
-          <Text style={{fontSize: 25, fontWeight: '200', marginRight: 10}}>
-            Day Change
-          </Text>
+          <Text style={styles.change_text}>Day Change</Text>
           <View
             style={{
               borderRadius: 10,
@@ -54,9 +71,7 @@ export const StockDetailsInfo: React.FC<{
           </View>
         </View>
         <View style={styles.change_container}>
-          <Text style={{fontSize: 25, fontWeight: '200', marginRight: 10}}>
-            YTD Change
-          </Text>
+          <Text style={styles.change_text}>YTD Change</Text>
           <View
             style={{
               borderRadius: 10,
@@ -75,7 +90,7 @@ export const StockDetailsInfo: React.FC<{
 
 const styles = StyleSheet.create({
   title: {
-    fontSize: 15,
+    fontSize: 17,
   },
   logo: {
     width: 40,
@@ -83,15 +98,20 @@ const styles = StyleSheet.create({
     borderRadius: 50,
   },
   price: {
-    fontSize: 50,
+    fontSize: 45,
     fontWeight: '700',
-    marginBottom: 50,
+    marginBottom: 20,
     alignSelf: 'center',
   },
   change_container: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 20,
+    marginVertical: 5,
+    marginHorizontal: 12,
+  },
+  change_text: {
+    fontSize: 15,
+    marginBottom: 5,
   },
 });

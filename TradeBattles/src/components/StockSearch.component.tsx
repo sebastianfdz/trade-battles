@@ -42,6 +42,7 @@ export const StockSearch: React.FC<{battle_id: string; user_id: string}> = ({
           flexDirection: 'row',
           alignItems: 'center',
           alignSelf: 'center',
+          marginVertical: 10,
         }}>
         <TextInput
           onChangeText={currentSearch => handleSearch(currentSearch)}
@@ -50,7 +51,7 @@ export const StockSearch: React.FC<{battle_id: string; user_id: string}> = ({
         />
         <Pressable
           style={{
-            backgroundColor: theme.primary_green,
+            backgroundColor: theme.primary_yellow,
             padding: 10,
             borderRadius: 7,
           }}
@@ -71,7 +72,7 @@ export const StockSearch: React.FC<{battle_id: string; user_id: string}> = ({
                 setBadSearch(true);
               });
           }}>
-          <Text style={{color: 'white', fontWeight: 'bold'}}>Search</Text>
+          <Text style={{fontWeight: 'bold'}}>Search</Text>
         </Pressable>
       </View>
       <View style={{alignSelf: 'center'}}>
@@ -107,12 +108,13 @@ export const StockSearch: React.FC<{battle_id: string; user_id: string}> = ({
                 style={{
                   flexDirection: 'row',
                   justifyContent: 'center',
-                  borderBottomColor: 'black',
+                  borderBottomColor: theme.colorPrimary,
                   borderBottomWidth: 0.3,
                   margin: 2,
                   width: SEARCH_TERM_WIDTH,
                   alignItems: 'center',
                   overflow: 'hidden',
+                  backgroundColor: theme.stockCardBackground,
                 }}>
                 <Image
                   style={{
@@ -130,6 +132,7 @@ export const StockSearch: React.FC<{battle_id: string; user_id: string}> = ({
                     fontSize: 15,
                     marginLeft: 5,
                     marginBottom: 5,
+                    color: theme.colorPrimary,
                   }}>
                   {item.name.length > textLengthLimit
                     ? item.name.substring(0, textLengthLimit - 3) + ' ...'
@@ -149,5 +152,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     textAlign: 'center',
     fontSize: 17,
+    backgroundColor: theme.stockCardBackground,
+    color: theme.colorPrimary,
   },
 });

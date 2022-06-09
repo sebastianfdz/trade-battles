@@ -69,49 +69,59 @@ export const StockDetailsBuySell: React.FC<{
       />
       <View
         style={{
-          flexDirection: 'row',
-          paddingHorizontal: 100,
-          justifyContent: 'space-between',
-          marginTop: 50,
+          flexDirection: 'column',
+          alignItems: 'center',
+          marginTop: 20,
         }}>
-        <View>
-          <Text style={{marginBottom: 3}}>TOTAL</Text>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <Text style={{fontSize: 17}}>TOTAL: </Text>
           <Text style={{alignSelf: 'center', fontSize: 30}}>
             $
-            {(price > 0 ? price : stock.latestPrice * quantitySelected).toFixed(
-              2,
-            )}
+            {(
+              (price > 0 ? price : stock.latestPrice) * quantitySelected
+            ).toFixed(2)}
           </Text>
         </View>
-        <View>
-          <Text style={{marginLeft: 'auto', marginBottom: 3}}>QTY</Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            marginLeft: 10,
+          }}>
           <View
             style={{
               flexDirection: 'row',
-              alignItems: 'center',
-              marginLeft: 10,
+              borderColor: theme.colorPrimary,
+              borderWidth: 1,
+              borderRadius: 5,
+              marginVertical: 20,
             }}>
-            <Text style={{fontSize: 18, marginRight: 5}}>
+            <Pressable
+              onPress={() => {
+                if (quantitySelected > 0) {
+                  setQuantitySelected(prevState => prevState - 1);
+                }
+              }}
+              style={[styles.qty, {borderRightWidth: 1}]}>
+              <Text style={{fontSize: 25}}>-</Text>
+            </Pressable>
+            <Text
+              style={{
+                fontSize: 25,
+                marginHorizontal: 20,
+                width: 'auto',
+                alignSelf: 'center',
+                textAlign: 'center',
+              }}>
               {quantitySelected}
             </Text>
-            <View>
-              <Pressable
-                onPress={() => {
-                  setQuantitySelected(prevState => prevState + 1);
-                }}
-                style={styles.qty}>
-                <Text>+</Text>
-              </Pressable>
-              <Pressable
-                onPress={() => {
-                  if (quantitySelected > 0) {
-                    setQuantitySelected(prevState => prevState - 1);
-                  }
-                }}
-                style={styles.qty}>
-                <Text>-</Text>
-              </Pressable>
-            </View>
+            <Pressable
+              onPress={() => {
+                setQuantitySelected(prevState => prevState + 1);
+              }}
+              style={[styles.qty, {borderLeftWidth: 1}]}>
+              <Text style={{fontSize: 25}}>+</Text>
+            </Pressable>
           </View>
         </View>
       </View>
@@ -147,7 +157,7 @@ export const StockDetailsBuySell: React.FC<{
           <Text style={styles.button_text}>Sell</Text>
         </Pressable>
         <Pressable
-          style={[styles.button, {backgroundColor: theme.primary_green}]}
+          style={[styles.button, {backgroundColor: 'black'}]}
           onPress={() =>
             quantitySelected > 0
               ? (ApiClient.postTransaction({
@@ -173,17 +183,19 @@ export const StockDetailsBuySell: React.FC<{
 const styles = StyleSheet.create({
   button: {
     padding: 10,
-    width: 150,
+    width: 140,
     borderRadius: 10,
+    marginHorizontal: 15,
   },
   button_text: {
     textAlign: 'center',
-    fontSize: 30,
+    fontSize: 22,
     fontWeight: '600',
   },
   qty: {
     padding: 3,
-    backgroundColor: 'grey',
-    borderRadius: 15,
+    borderColor: theme.colorPrimary,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
   },
 });

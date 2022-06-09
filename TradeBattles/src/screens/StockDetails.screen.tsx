@@ -8,6 +8,7 @@ import {ApiClient} from '../services/ApiClient.service';
 import {StockDetailsInfo} from '../components/StockDetailsInfo.component';
 import {StockDetailsBuySell} from '../components/StockDetailsBuySell.component';
 import {GoBack} from '../components/GoBack.component';
+import {theme} from '../shared/themes';
 
 export const StockDetails: React.FC = () => {
   const route = useRoute<RouteProp<RootStackParamList, 'BuySellStock'>>();
@@ -37,7 +38,7 @@ export const StockDetails: React.FC = () => {
   }, []);
 
   return (
-    <View>
+    <View style={{backgroundColor: theme.light_mode_white}}>
       <GoBack />
       <View style={styles.container}>
         <StockDetailsInfo
@@ -51,15 +52,15 @@ export const StockDetails: React.FC = () => {
           style={{
             justifyContent: 'center',
             alignItems: 'center',
-            marginTop: 30,
+            marginTop: 20,
           }}>
           <Text>Your average cost per share: ${average_cost.toFixed(2)}</Text>
-          <Text style={{marginTop: 10}}>
+          {/* <Text style={{marginTop: 10}}>
             Gain / Loss ={' '}
             {(
               (price == null ? 0 : price - average_cost) * quantitySelected
             ).toFixed(2)}
-          </Text>
+          </Text> */}
         </View>
 
         <StockDetailsBuySell

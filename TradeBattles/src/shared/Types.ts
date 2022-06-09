@@ -35,6 +35,11 @@ export type PortfolioStock = {
 
 export type RootStackParamList = {
   Home: undefined;
+
+  LoginOnlySocial: undefined;
+};
+
+export type GeneralStackNavigator = {
   BattlePortfolio: {
     battle: Battle;
     user_id: string;
@@ -45,10 +50,7 @@ export type RootStackParamList = {
     average_cost: number;
     battle_id: string;
     user_id: string;
-    // symbol?: string;
   };
-
-  LoginOnlySocial: undefined;
   MyBattles: {
     user_id: string;
   };
