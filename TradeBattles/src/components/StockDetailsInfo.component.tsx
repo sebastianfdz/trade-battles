@@ -17,9 +17,11 @@ export const StockDetailsInfo: React.FC<{
   dayChange: number;
   ytdChange: number;
 }> = ({stock, price, dayChange, ytdChange}) => {
+  price = price > 0 ? price : stock.latestPrice;
   const now = Date.now();
-
-  const [graphPoints, setGraphPoints] = useState<GraphPoint[]>([]);
+  const [graphPoints, setGraphPoints] = useState<GraphPoint[]>([
+    {vw: -1, t: 0},
+  ]);
 
   useEffect(() => {
     const getHistoricals = async () => {
@@ -37,7 +39,7 @@ export const StockDetailsInfo: React.FC<{
   const formatCurrency = (value: any) => {
     'worklet';
     if (value === '') {
-      return `$${(price > 0 ? price : stock.latestPrice).toFixed(2)}`;
+      return `$${price.toFixed(2)}`;
     }
     return `$${parseFloat(value).toFixed(2)}`;
   };
@@ -47,6 +49,8 @@ export const StockDetailsInfo: React.FC<{
   const return_color_ytd_change =
     ytdChange > 0 ? theme.primary_green : theme.primary_red;
 
+  const return_color_graph =
+    price > graphPoints[0].vw ? theme.primary_green : theme.primary_red;
   return (
     <View
       style={{
@@ -54,7 +58,7 @@ export const StockDetailsInfo: React.FC<{
       }}>
       <ChartPathProvider
         data={{
-          points: graphPoints.map(price => ({x: price.t, y: price.vw})),
+          points: graphPoints.map(point => ({x: point.t, y: point.vw})),
           smoothingStrategy: 'bezier',
         }}>
         <View>
@@ -82,13 +86,8 @@ export const StockDetailsInfo: React.FC<{
 
         <View
           style={{
-            // backgroundColor: theme.greyPrimary,
             borderRadius: 15,
-            // padding: 20,
           }}>
-          {/* <Text style={styles.price}>
-            ${price > 0 ? price : stock.latestPrice}
-          </Text> */}
           <View
             style={{
               flexDirection: 'row',
@@ -122,14 +121,18 @@ export const StockDetailsInfo: React.FC<{
             </View>
           </View>
           <View>
-            <ChartPath
-              height={SCREEN_WIDTH / 2}
-              stroke={'red'}
-              strokeWidth={0.5}
-              selectedStrokeWidth={10}
-              width={SCREEN_WIDTH}
-            />
-
+            {graphPoints[0].vw > -1 ? (
+              <ChartPath
+                height={SCREEN_WIDTH / 2}
+                stroke={return_color_graph}
+                strokeWidth={1}
+                width={SCREEN_WIDTH}
+              />
+            ) : (
+              <Text style={{alignSelf: 'center', marginTop: 100}}>
+                Loading...
+              </Text> // TODO --> REPLACE WITH SPINNER
+            )}
             <ChartDot
               style={{
                 backgroundColor: 'red',
@@ -170,28 +173,5 @@ const styles = StyleSheet.create({
   change_text: {
     fontSize: 15,
     marginBottom: 5,
-  },
-  // price: {
-  //   color: 'white',
-  //   fontSize: 40,
-  //   fontWeight: 'bold',
-  // },
-  name: {
-    color: 'white',
-    fontSize: 20,
-  },
-  body_container: {
-    padding: 20,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  return_percentage: {color: 'white', fontSize: 18, fontWeight: 'bold'},
-  return_container: {
-    padding: 5,
-    borderRadius: 5,
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 7,
   },
 });

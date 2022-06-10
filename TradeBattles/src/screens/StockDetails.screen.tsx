@@ -21,6 +21,7 @@ export const StockDetails: React.FC = () => {
   );
   const [dayChange, setDayChange] = useState(stock.changePercent);
   const [ytdChange, setYtdChange] = useState(stock.ytdChange);
+  const [buySellViewable, setBuySellViewable] = useState(false);
   useEffect(() => {
     setQuantityAvailable(shares_owned);
   }, [quantitySelected]);
@@ -47,8 +48,8 @@ export const StockDetails: React.FC = () => {
           dayChange={dayChange}
           ytdChange={ytdChange}
         />
-
-        {/* <View
+        {/* 
+        <View
           style={{
             justifyContent: 'center',
             alignItems: 'center',
@@ -64,13 +65,14 @@ export const StockDetails: React.FC = () => {
         </View> */}
 
         <Pressable
+          onPress={() => setBuySellViewable(!buySellViewable)}
           style={{
             backgroundColor: theme.colorPrimary,
             width: '80%',
             height: 60,
             borderRadius: 15,
             padding: 10,
-            marginTop: 100,
+            marginTop: 60,
             justifyContent: 'center',
           }}>
           <Text
@@ -83,7 +85,7 @@ export const StockDetails: React.FC = () => {
             Trade
           </Text>
         </Pressable>
-        {/* <StockDetailsBuySell
+        <StockDetailsBuySell
           price={price == null ? 0 : price}
           quantitySelected={quantitySelected}
           quantityAvailable={quantityAvailable}
@@ -92,7 +94,9 @@ export const StockDetails: React.FC = () => {
           stock={stock}
           battle_id={battle_id}
           user_id={user_id}
-        /> */}
+          setBuySellViewable={setBuySellViewable}
+          buySellViewable={buySellViewable}
+        />
       </View>
     </View>
   );
