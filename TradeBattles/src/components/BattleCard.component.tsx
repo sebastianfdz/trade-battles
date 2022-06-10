@@ -39,9 +39,12 @@ export const BattleCard: React.FC<{
               style={{width: 30, height: 30, borderRadius: 50, marginRight: 10}}
               source={{uri: member.photo}}
             />
-            <Text>
-              {member.first_name} {member.last_name}
-            </Text>
+            <View>
+              <Text style={{fontWeight: 'bold'}}>
+                {member.first_name} {member.last_name}
+              </Text>
+              <Text>Current Profit: </Text>
+            </View>
           </View>
         );
       })}

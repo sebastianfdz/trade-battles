@@ -48,22 +48,42 @@ export const StockDetails: React.FC = () => {
           ytdChange={ytdChange}
         />
 
-        <View
+        {/* <View
           style={{
             justifyContent: 'center',
             alignItems: 'center',
             marginTop: 20,
           }}>
           <Text>Your average cost per share: ${average_cost.toFixed(2)}</Text>
-          {/* <Text style={{marginTop: 10}}>
+          <Text style={{marginTop: 10}}>
             Gain / Loss ={' '}
             {(
               (price == null ? 0 : price - average_cost) * quantitySelected
             ).toFixed(2)}
-          </Text> */}
-        </View>
+          </Text>
+        </View> */}
 
-        <StockDetailsBuySell
+        <Pressable
+          style={{
+            backgroundColor: theme.colorPrimary,
+            width: '80%',
+            height: 60,
+            borderRadius: 15,
+            padding: 10,
+            marginTop: 100,
+            justifyContent: 'center',
+          }}>
+          <Text
+            style={{
+              color: 'white',
+              fontSize: 20,
+              fontWeight: '800',
+              textAlign: 'center',
+            }}>
+            Trade
+          </Text>
+        </Pressable>
+        {/* <StockDetailsBuySell
           price={price == null ? 0 : price}
           quantitySelected={quantitySelected}
           quantityAvailable={quantityAvailable}
@@ -72,7 +92,7 @@ export const StockDetails: React.FC = () => {
           stock={stock}
           battle_id={battle_id}
           user_id={user_id}
-        />
+        /> */}
       </View>
     </View>
   );
