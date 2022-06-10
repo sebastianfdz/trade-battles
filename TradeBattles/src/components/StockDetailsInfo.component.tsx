@@ -62,13 +62,7 @@ export const StockDetailsInfo: React.FC<{
           smoothingStrategy: 'bezier',
         }}>
         <View>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginBottom: 20,
-            }}>
+          <View style={styles.logo_ticker_header}>
             <Image
               style={[styles.logo]}
               source={{
@@ -78,67 +72,58 @@ export const StockDetailsInfo: React.FC<{
             <Text style={styles.title}>{stock.symbol}</Text>
           </View>
         </View>
-        {/* -------------------------------------------------------CHANGES----------------------------------------------------------- */}
 
         <View>
           <ChartYLabel format={formatCurrency} style={styles.price} />
         </View>
 
-        <View
-          style={{
-            borderRadius: 15,
-          }}>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignSelf: 'center',
-            }}>
-            <View style={styles.change_container}>
-              <Text style={styles.change_text}>Day Change</Text>
-              <View
-                style={{
-                  borderRadius: 10,
-                  padding: 5,
-                  backgroundColor: return_color_day_change,
-                }}>
-                <Text style={{color: 'white', fontWeight: '700'}}>
-                  {(dayChange * 100).toFixed(2)}%
-                </Text>
-              </View>
-            </View>
-            <View style={styles.change_container}>
-              <Text style={styles.change_text}>YTD Change</Text>
-              <View
-                style={{
-                  borderRadius: 10,
-                  padding: 5,
-                  backgroundColor: return_color_ytd_change,
-                }}>
-                <Text style={{color: 'white', fontWeight: '700'}}>
-                  {(ytdChange * 100).toFixed(2)}%
-                </Text>
-              </View>
-            </View>
-          </View>
-          <View>
-            {graphPoints[0].vw > -1 ? (
-              <ChartPath
-                height={SCREEN_WIDTH / 2}
-                stroke={return_color_graph}
-                strokeWidth={1}
-                width={SCREEN_WIDTH}
-              />
-            ) : (
-              <Text style={{alignSelf: 'center', marginTop: 100}}>
-                Loading...
-              </Text> // TODO --> REPLACE WITH SPINNER
-            )}
-            <ChartDot
+        <View style={styles.changes_row}>
+          <View style={styles.change_container}>
+            <Text style={styles.change_text}>Day Change</Text>
+            <View
               style={{
-                backgroundColor: 'red',
-              }}
-            />
+                borderRadius: 10,
+                padding: 5,
+                backgroundColor: return_color_day_change,
+              }}>
+              <Text style={{color: 'white', fontWeight: '700'}}>
+                {(dayChange * 100).toFixed(2)}%
+              </Text>
+            </View>
           </View>
+          <View style={styles.change_container}>
+            <Text style={styles.change_text}>YTD Change</Text>
+            <View
+              style={{
+                borderRadius: 10,
+                padding: 5,
+                backgroundColor: return_color_ytd_change,
+              }}>
+              <Text style={{color: 'white', fontWeight: '700'}}>
+                {(ytdChange * 100).toFixed(2)}%
+              </Text>
+            </View>
+          </View>
+        </View>
+
+        <View style={styles.graph_container}>
+          {graphPoints[0].vw > -1 ? (
+            <ChartPath
+              height={SCREEN_WIDTH / 2}
+              stroke={return_color_graph}
+              strokeWidth={1}
+              width={SCREEN_WIDTH}
+            />
+          ) : (
+            <Text style={{alignSelf: 'center', marginTop: 100}}>
+              Loading...
+            </Text> // TODO --> REPLACE WITH SPINNER
+          )}
+          <ChartDot
+            style={{
+              backgroundColor: return_color_graph,
+            }}
+          />
         </View>
       </ChartPathProvider>
     </View>
@@ -174,4 +159,15 @@ const styles = StyleSheet.create({
     fontSize: 15,
     marginBottom: 5,
   },
+  logo_ticker_header: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  changes_row: {
+    flexDirection: 'row',
+    alignSelf: 'center',
+  },
+  graph_container: {},
 });

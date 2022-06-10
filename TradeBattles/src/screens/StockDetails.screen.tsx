@@ -48,54 +48,28 @@ export const StockDetails: React.FC = () => {
           dayChange={dayChange}
           ytdChange={ytdChange}
         />
-        {/* 
-        <View
-          style={{
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginTop: 20,
-          }}>
-          <Text>Your average cost per share: ${average_cost.toFixed(2)}</Text>
-          <Text style={{marginTop: 10}}>
-            Gain / Loss ={' '}
-            {(
-              (price == null ? 0 : price - average_cost) * quantitySelected
-            ).toFixed(2)}
-          </Text>
-        </View> */}
 
         <Pressable
           onPress={() => setBuySellViewable(!buySellViewable)}
-          style={{
-            backgroundColor: theme.colorPrimary,
-            width: '80%',
-            height: 60,
-            borderRadius: 15,
-            padding: 10,
-            marginTop: 60,
-            justifyContent: 'center',
-          }}>
-          <Text
-            style={{
-              color: 'white',
-              fontSize: 20,
-              fontWeight: '800',
-              textAlign: 'center',
-            }}>
-            Trade
-          </Text>
+          style={styles.trade_button}>
+          <Text style={styles.trade_button_text}>Trade</Text>
         </Pressable>
+
+        <Text style={{fontSize: 12, textAlign: 'center', marginTop: 5}}>
+          Your average cost per share: ${average_cost.toFixed(2)}
+        </Text>
+
         <StockDetailsBuySell
-          price={price == null ? 0 : price}
-          quantitySelected={quantitySelected}
-          quantityAvailable={quantityAvailable}
           setQuantitySelected={setQuantitySelected}
+          quantitySelected={quantitySelected}
           setQuantityAvailable={setQuantityAvailable}
+          quantityAvailable={quantityAvailable}
+          setBuySellViewable={setBuySellViewable}
+          buySellViewable={buySellViewable}
+          price={price == null ? 0 : price}
           stock={stock}
           battle_id={battle_id}
           user_id={user_id}
-          setBuySellViewable={setBuySellViewable}
-          buySellViewable={buySellViewable}
         />
       </View>
     </View>
@@ -114,5 +88,20 @@ const styles = StyleSheet.create({
   back: {
     height: 30,
     width: 30,
+  },
+  trade_button: {
+    backgroundColor: theme.colorPrimary,
+    width: '80%',
+    height: 60,
+    borderRadius: 15,
+    padding: 10,
+    marginTop: 50,
+    justifyContent: 'center',
+  },
+  trade_button_text: {
+    color: 'white',
+    fontSize: 20,
+    fontWeight: '800',
+    textAlign: 'center',
   },
 });
