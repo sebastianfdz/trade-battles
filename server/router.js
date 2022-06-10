@@ -34,5 +34,9 @@ router.get(
 
 // Quote
 router.get("/quote/:symbol", quote_controller.getQuote);
+router.get(
+	"/quote/historical/data/:ticker/:periodicity/:periodicity_unit/:start_date/:end_date",
+	quote_controller.getHistoricalData
+);
 
 module.exports = router;
