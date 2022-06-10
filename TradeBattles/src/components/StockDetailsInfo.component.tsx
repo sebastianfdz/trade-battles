@@ -17,7 +17,12 @@ export const StockDetailsInfo: React.FC<{
   dayChange: number;
   ytdChange: number;
 }> = ({stock, price, dayChange, ytdChange}) => {
-  price = price > 0 ? price : stock.latestPrice;
+  price =
+    price > 0
+      ? price
+      : stock.iexRealtimePrice
+      ? stock.iexRealtimePrice
+      : stock.latestPrice;
   const [graphPoints, setGraphPoints] = useState<GraphPoint[]>([
     {vw: -1, t: 0},
   ]);
@@ -25,11 +30,12 @@ export const StockDetailsInfo: React.FC<{
   useEffect(() => {
     const getHistoricals = async () => {
       const now = Date.now();
+      const oneYearInMiliseconds = 31556952000;
       await ApiClient.getHistoricalData(
         stock.symbol,
         'day',
         1,
-        now - 31556952000,
+        now - oneYearInMiliseconds,
         now,
       ).then(res => setGraphPoints(res.data.results));
     };
@@ -63,7 +69,7 @@ export const StockDetailsInfo: React.FC<{
         <View>
           <View style={styles.logo_ticker_header}>
             <Image
-              style={[styles.logo]}
+              style={[styles.logo, {resizeMode: 'contain'}]}
               source={{
                 uri: `https://storage.googleapis.com/iexcloud-hl37opg/api/logos/${stock.symbol}.png`,
               }}

@@ -122,6 +122,7 @@ export const StockSearch: React.FC<{battle_id: string; user_id: string}> = ({
                     height: 30,
                     borderRadius: 50,
                     marginBottom: 5,
+                    resizeMode: 'contain',
                   }}
                   source={{
                     uri: `https://storage.googleapis.com/iexcloud-hl37opg/api/logos/${item.ticker}.png`,

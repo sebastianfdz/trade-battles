@@ -25,12 +25,19 @@ export const PortfolioStockCard: React.FC<{
           user_id: userid,
         });
       }}>
-      <Image
-        style={styles.logo_container}
-        source={{
-          uri: `https://storage.googleapis.com/iexcloud-hl37opg/api/logos/${stock.symbol}.png`,
-        }}
-      />
+      <View style={styles.logo_container}>
+        <Image
+          style={{
+            width: '100%',
+            height: 30,
+            resizeMode: 'contain',
+            borderRadius: 50,
+          }}
+          source={{
+            uri: `https://storage.googleapis.com/iexcloud-hl37opg/api/logos/${stock.symbol}.png`,
+          }}
+        />
+      </View>
 
       <Text style={styles.text}>{stock.symbol}</Text>
       <Text
@@ -62,6 +69,7 @@ const styles = StyleSheet.create({
   logo_container: {
     height: 30,
     width: 30,
+    // resizeMode: 'cover',
   },
 
   text: {
