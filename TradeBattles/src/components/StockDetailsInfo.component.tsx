@@ -18,13 +18,13 @@ export const StockDetailsInfo: React.FC<{
   ytdChange: number;
 }> = ({stock, price, dayChange, ytdChange}) => {
   price = price > 0 ? price : stock.latestPrice;
-  const now = Date.now();
   const [graphPoints, setGraphPoints] = useState<GraphPoint[]>([
     {vw: -1, t: 0},
   ]);
 
   useEffect(() => {
     const getHistoricals = async () => {
+      const now = Date.now();
       await ApiClient.getHistoricalData(
         stock.symbol,
         'day',
@@ -45,12 +45,11 @@ export const StockDetailsInfo: React.FC<{
   };
   const return_color_day_change =
     dayChange > 0 ? theme.primary_green : theme.primary_red;
-
   const return_color_ytd_change =
     ytdChange > 0 ? theme.primary_green : theme.primary_red;
-
   const return_color_graph =
     price > graphPoints[0].vw ? theme.primary_green : theme.primary_red;
+
   return (
     <View
       style={{
