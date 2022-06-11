@@ -5,6 +5,7 @@ import {
   Image,
   useWindowDimensions,
   ScrollView,
+  Text,
 } from 'react-native';
 import {CustomButton} from '../components/CustomButton.component';
 import {theme} from '../shared/themes';
@@ -12,6 +13,7 @@ import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {appleAuth} from '@invertase/react-native-apple-authentication';
 import {useUserContext} from '../App.provider';
 import {ApiClient} from '../services/ApiClient.service';
+import LottieView from 'lottie-react-native';
 
 const googleImageSource = require('../../assets/images/Google_logo.png');
 const facebookImageSource = require('../../assets/images/Facebook_logo.png');
@@ -23,7 +25,7 @@ GoogleSignin.configure({
     '590254695836-9ai733i10c8phjeh71t0e5vp0hctm905.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
 });
 
-const logoSrc = require('../../assets/images/Placeholder_logo.png');
+const fallingMoneySrc = require('../../assets/lotties/falling_money.json');
 
 export const LoginOnlySocial: React.FC = () => {
   const userContext = useUserContext();
@@ -56,11 +58,18 @@ export const LoginOnlySocial: React.FC = () => {
   return (
     <ScrollView>
       <View style={styles.container}>
-        <Image
-          source={logoSrc}
-          style={[styles.logo, {height: height * 0.3}]}
-          resizeMode="contain"
-        />
+        <View style={{alignItems: 'center', marginTop: 100}}>
+          {/* <LottieView
+            style={{marginTop: -25}}
+            source={fallingMoneySrc}
+            autoPlay
+            loop={false}
+          /> */}
+          <Text style={styles.logo_bold}>TRADE</Text>
+          <Text style={styles.logo_light}>BATTLES</Text>
+        </View>
+
+        <View style={{marginBottom: 40, marginTop: 30}}></View>
 
         <CustomButton
           text="Sign In with Google"
@@ -87,6 +96,7 @@ export const LoginOnlySocial: React.FC = () => {
     </ScrollView>
   );
 };
+
 const styles = StyleSheet.create({
   container: {alignItems: 'center', padding: 20, marginTop: 60},
   logo: {
@@ -94,4 +104,6 @@ const styles = StyleSheet.create({
     maxWidth: 300,
     maxHeight: 200,
   },
+  logo_bold: {fontSize: 85},
+  logo_light: {fontSize: 60, fontWeight: '900', marginTop: -10},
 });

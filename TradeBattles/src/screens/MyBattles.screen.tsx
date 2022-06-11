@@ -8,6 +8,7 @@ import {
   Animated,
   NativeSyntheticEvent,
   NativeScrollEvent,
+  Pressable,
 } from 'react-native';
 import {ApiClient} from '../services/ApiClient.service';
 import {theme} from '../shared/themes';
@@ -94,7 +95,7 @@ export const MyBattles: React.FC = () => {
           );
         }}
       />
-      <View style={{marginTop: -100, marginBottom: 100, flexDirection: 'row'}}>
+      <View style={{marginTop: -100, marginBottom: 15, flexDirection: 'row'}}>
         {myBattles.map((dot, index) => {
           const backgroundColor =
             index === currentBattleIndex ? theme.colorPrimary : 'grey';
@@ -111,6 +112,30 @@ export const MyBattles: React.FC = () => {
           );
         })}
       </View>
+      <Pressable
+        style={{
+          width: 50,
+          height: 50,
+          backgroundColor: theme.greyPrimary,
+          borderRadius: 50,
+          justifyContent: 'center',
+          alignItems: 'center',
+          shadowColor: 'black',
+          shadowOffset: {
+            width: 0,
+            height: 2,
+          },
+          shadowRadius: 3,
+          shadowOpacity: 0.2,
+        }}>
+        <Text
+          style={{
+            fontSize: 50,
+            color: theme.colorPrimary,
+          }}>
+          +
+        </Text>
+      </Pressable>
     </SafeAreaView>
   );
 };

@@ -3,7 +3,7 @@ import {StyleSheet, View, TextInput, useWindowDimensions} from 'react-native';
 import {theme} from '../shared/themes';
 
 type CustomInputProps = {
-  value: string;
+  value: any;
   setValue: React.Dispatch<SetStateAction<any>>;
   placeholder: string;
   secureTextEntry?: boolean;
@@ -30,7 +30,7 @@ export const CustomInput: React.FC<CustomInputProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: theme.primary_grey,
+    backgroundColor: theme.greyPrimary,
     width: 250,
     height: 50,
     justifyContent: 'center',

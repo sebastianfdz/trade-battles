@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {View, Text, Image, StyleSheet, Dimensions} from 'react-native';
 import {GraphPoint, Stock} from '../shared/Types';
 import {theme} from '../shared/themes';
+import LottieView from 'lottie-react-native';
 const {
   ChartDot,
   ChartPath,
@@ -9,6 +10,7 @@ const {
   ChartYLabel,
 } = require('@rainbow-me/animated-charts');
 import {ApiClient} from '../services/ApiClient.service';
+const spinnerLottieSrc = require('../../assets/lotties/spinner.json');
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 export const StockDetailsInfo: React.FC<{
@@ -75,6 +77,7 @@ export const StockDetailsInfo: React.FC<{
               }}
             />
             <Text style={styles.title}>{stock.symbol}</Text>
+            {/* <LottieView source={spinnerLottieSrc} autoPlay loop /> */}
           </View>
         </View>
 
@@ -120,9 +123,9 @@ export const StockDetailsInfo: React.FC<{
               width={SCREEN_WIDTH}
             />
           ) : (
-            <Text style={{alignSelf: 'center', marginTop: 100}}>
-              Loading...
-            </Text> // TODO --> REPLACE WITH SPINNER
+            <View style={{alignSelf: 'center', marginTop: 100}}>
+              <Text>Loading...</Text>
+            </View>
           )}
           <ChartDot
             style={{

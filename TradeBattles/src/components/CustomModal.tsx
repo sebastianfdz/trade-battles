@@ -1,12 +1,37 @@
-import React from 'react';
+import LottieView from 'lottie-react-native';
+import React, {useEffect, useState} from 'react';
 import {View, Modal, Text, Pressable, StyleSheet} from 'react-native';
 import {theme} from '../shared/themes';
+const correctTransactionSrc = require('../../assets/lotties/correct_transaction.json');
+const incorrectTransactionSrc = require('../../assets/lotties/incorrect_transaction.json');
+const confettiSrc = require('../../assets/lotties/confetti.json');
 
 export const CustomModal: React.FC<{
   viewable: boolean;
   setViewable: React.Dispatch<React.SetStateAction<boolean>>;
   text: string;
 }> = ({viewable, setViewable, text}) => {
+  // const [isValid, setIsValid] = useState(false);
+
+  // useEffect(() => {
+  //   const invalidTransaction =
+  //     text === 'Cannot sell more stocks than you own.' ||
+  //     text === 'You must select at least one stock';
+
+  //   if (invalidTransaction === false) {
+  //     console.log(text);
+  //     setIsValid(true);
+  //   } else {
+  //     setIsValid(false);
+  //   }
+  // }, []);
+
+  // console.warn(text, viewable, invalidTransaction);
+  // console.warn(text);
+  // <LottieView source={incorrectTransactionSrc} autoPlay />
+  // <LottieView source={correctTransactionSrc} autoPlay />
+  // <LottieView source={confettiSrc} autoPlay />
+
   return (
     <View style={styles.centeredView}>
       <Modal
@@ -57,11 +82,11 @@ const styles = StyleSheet.create({
   },
 
   button: {
-    padding: 20,
+    padding: 15,
     borderRadius: 15,
   },
   buttonClose: {
-    backgroundColor: theme.primary_green,
+    backgroundColor: theme.colorPrimary,
   },
   textStyle: {
     color: 'white',
@@ -71,6 +96,6 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: 'center',
-    fontSize: 20,
+    fontSize: 15,
   },
 });

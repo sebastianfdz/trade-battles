@@ -60,25 +60,31 @@ export const StockDetailsBuySell: React.FC<{
         onRequestClose={() => {
           setBuySellViewable(!buySellViewable);
         }}>
-        <CustomModal
-          text="Cannot sell more stocks than you own."
-          viewable={cantSellModal}
-          setViewable={setCantSellModal}
-        />
-        <CustomModal
-          text="You must select at least one stock"
-          viewable={cantBuySellZeroModal}
-          setViewable={setCantBuySellZeroModal}
-        />
-        <CustomModal
-          text={`${purchaseOrder.quantity} ${purchaseOrder.ticker} stock${
-            purchaseOrder.quantity > 1 ? 's' : ''
-          } ${
-            purchaseOrder.action === 'BUY' ? 'added to' : 'sold from'
-          } your portfolio at a price of $${purchaseOrder.price}`}
-          viewable={succesfulPurchaseModal}
-          setViewable={setSuccesfulPurchaseModal}
-        />
+        {cantSellModal && (
+          <CustomModal
+            text="Cannot sell more stocks than you own."
+            viewable={cantSellModal}
+            setViewable={setCantSellModal}
+          />
+        )}
+        {cantBuySellZeroModal && (
+          <CustomModal
+            text="You must select at least one stock"
+            viewable={cantBuySellZeroModal}
+            setViewable={setCantBuySellZeroModal}
+          />
+        )}
+        {succesfulPurchaseModal && (
+          <CustomModal
+            text={`${purchaseOrder.quantity} ${purchaseOrder.ticker} stock${
+              purchaseOrder.quantity > 1 ? 's' : ''
+            } ${
+              purchaseOrder.action === 'BUY' ? 'added to' : 'sold from'
+            } your portfolio at a price of $${purchaseOrder.price}`}
+            viewable={succesfulPurchaseModal}
+            setViewable={setSuccesfulPurchaseModal}
+          />
+        )}
         <View style={styles.buy_sell_modal_container}>
           <Pressable onPress={() => setBuySellViewable(false)}>
             {/* <Text style={{marginLeft: 'auto', fontSize: 20}}>X</Text> */}
