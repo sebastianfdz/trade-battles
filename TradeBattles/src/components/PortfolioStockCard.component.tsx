@@ -1,7 +1,13 @@
 import React from 'react';
-import {View, Text, StyleSheet, Image, Pressable} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  Pressable,
+  Dimensions,
+} from 'react-native';
 import {theme} from '../shared/themes';
-import type {Stock} from '../shared/Types';
 import {PortfolioStock} from '../shared/Types';
 import {useNavigation} from '@react-navigation/native';
 import type {ProfileScreenNavigationProp} from '../shared/Types';
@@ -13,6 +19,7 @@ export const PortfolioStockCard: React.FC<{
 }> = ({stock, battleid, userid}) => {
   const navigation = useNavigation<ProfileScreenNavigationProp>();
 
+  const width = Dimensions.get('window').width;
   return (
     <Pressable
       style={styles.container}
@@ -61,7 +68,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingVertical: 15,
-    paddingHorizontal: 25,
+    paddingHorizontal: 30,
     borderBottomWidth: 0.3,
     borderBottomColor: theme.greyPrimary,
     backgroundColor: theme.stockCardBackground,

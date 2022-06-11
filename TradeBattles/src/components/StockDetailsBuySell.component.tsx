@@ -1,6 +1,14 @@
 import React from 'react';
 import {useState} from 'react';
-import {View, Text, Pressable, StyleSheet, Modal, Image} from 'react-native';
+import {
+  View,
+  Text,
+  Pressable,
+  StyleSheet,
+  Modal,
+  Image,
+  Dimensions,
+} from 'react-native';
 import {ApiClient} from '../services/ApiClient.service';
 import {PurchaseOrderInitializer} from '../shared/EmptyInitializers';
 import {theme} from '../shared/themes';
@@ -8,6 +16,7 @@ import {Stock} from '../shared/Types';
 import {CustomModal} from './CustomModal';
 const closeIconSrc = require('../../assets/icons/close_icon_black.png');
 
+const width = Dimensions.get('window').width;
 export const StockDetailsBuySell: React.FC<{
   price: number;
   quantitySelected: number;
@@ -87,7 +96,6 @@ export const StockDetailsBuySell: React.FC<{
         )}
         <View style={styles.buy_sell_modal_container}>
           <Pressable onPress={() => setBuySellViewable(false)}>
-            {/* <Text style={{marginLeft: 'auto', fontSize: 20}}>X</Text> */}
             <Image style={styles.close_icon} source={closeIconSrc} />
           </Pressable>
           <View style={{alignItems: 'center'}}>
@@ -207,7 +215,7 @@ export const StockDetailsBuySell: React.FC<{
 const styles = StyleSheet.create({
   button: {
     padding: 10,
-    width: 140,
+    width: width * 0.33,
     borderRadius: 10,
     marginHorizontal: 15,
   },

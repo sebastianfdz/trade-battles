@@ -7,7 +7,6 @@ import {
   TextInput,
   Pressable,
   Dimensions,
-  Button,
 } from 'react-native';
 import {Stock} from '../shared/Types';
 import {stockListForSearch} from '../stockListForSearch';
@@ -42,7 +41,7 @@ export const StockSearch: React.FC<{battle_id: string; user_id: string}> = ({
           flexDirection: 'row',
           alignItems: 'center',
           alignSelf: 'center',
-          marginVertical: 10,
+          marginVertical: 15,
         }}>
         <TextInput
           onChangeText={currentSearch => handleSearch(currentSearch)}
@@ -51,7 +50,7 @@ export const StockSearch: React.FC<{battle_id: string; user_id: string}> = ({
         />
         <Pressable
           style={{
-            backgroundColor: theme.primary_yellow,
+            backgroundColor: theme.colorPrimary,
             padding: 10,
             borderRadius: 7,
           }}
@@ -72,7 +71,9 @@ export const StockSearch: React.FC<{battle_id: string; user_id: string}> = ({
                 setBadSearch(true);
               });
           }}>
-          <Text style={{fontWeight: 'bold'}}>Search</Text>
+          <Text style={{fontWeight: 'bold', color: theme.light_mode_white}}>
+            Search
+          </Text>
         </Pressable>
       </View>
       <View style={{alignSelf: 'center'}}>

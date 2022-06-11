@@ -22,7 +22,7 @@ export const BattlePortfolioHeader: React.FC<{battle: Battle}> = ({battle}) => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
+    paddingHorizontal: 20,
   },
   portfolio_header_container: {
     backgroundColor: theme.greyPrimary,

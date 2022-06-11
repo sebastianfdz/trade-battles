@@ -5,6 +5,7 @@ import {BattlePortfolio} from './BattlePortfolio.screen';
 import {StockDetails} from './StockDetails.screen';
 import {MyBattles} from './MyBattles.screen';
 import {theme} from '../shared/themes';
+import {CreateBattle} from './CreateBattle.screen';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -19,6 +20,7 @@ export const StackNavigator = () => {
       <Stack.Screen name={'MyBattles'} component={MyBattles} />
       <Stack.Screen name={'BattlePortfolio'} component={BattlePortfolio} />
       <Stack.Screen name={'BuySellStock'} component={StockDetails} />
+      <Stack.Screen name={'CreateBattle'} component={CreateBattle} />
     </Stack.Navigator>
   );
 };

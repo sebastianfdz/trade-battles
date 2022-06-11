@@ -36,8 +36,8 @@ export const BottomTabsNavigator: React.FC = () => {
         },
       })}>
       <BottomTabs.Screen name="StackNavigator" component={StackNavigator} />
-      <BottomTabs.Screen name="CreateBattle" component={CreateBattle} />
-      <BottomTabs.Screen name="ActivityFeed" component={ActivityFeed} />
+      {/* <BottomTabs.Screen name="CreateBattle" component={CreateBattle} />
+      <BottomTabs.Screen name="ActivityFeed" component={ActivityFeed} /> */}
     </BottomTabs.Navigator>
   );
 };

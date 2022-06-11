@@ -53,6 +53,7 @@ export type RootStackParamList = {
   MyBattles: {
     user_id: string;
   };
+  CreateBattle: undefined;
 };
 
 export type ProfileScreenNavigationProp =

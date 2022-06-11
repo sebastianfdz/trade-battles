@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
     height: 60,
     borderRadius: 15,
     padding: 10,
-    marginTop: 50,
+    marginTop: 35,
     justifyContent: 'center',
   },
   trade_button_text: {

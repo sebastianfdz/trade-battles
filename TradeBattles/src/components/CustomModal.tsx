@@ -10,7 +10,7 @@ export const CustomModal: React.FC<{
   viewable: boolean;
   setViewable: React.Dispatch<React.SetStateAction<boolean>>;
   text: string;
-}> = ({viewable, setViewable, text}) => {
+}> = ({viewable = false, setViewable, text}) => {
   // const [isValid, setIsValid] = useState(false);
 
   // useEffect(() => {

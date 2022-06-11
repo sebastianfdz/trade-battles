@@ -15,6 +15,8 @@ import {theme} from '../shared/themes';
 import type {Battle} from '../shared/Types';
 import {BattleCard} from '../components/BattleCard.component';
 import {useUserContext} from '../App.provider';
+import {useNavigation} from '@react-navigation/native';
+import {ProfileScreenNavigationProp} from '../shared/Types';
 
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
@@ -34,15 +36,29 @@ export const MyBattles: React.FC = () => {
   const scrollX = React.useRef(new Animated.Value(0)).current;
 
   const [currentBattleIndex, setCurrentBattleIndex] = useState(0);
-
   const scrollListener = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const totalWidth = event.nativeEvent.layoutMeasurement.width;
     const xPosition = event.nativeEvent.contentOffset.x;
     setCurrentBattleIndex(Math.floor(xPosition / totalWidth));
   };
 
+  const navigation = useNavigation<ProfileScreenNavigationProp>();
+
   return (
     <SafeAreaView style={styles.container}>
+      <Pressable
+        style={styles.create_battle_button}
+        onPress={() => navigation.navigate('CreateBattle')}>
+        <Text
+          style={{
+            fontSize: 30,
+            color: theme.light_mode_white,
+            fontWeight: '700',
+            alignSelf: 'center',
+          }}>
+          +
+        </Text>
+      </Pressable>
       <Text style={styles.header}>My Battles</Text>
       <Animated.FlatList
         onScroll={Animated.event(
@@ -95,7 +111,7 @@ export const MyBattles: React.FC = () => {
           );
         }}
       />
-      <View style={{marginTop: -100, marginBottom: 15, flexDirection: 'row'}}>
+      <View style={{marginTop: -100, marginBottom: 35, flexDirection: 'row'}}>
         {myBattles.map((dot, index) => {
           const backgroundColor =
             index === currentBattleIndex ? theme.colorPrimary : 'grey';
@@ -112,30 +128,6 @@ export const MyBattles: React.FC = () => {
           );
         })}
       </View>
-      <Pressable
-        style={{
-          width: 50,
-          height: 50,
-          backgroundColor: theme.greyPrimary,
-          borderRadius: 50,
-          justifyContent: 'center',
-          alignItems: 'center',
-          shadowColor: 'black',
-          shadowOffset: {
-            width: 0,
-            height: 2,
-          },
-          shadowRadius: 3,
-          shadowOpacity: 0.2,
-        }}>
-        <Text
-          style={{
-            fontSize: 50,
-            color: theme.colorPrimary,
-          }}>
-          +
-        </Text>
-      </Pressable>
     </SafeAreaView>
   );
 };
@@ -145,11 +137,30 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: theme.light_mode_white,
+    // marginTop: -30,
   },
   header: {
     fontSize: 30,
     fontWeight: '700',
-    marginTop: 50,
+    marginTop: 20,
+    marginBottom: -25,
+  },
+  create_battle_button: {
+    width: 40,
+    height: 40,
+    marginLeft: 'auto',
+    marginRight: 40,
+    marginTop: 20,
+    backgroundColor: theme.colorPrimary,
+    borderRadius: 50,
+    justifyContent: 'center',
+    shadowColor: 'black',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowRadius: 3,
+    shadowOpacity: 0.2,
   },
 });
 

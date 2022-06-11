@@ -65,5 +65,6 @@ const styles = StyleSheet.create({
     },
     shadowRadius: 3,
     shadowOpacity: 0.2,
+    // marginTop: -35,
   },
 });
