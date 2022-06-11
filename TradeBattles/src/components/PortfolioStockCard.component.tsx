@@ -11,6 +11,7 @@ import {theme} from '../shared/themes';
 import {PortfolioStock} from '../shared/Types';
 import {useNavigation} from '@react-navigation/native';
 import type {ProfileScreenNavigationProp} from '../shared/Types';
+import {showNotification} from '../shared/Notification';
 
 export const PortfolioStockCard: React.FC<{
   stock: PortfolioStock;
@@ -31,6 +32,10 @@ export const PortfolioStockCard: React.FC<{
           battle_id: battleid,
           user_id: userid,
         });
+        showNotification(
+          'Battle time is near..',
+          'Your battle starts in 1 day',
+        );
       }}>
       <View style={styles.logo_container}>
         <Image
