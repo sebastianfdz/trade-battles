@@ -12,40 +12,27 @@ import {
 import {ApiClient} from '../services/ApiClient.service';
 import {PurchaseOrderInitializer} from '../shared/EmptyInitializers';
 import {theme} from '../shared/themes';
-import {PortfolioStock, Stock} from '../shared/Types';
+import {PortfolioStock, Stock, BuySellProps} from '../shared/Types';
 import {CustomModal} from './CustomModal';
+import {QuantitySetter} from './QuantitySetter.component';
 const closeIconSrc = require('../../assets/icons/close_icon_black.png');
 
 const width = Dimensions.get('window').width;
-export const StockDetailsBuySell: React.FC<{
-  price: number;
-  quantitySelected: number;
-  quantityAvailable: number;
-  setQuantitySelected: React.Dispatch<React.SetStateAction<number>>;
-  setQuantityAvailable: React.Dispatch<React.SetStateAction<number>>;
-  setBuySellViewable: React.Dispatch<React.SetStateAction<boolean>>;
-  setCurrentUserPortfolio: React.Dispatch<
-    React.SetStateAction<PortfolioStock[]>
-  >;
-  currentUserPortfolio: PortfolioStock[];
-  buySellViewable: boolean;
-  stock: Stock;
-  battle_id: string;
-  user_id: string;
-}> = ({
-  price,
-  quantitySelected,
-  quantityAvailable,
-  setQuantitySelected,
-  setQuantityAvailable,
-  setBuySellViewable,
-  setCurrentUserPortfolio,
-  currentUserPortfolio,
-  buySellViewable,
-  stock,
-  battle_id,
-  user_id,
-}) => {
+export const StockDetailsBuySell: React.FC<BuySellProps> = props => {
+  const {
+    price,
+    quantitySelected,
+    quantityAvailable,
+    setQuantitySelected,
+    setQuantityAvailable,
+    setBuySellViewable,
+    setCurrentUserPortfolio,
+    currentUserPortfolio,
+    buySellViewable,
+    stock,
+    battle_id,
+    user_id,
+  } = props;
   const [cantSellModal, setCantSellModal] = useState(false);
   const [cantBuySellZeroModal, setCantBuySellZeroModal] = useState(false);
   const [succesfulPurchaseModal, setSuccesfulPurchaseModal] = useState(false);
@@ -66,6 +53,58 @@ export const StockDetailsBuySell: React.FC<{
     price: price > 0 ? price : stock.latestPrice,
     action: 'to be defined',
   };
+
+  const handleBuyOrder = () => {
+    quantitySelected > 0
+      ? (ApiClient.postTransaction({
+          ...buySellApiBody,
+          action: 'BUY',
+        }),
+        setPurchaseOrder({
+          ...purchaseOrderBody,
+          action: 'BUY',
+        }),
+        setSuccesfulPurchaseModal(true),
+        setQuantityAvailable(prevstate => prevstate + quantitySelected),
+        setQuantitySelected(0),
+        setCurrentUserPortfolio(prevState => [
+          ...prevState,
+          {
+            price: price > 0 ? price : stock.latestPrice,
+            symbol: stock.symbol,
+            change: 0,
+            quantity: quantitySelected,
+            averageCost: price > 0 ? price : stock.latestPrice,
+            quote: stock,
+          },
+        ]))
+      : setCantBuySellZeroModal(true);
+  };
+
+  const pseudobuyOrder = () => {
+    // Check that quantity id > 0
+    // Users has enough money to buy the amount
+    // if both are true -> make api call : else set cantbuyzero or not enough money respectively
+  };
+
+  const handleSellOrder = () => {
+    quantitySelected > quantityAvailable
+      ? setCantSellModal(true)
+      : quantitySelected <= 0
+      ? setCantBuySellZeroModal(true)
+      : ApiClient.postTransaction({
+          ...buySellApiBody,
+          action: 'SELL',
+        }),
+      setPurchaseOrder({
+        ...purchaseOrderBody,
+        action: 'SELL',
+      }),
+      setSuccesfulPurchaseModal(true),
+      setQuantityAvailable(prevstate => prevstate - quantitySelected),
+      setQuantitySelected(0);
+  };
+
   return (
     <View>
       <Modal
@@ -75,6 +114,61 @@ export const StockDetailsBuySell: React.FC<{
         onRequestClose={() => {
           setBuySellViewable(!buySellViewable);
         }}>
+        <View style={styles.buy_sell_modal_container}>
+          {/* ------------ Cross Icon ---------------*/}
+          <Pressable onPress={() => setBuySellViewable(false)}>
+            <Image style={styles.close_icon} source={closeIconSrc} />
+          </Pressable>
+
+          {/* ------------ Top container (total amount and quantity header)  ---------------*/}
+
+          <View style={{alignItems: 'center'}}>
+            {/* ------------ Total amount header ---------------*/}
+
+            <View style={styles.total_amount}>
+              <Text style={{fontSize: 17}}>TOTAL: </Text>
+              <Text style={{alignSelf: 'center', fontSize: 30}}>
+                $
+                {(
+                  (price > 0 ? price : stock.latestPrice) * quantitySelected
+                ).toFixed(2)}
+              </Text>
+            </View>
+            {/* ------------ Quantity setter ---------------*/}
+
+            <QuantitySetter
+              quantitySelected={quantitySelected}
+              setQuantitySelected={setQuantitySelected}
+            />
+          </View>
+
+          {/* ------------ Available to sell ---------------*/}
+
+          <Text style={{alignSelf: 'center'}}>
+            {quantityAvailable} available to sell
+          </Text>
+
+          {/* ------------  Buy Sell Buttons ---------------*/}
+
+          <View style={styles.buysell_button_container}>
+            <Pressable
+              onPress={handleSellOrder}
+              style={[styles.button, {backgroundColor: theme.primary_yellow}]}>
+              <Text style={styles.button_text}>Sell</Text>
+            </Pressable>
+            <Pressable
+              style={[styles.button, {backgroundColor: theme.colorPrimary}]}
+              onPress={handleBuyOrder}>
+              <Text
+                style={[styles.button_text, {color: theme.light_mode_white}]}>
+                Buy
+              </Text>
+            </Pressable>
+          </View>
+        </View>
+
+        {/* ------------  Hidden Custom Modals ---------------*/}
+
         {cantSellModal && (
           <CustomModal
             text="Cannot sell more stocks than you own."
@@ -100,131 +194,6 @@ export const StockDetailsBuySell: React.FC<{
             setViewable={setSuccesfulPurchaseModal}
           />
         )}
-        <View style={styles.buy_sell_modal_container}>
-          <Pressable onPress={() => setBuySellViewable(false)}>
-            <Image style={styles.close_icon} source={closeIconSrc} />
-          </Pressable>
-          <View style={{alignItems: 'center'}}>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text style={{fontSize: 17}}>TOTAL: </Text>
-              <Text style={{alignSelf: 'center', fontSize: 30}}>
-                $
-                {(
-                  (price > 0 ? price : stock.latestPrice) * quantitySelected
-                ).toFixed(2)}
-              </Text>
-            </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                marginLeft: 10,
-              }}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  borderColor: theme.colorPrimary,
-                  borderWidth: 1,
-                  borderRadius: 5,
-                  marginVertical: 20,
-                }}>
-                <Pressable
-                  onPress={() => {
-                    if (quantitySelected > 0) {
-                      setQuantitySelected(prevState => prevState - 1);
-                    }
-                  }}
-                  style={[styles.qty, {borderRightWidth: 1}]}>
-                  <Text style={{fontSize: 25}}>-</Text>
-                </Pressable>
-                <Text
-                  style={{
-                    fontSize: 25,
-                    marginHorizontal: 20,
-                    width: 'auto',
-                    alignSelf: 'center',
-                    textAlign: 'center',
-                  }}>
-                  {quantitySelected}
-                </Text>
-                <Pressable
-                  onPress={() => {
-                    setQuantitySelected(prevState => prevState + 1);
-                  }}
-                  style={[styles.qty, {borderLeftWidth: 1}]}>
-                  <Text style={{fontSize: 25}}>+</Text>
-                </Pressable>
-              </View>
-            </View>
-          </View>
-          <Text style={{alignSelf: 'center'}}>
-            {quantityAvailable} available to sell
-          </Text>
-
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-around',
-              padding: 30,
-            }}>
-            <Pressable
-              onPress={() => {
-                quantitySelected > quantityAvailable
-                  ? setCantSellModal(true)
-                  : quantitySelected <= 0
-                  ? setCantBuySellZeroModal(true)
-                  : ApiClient.postTransaction({
-                      ...buySellApiBody,
-                      action: 'SELL',
-                    }),
-                  setPurchaseOrder({
-                    ...purchaseOrderBody,
-                    action: 'SELL',
-                  }),
-                  setSuccesfulPurchaseModal(true),
-                  setQuantityAvailable(
-                    prevstate => prevstate - quantitySelected,
-                  ),
-                  setQuantitySelected(0);
-              }}
-              style={[styles.button, {backgroundColor: theme.primary_yellow}]}>
-              <Text style={styles.button_text}>Sell</Text>
-            </Pressable>
-            <Pressable
-              style={[styles.button, {backgroundColor: 'black'}]}
-              onPress={() =>
-                quantitySelected > 0
-                  ? (ApiClient.postTransaction({
-                      ...buySellApiBody,
-                      action: 'BUY',
-                    }),
-                    setPurchaseOrder({
-                      ...purchaseOrderBody,
-                      action: 'BUY',
-                    }),
-                    setSuccesfulPurchaseModal(true),
-                    setQuantityAvailable(
-                      prevstate => prevstate + quantitySelected,
-                    ),
-                    setQuantitySelected(0),
-                    console.warn(currentUserPortfolio),
-                    setCurrentUserPortfolio(prevState => [
-                      ...prevState,
-                      {
-                        price: price > 0 ? price : stock.latestPrice,
-                        symbol: stock.symbol,
-                        change: 0,
-                        quantity: quantitySelected,
-                        averageCost: price > 0 ? price : stock.latestPrice,
-                        quote: stock,
-                      },
-                    ]))
-                  : setCantBuySellZeroModal(true)
-              }>
-              <Text style={[styles.button_text, {color: 'white'}]}>Buy</Text>
-            </Pressable>
-          </View>
-        </View>
       </Modal>
     </View>
   );
@@ -242,12 +211,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: '600',
   },
-  qty: {
-    padding: 3,
-    borderColor: theme.colorPrimary,
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-  },
+
   buy_sell_modal_container: {
     flexDirection: 'column',
     marginTop: 250,
@@ -271,5 +235,12 @@ const styles = StyleSheet.create({
     height: 20,
     marginRight: 20,
     marginTop: 20,
+  },
+  total_amount: {flexDirection: 'row', alignItems: 'center'},
+
+  buysell_button_container: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    padding: 30,
   },
 });

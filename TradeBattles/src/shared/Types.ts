@@ -112,3 +112,20 @@ export type GraphPoint = {
 export type HistoricalData = {
   results: GraphPoint[];
 };
+
+export type BuySellProps = {
+  price: number;
+  quantitySelected: number;
+  quantityAvailable: number;
+  setQuantitySelected: React.Dispatch<React.SetStateAction<number>>;
+  setQuantityAvailable: React.Dispatch<React.SetStateAction<number>>;
+  setBuySellViewable: React.Dispatch<React.SetStateAction<boolean>>;
+  setCurrentUserPortfolio: React.Dispatch<
+    React.SetStateAction<PortfolioStock[]>
+  >;
+  currentUserPortfolio: PortfolioStock[];
+  buySellViewable: boolean;
+  stock: Stock;
+  battle_id: string;
+  user_id: string;
+};

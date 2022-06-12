@@ -59,12 +59,12 @@ export const LoginOnlySocial: React.FC = () => {
     <ScrollView>
       <View style={styles.container}>
         <View style={{alignItems: 'center', marginTop: 100}}>
-          {/* <LottieView
+          <LottieView
             style={{marginTop: -25}}
             source={fallingMoneySrc}
             autoPlay
             loop={false}
-          /> */}
+          />
           <Text style={styles.logo_bold}>TRADE</Text>
           <Text style={styles.logo_light}>BATTLES</Text>
         </View>

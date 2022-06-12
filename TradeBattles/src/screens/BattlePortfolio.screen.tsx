@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext, createContext} from 'react';
 import {View, Text, FlatList} from 'react-native';
 import {PortfolioStockCard} from '../components/PortfolioStockCard.component';
 import {PortfolioStock} from '../shared/Types';
@@ -11,9 +11,33 @@ import {RouteProp, useRoute} from '@react-navigation/native';
 import {PortfolioInitializer} from '../shared/EmptyInitializers';
 import {StockSearch} from '../components/StockSearch.component';
 
+type BattlePortfolioContext = {
+  currentUserPortfolio: PortfolioStock[];
+  handleSetPortfolio: React.Dispatch<React.SetStateAction<PortfolioStock[]>>;
+};
+
+const BattlePortfolioContext = createContext<BattlePortfolioContext>({
+  currentUserPortfolio: PortfolioInitializer,
+  handleSetPortfolio: () => {},
+});
+
 export const BattlePortfolio: React.FC = () => {
   const [currentUserPortfolio, setCurrentUserPortfolio] =
     useState<PortfolioStock[]>(PortfolioInitializer);
+
+  // const BattlePortfolioProvider: React.FC<any> = ({children}) => {
+  //   const [user, setUser] = useState<User>(initialUser);
+
+  //   const handleSetUser = (user: User) => {
+  //     setUser(user);
+  //   };
+
+  //   return (
+  //     <UserContext.Provider value={{user, handleSetUser}}>
+  //       {children}
+  //     </UserContext.Provider>
+  //   );
+  // };
 
   const route = useRoute<RouteProp<RootStackParamList, 'BattlePortfolio'>>();
 
@@ -87,3 +111,5 @@ export const BattlePortfolio: React.FC = () => {
     </View>
   );
 };
+
+export const useUserContext = () => useContext(BattlePortfolioContext);

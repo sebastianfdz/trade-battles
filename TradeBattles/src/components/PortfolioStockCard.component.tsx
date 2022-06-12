@@ -31,7 +31,7 @@ export const PortfolioStockCard: React.FC<{
   const navigation = useNavigation<ProfileScreenNavigationProp>();
 
   const width = Dimensions.get('window').width;
-  console.warn(currentUserPortfolio);
+
   return (
     <Pressable
       style={styles.container}
@@ -45,6 +45,7 @@ export const PortfolioStockCard: React.FC<{
           currentUserPortfolio,
           setCurrentUserPortfolio,
         });
+
         showNotification(
           'Battle time is near..',
           'Your battle starts in 1 day',

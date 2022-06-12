@@ -40,13 +40,7 @@ export const StockSearch: React.FC<{
         viewable={badSearch}
         setViewable={setBadSearch}
       />
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          alignSelf: 'center',
-          marginVertical: 15,
-        }}>
+      <View style={styles.container}>
         <TextInput
           onChangeText={currentSearch => handleSearch(currentSearch)}
           style={styles.input}
@@ -54,11 +48,7 @@ export const StockSearch: React.FC<{
           value={search}
         />
         <Pressable
-          style={{
-            backgroundColor: theme.colorPrimary,
-            padding: 10,
-            borderRadius: 7,
-          }}
+          style={styles.search_button}
           onPress={() => {
             let stock: Stock = StockInitializer;
             ApiClient.getQuote(search)
@@ -103,6 +93,7 @@ export const StockSearch: React.FC<{
                 onPress={() => {
                   setSearch('');
                   let stock: Stock = StockInitializer;
+
                   ApiClient.getQuote(item.ticker).then(res => {
                     (stock = res.data),
                       navigation.navigate('BuySellStock', {
@@ -116,36 +107,14 @@ export const StockSearch: React.FC<{
                       });
                   });
                 }}
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                  borderBottomColor: theme.colorPrimary,
-                  borderBottomWidth: 0.3,
-                  margin: 2,
-                  width: SEARCH_TERM_WIDTH,
-                  alignItems: 'center',
-                  overflow: 'hidden',
-                  backgroundColor: theme.stockCardBackground,
-                }}>
+                style={styles.result_card_container}>
                 <Image
-                  style={{
-                    width: 30,
-                    height: 30,
-                    borderRadius: 50,
-                    marginBottom: 5,
-                    resizeMode: 'contain',
-                  }}
+                  style={styles.logo}
                   source={{
                     uri: `https://storage.googleapis.com/iexcloud-hl37opg/api/logos/${item.ticker}.png`,
                   }}
                 />
-                <Text
-                  style={{
-                    fontSize: 15,
-                    marginLeft: 5,
-                    marginBottom: 5,
-                    color: theme.colorPrimary,
-                  }}>
+                <Text style={styles.stock_company_name}>
                   {item.name.length > textLengthLimit
                     ? item.name.substring(0, textLengthLimit - 3) + ' ...'
                     : item.name}
@@ -158,6 +127,12 @@ export const StockSearch: React.FC<{
   );
 };
 const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignSelf: 'center',
+    marginVertical: 15,
+  },
   input: {
     width: 200,
     height: 50,
@@ -165,6 +140,35 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 17,
     backgroundColor: theme.stockCardBackground,
+    color: theme.colorPrimary,
+  },
+  search_button: {
+    backgroundColor: theme.colorPrimary,
+    padding: 10,
+    borderRadius: 7,
+  },
+  result_card_container: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    borderBottomColor: theme.colorPrimary,
+    borderBottomWidth: 0.3,
+    margin: 2,
+    width: SEARCH_TERM_WIDTH,
+    alignItems: 'center',
+    overflow: 'hidden',
+    backgroundColor: theme.stockCardBackground,
+  },
+  logo: {
+    width: 30,
+    height: 30,
+    borderRadius: 50,
+    marginBottom: 5,
+    resizeMode: 'contain',
+  },
+  stock_company_name: {
+    fontSize: 15,
+    marginLeft: 5,
+    marginBottom: 5,
     color: theme.colorPrimary,
   },
 });

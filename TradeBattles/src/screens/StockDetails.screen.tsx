@@ -22,7 +22,7 @@ export const StockDetails: React.FC = () => {
     currentUserPortfolio,
   } = route.params;
 
-  const [quantityAvailable, setQuantityAvailable] = useState(0);
+  const [quantityAvailable, setQuantityAvailable] = useState(shares_owned);
   const [quantitySelected, setQuantitySelected] = useState(0);
   const [price, setPrice] = useState(
     stock.isUSMarketOpen ? stock.iexRealtimePrice : stock.close,
@@ -30,9 +30,6 @@ export const StockDetails: React.FC = () => {
   const [dayChange, setDayChange] = useState(stock.changePercent);
   const [ytdChange, setYtdChange] = useState(stock.ytdChange);
   const [buySellViewable, setBuySellViewable] = useState(false);
-  useEffect(() => {
-    setQuantityAvailable(shares_owned);
-  }, [quantitySelected]);
 
   useEffect(() => {
     // const fetchPrice = async () => {
@@ -46,7 +43,6 @@ export const StockDetails: React.FC = () => {
     // setInterval(() => fetchPrice(), 2000);
   }, []);
 
-  console.warn(currentUserPortfolio, 'INSIDE STOCK DETAILS');
   return (
     <View style={{backgroundColor: theme.light_mode_white}}>
       <GoBack />

@@ -32,6 +32,7 @@ export const CustomModal: React.FC<{
   // <LottieView source={correctTransactionSrc} autoPlay />
   // <LottieView source={confettiSrc} autoPlay />
 
+  console.warn(text);
   return (
     <View style={styles.centeredView}>
       <Modal
@@ -39,14 +40,14 @@ export const CustomModal: React.FC<{
         transparent={true}
         visible={viewable}
         onRequestClose={() => {
-          setViewable(!viewable);
+          setViewable(false);
         }}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <Text style={styles.modalText}>{text}</Text>
             <Pressable
               style={[styles.button, styles.buttonClose]}
-              onPress={() => setViewable(!viewable)}>
+              onPress={() => setViewable(false)}>
               <Text style={styles.textStyle}>Got it!</Text>
             </Pressable>
           </View>
