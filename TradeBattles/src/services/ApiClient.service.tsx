@@ -10,7 +10,8 @@ import type {User} from '../shared/Types';
 import type {Transaction, GraphPoint} from '../shared/Types';
 
 const port = 3000;
-const baseUrl = `http://192.168.1.142:${port}`;
+// const baseUrl = `http://192.168.1.142:${port}`;
+const baseUrl = `http://localhost:${port}`;
 export const ApiClient = {
   getMyBattles: async (user_id: string) => {
     const myBattles = await axios.get(
@@ -102,5 +103,19 @@ export const ApiClient = {
     });
 
     return battle;
+  },
+
+  updateUserProfit: async (
+    user_id: string,
+    gain_loss: number,
+    battle_id: string,
+  ) => {
+    const user = await axios.patch(
+      `${baseUrl}/users/profit/${user_id}/${battle_id}`,
+      {
+        gain_loss: gain_loss,
+      },
+    );
+    return user;
   },
 };

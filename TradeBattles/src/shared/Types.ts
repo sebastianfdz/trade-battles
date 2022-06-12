@@ -91,6 +91,7 @@ export type BattleMember = {
   photo: string;
   battles: string[];
   transactions: Transaction[];
+  current_gains_losses: any;
 };
 
 export type Transaction = {

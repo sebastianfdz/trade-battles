@@ -42,7 +42,13 @@ export const BattleCard: React.FC<{
               <Text style={{fontWeight: 'bold'}}>
                 {member.first_name} {member.last_name}
               </Text>
-              <Text>Current Profit: </Text>
+              <Text>
+                Current Profit:{' '}
+                {member.current_gains_losses[String(battle.battle_id)]
+                  ? member.current_gains_losses[String(battle.battle_id)]
+                  : 0}
+                {/* {JSON.parse(member.current_gains_losses).battle_id} */}
+              </Text>
             </View>
           </View>
         );

@@ -22,6 +22,7 @@ export const BattlePortfolio: React.FC = () => {
   const startDate = new Date(Number(battle.start_date_timestamp)).toString();
   const endDate = new Date(Number(battle.end_date_timestamp)).toString();
   const [nonLockedGainLoss, setNonLockedGainLoss] = useState(0);
+  let profit = 0;
 
   useEffect(() => {
     const setPortfolio = async () => {
@@ -32,6 +33,7 @@ export const BattlePortfolio: React.FC = () => {
             el.price = res.data.close ? res.data.close : res.data.latestPrice;
             el.change = ((el.price - el.averageCost) / el.averageCost) * 100;
             el.quote = res.data;
+            profit += (el.price - el.averageCost) * el.quantity;
             setNonLockedGainLoss(
               prevstate =>
                 (prevstate += (el.price - el.averageCost) * el.quantity),
@@ -44,6 +46,12 @@ export const BattlePortfolio: React.FC = () => {
     };
 
     setPortfolio();
+  }, []);
+
+  useEffect(() => {
+    setTimeout(() => {
+      ApiClient.updateUserProfit(user_id, profit, battle.battle_id);
+    }, 3000);
   }, []);
   return (
     <View style={{flex: 1}}>
