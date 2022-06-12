@@ -21,3 +21,17 @@ exports.postBattle = async (req, res) => {
 		res.sendStatus(500);
 	}
 };
+
+exports.patchBattleMembers = async (req, res) => {
+	try {
+		const battle = await battles_model.updateBattleMembers(
+			req.params["battle_id"],
+			req.body
+		);
+		res.send(battle.rows);
+		res.status(200);
+	} catch (error) {
+		console.error(error);
+		res.sendStatus(500);
+	}
+};

@@ -22,6 +22,7 @@ exports.getHistoricalData = async (
 	start_date,
 	end_date
 ) => {
+	console.log("inside getHistorical");
 	const convertDate = (timestamp) => {
 		date = new Date(Number(timestamp));
 		return date.toISOString().split("T").slice(0, 1).join("");

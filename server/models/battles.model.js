@@ -56,3 +56,12 @@ exports.createBattle = (battle) => {
 	}
 	return result;
 };
+
+exports.updateBattleMembers = async (battle_id, new_members) => {
+	console.log("inside update battle members");
+	const sql = await pool.query(
+		`UPDATE ${table_name} SET battle_members = array_append(battle_members, '${new_members.user_id}') WHERE battle_id  = '${battle_id}'`
+	);
+	user_model.addBattleToUser(new_members.user_id, battle_id);
+	return sql;
+};
