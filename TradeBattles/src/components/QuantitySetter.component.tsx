@@ -1,14 +1,22 @@
 import React from 'react';
-import {View, Pressable, Text, Dimensions, StyleSheet} from 'react-native';
+import {
+  View,
+  Pressable,
+  Text,
+  Dimensions,
+  StyleSheet,
+  Image,
+} from 'react-native';
 import {theme} from '../shared/themes';
 const width = Dimensions.get('window').width;
+const arrowIconSrc = require('../../assets/icons/go_back_icon_black.png');
 
 export const QuantitySetter: React.FC<{
   quantitySelected: number;
   setQuantitySelected: React.Dispatch<React.SetStateAction<number>>;
 }> = ({quantitySelected, setQuantitySelected}) => {
   return (
-    <View style={styles.quantity_setter_container}>
+    <View>
       <View style={styles.quantity_setter}>
         <Pressable
           onPress={() => {
@@ -16,10 +24,12 @@ export const QuantitySetter: React.FC<{
               setQuantitySelected(prevState => prevState - 1);
             }
           }}
-          style={[styles.plus_minus_button, {borderRightWidth: 1}]}>
-          <Text style={{fontSize: 25}}>-</Text>
+          style={styles.arrow_button}>
+          <Image style={styles.arrow} source={arrowIconSrc} />
         </Pressable>
+
         <Text style={styles.quantity_selected}>{quantitySelected}</Text>
+
         {/* TODO --> Make quantity editable by text aswell */}
         <Pressable
           onPress={() => {
@@ -27,8 +37,11 @@ export const QuantitySetter: React.FC<{
               return prevState + 1;
             });
           }}
-          style={[styles.plus_minus_button, {borderLeftWidth: 1}]}>
-          <Text style={{fontSize: 25}}>+</Text>
+          style={styles.arrow_button}>
+          <Image
+            style={[styles.arrow, {transform: [{rotate: '180deg'}]}]}
+            source={arrowIconSrc}
+          />
         </Pressable>
       </View>
     </View>
@@ -36,30 +49,37 @@ export const QuantitySetter: React.FC<{
 };
 
 const styles = StyleSheet.create({
-  plus_minus_button: {
-    padding: 3,
-    borderColor: theme.colorPrimary,
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-  },
-
   quantity_setter_container: {
+    width: width * 0.7,
+    height: 60,
     flexDirection: 'row',
     alignItems: 'center',
-    marginLeft: 10,
   },
   quantity_setter: {
     flexDirection: 'row',
-    borderColor: theme.colorPrimary,
-    borderWidth: 1,
-    borderRadius: 5,
+    alignItems: 'center',
     marginVertical: 20,
+    borderRadius: 30,
   },
   quantity_selected: {
     fontSize: 25,
+    color: theme.colorPrimary,
+  },
+  arrow: {
+    width: 25,
+    height: 25,
+  },
+  arrow_button: {
+    padding: 20,
+    backgroundColor: theme.greyPrimary,
+    borderRadius: 50,
     marginHorizontal: 20,
-    width: 'auto',
-    alignSelf: 'center',
-    textAlign: 'center',
+    shadowColor: 'grey',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowRadius: 1,
+    shadowOpacity: 0.3,
   },
 });

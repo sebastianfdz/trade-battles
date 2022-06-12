@@ -68,6 +68,7 @@ export const StockDetailsBuySell: React.FC<BuySellProps> = props => {
         setSuccesfulPurchaseModal(true),
         setQuantityAvailable(prevstate => prevstate + quantitySelected),
         setQuantitySelected(0),
+        setBuySellViewable(false),
         setCurrentUserPortfolio(prevState => [
           ...prevState,
           {
@@ -98,6 +99,7 @@ export const StockDetailsBuySell: React.FC<BuySellProps> = props => {
         setSuccesfulPurchaseModal(true),
         setQuantityAvailable(prevstate => prevstate - quantitySelected),
         setQuantitySelected(0));
+    setBuySellViewable(false);
   };
 
   return (
@@ -115,12 +117,11 @@ export const StockDetailsBuySell: React.FC<BuySellProps> = props => {
           </Pressable>
           <View style={{alignItems: 'center'}}>
             <View style={styles.total_amount}>
-              <Text style={{fontSize: 17}}>TOTAL: </Text>
+              {/* <Text style={{fontSize: 17}}>TOTAL: </Text> */}
               <Text style={{alignSelf: 'center', fontSize: 30}}>
-                $
-                {(
-                  (price > 0 ? price : stock.latestPrice) * quantitySelected
-                ).toFixed(2)}
+                {formatter.format(
+                  (price > 0 ? price : stock.latestPrice) * quantitySelected,
+                )}
               </Text>
             </View>
             <QuantitySetter

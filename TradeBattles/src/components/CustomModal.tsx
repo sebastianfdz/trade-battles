@@ -1,17 +1,24 @@
 import LottieView from 'lottie-react-native';
 import React, {useEffect, useState} from 'react';
-import {View, Modal, Text, Pressable, StyleSheet} from 'react-native';
+import {
+  View,
+  Modal,
+  Text,
+  Pressable,
+  StyleSheet,
+  Dimensions,
+} from 'react-native';
 import {theme} from '../shared/themes';
 const correctTransactionSrc = require('../../assets/lotties/correct_transaction.json');
 const incorrectTransactionSrc = require('../../assets/lotties/incorrect_transaction.json');
 const confettiSrc = require('../../assets/lotties/confetti.json');
 
+const width = Dimensions.get('window').width;
 export const CustomModal: React.FC<{
   viewable: boolean;
   setViewable: React.Dispatch<React.SetStateAction<boolean>>;
   text: string;
 }> = ({viewable = false, setViewable, text}) => {
-  console.warn(text);
   const modalIsAPositiveResponse = text.includes('Success');
   return (
     <View style={styles.centeredView}>
@@ -70,7 +77,7 @@ const styles = StyleSheet.create({
   modalView: {
     flexDirection: 'column',
     justifyContent: 'space-between',
-    marginTop: '50%',
+    marginTop: '60%',
     height: 350,
     margin: 20,
     backgroundColor: 'white',
@@ -85,6 +92,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
+    width: width * 0.91,
   },
 
   button: {

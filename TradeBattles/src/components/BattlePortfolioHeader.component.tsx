@@ -13,7 +13,7 @@ export const BattlePortfolioHeader: React.FC<{
   const [wait, setWait] = useState(false);
 
   useEffect(() => {
-    setTimeout(() => setWait(true), 2000);
+    setTimeout(() => setWait(true), 1000);
   }, []);
 
   const returnColor =
@@ -65,6 +65,13 @@ const styles = StyleSheet.create({
     padding: 20,
     alignItems: 'center',
     color: theme.colorPrimary,
+    shadowColor: 'grey',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowRadius: 1,
+    shadowOpacity: 0.3,
   },
   title: {
     fontSize: 30,

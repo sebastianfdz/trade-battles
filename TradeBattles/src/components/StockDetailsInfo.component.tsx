@@ -10,7 +10,7 @@ const {
   ChartYLabel,
 } = require('@rainbow-me/animated-charts');
 import {ApiClient} from '../services/ApiClient.service';
-const spinnerLottieSrc = require('../../assets/lotties/spinner.json');
+const spinnerSrc = require('../../assets/lotties/spinner.json');
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 export const StockDetailsInfo: React.FC<{
@@ -123,8 +123,10 @@ export const StockDetailsInfo: React.FC<{
               width={SCREEN_WIDTH}
             />
           ) : (
-            <View style={{alignSelf: 'center', marginTop: 100}}>
-              <Text>Loading...</Text>
+            <View style={{alignSelf: 'center'}}>
+              <View style={{width: 200, height: 200, padding: -10}}>
+                <LottieView source={spinnerSrc} autoPlay loop={false} />
+              </View>
             </View>
           )}
           <ChartDot
