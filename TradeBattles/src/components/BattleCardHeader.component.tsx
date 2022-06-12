@@ -35,14 +35,15 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: theme.primary_yellow,
     height: 150,
-    borderTopStartRadius: 34,
-    borderTopEndRadius: 34,
+    borderTopStartRadius: 45,
+    borderTopEndRadius: 45,
   },
   header_small: {
     fontSize: 25,
     fontWeight: '700',
     marginTop: 30,
     alignSelf: 'center',
+    color: theme.colorPrimary,
   },
   value_of_portfolio: {
     borderBottomWidth: 0.3,

@@ -28,7 +28,6 @@ export const StockDetailsBuySell: React.FC<BuySellProps> = props => {
     setQuantityAvailable,
     setBuySellViewable,
     setCurrentUserPortfolio,
-    currentUserPortfolio,
     buySellViewable,
     stock,
     battle_id,
@@ -117,22 +116,28 @@ export const StockDetailsBuySell: React.FC<BuySellProps> = props => {
           setBuySellViewable(!buySellViewable);
         }}>
         <View style={styles.buy_sell_modal_container}>
-          <Pressable onPress={() => setBuySellViewable(false)}>
+          <Pressable
+            onPress={() => {
+              setQuantitySelected(0);
+              setBuySellViewable(false);
+            }}>
             <Image style={styles.close_icon} source={closeIconSrc} />
           </Pressable>
           <View style={{alignItems: 'center'}}>
-            <View style={styles.total_amount}>
-              {/* <Text style={{fontSize: 17}}>TOTAL: </Text> */}
-              <Text style={{alignSelf: 'center', fontSize: 30}}>
-                {formatter.format(
-                  (price > 0 ? price : stock.latestPrice) * quantitySelected,
-                )}
-              </Text>
-            </View>
             <QuantitySetter
               quantitySelected={quantitySelected}
               setQuantitySelected={setQuantitySelected}
             />
+            <View style={styles.total_amount}>
+              {quantitySelected > 0 && (
+                <Text style={{alignSelf: 'center', fontSize: 12}}>
+                  Total:{' '}
+                  {formatter.format(
+                    (price > 0 ? price : stock.latestPrice) * quantitySelected,
+                  )}
+                </Text>
+              )}
+            </View>
           </View>
           <Text style={{alignSelf: 'center'}}>
             {quantityAvailable} available to sell

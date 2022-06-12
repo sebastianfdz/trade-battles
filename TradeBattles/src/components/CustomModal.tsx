@@ -46,7 +46,6 @@ export const CustomModal: React.FC<{
                   <LottieView source={confettiSrc} autoPlay />
                 </>
               ) : (
-                // <LottieView source={confettiSrc} autoPlay  />
                 <LottieView
                   source={incorrectTransactionSrc}
                   autoPlay

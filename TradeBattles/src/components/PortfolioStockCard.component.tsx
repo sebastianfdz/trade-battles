@@ -96,7 +96,6 @@ const styles = StyleSheet.create({
   logo_container: {
     height: 30,
     width: 30,
-    // resizeMode: 'cover',
   },
 
   text: {

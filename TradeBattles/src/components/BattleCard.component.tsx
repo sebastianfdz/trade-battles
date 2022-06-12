@@ -23,7 +23,6 @@ export const BattleCard: React.FC<{
       style={styles.container}>
       <BattleCardHeader battle={battle} />
 
-      <Text>Current user: {userContext.user.name}</Text>
       {battle.battle_members.map(member => {
         return (
           <View
@@ -57,7 +56,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.greyPrimary,
     width: '80%',
     height: '100%',
-    borderRadius: 34,
+    borderRadius: 45,
     shadowColor: 'black',
     shadowOffset: {
       width: 0,
@@ -65,6 +64,5 @@ const styles = StyleSheet.create({
     },
     shadowRadius: 3,
     shadowOpacity: 0.2,
-    // marginTop: -35,
   },
 });

@@ -77,7 +77,6 @@ export const StockDetailsInfo: React.FC<{
               }}
             />
             <Text style={styles.title}>{stock.symbol}</Text>
-            {/* <LottieView source={spinnerLottieSrc} autoPlay loop /> */}
           </View>
         </View>
 
