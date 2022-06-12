@@ -12,6 +12,7 @@ import {PortfolioStock} from '../shared/Types';
 import {useNavigation} from '@react-navigation/native';
 import type {ProfileScreenNavigationProp} from '../shared/Types';
 import {showNotification} from '../shared/Notification';
+import {formatter} from '../shared/Methods';
 
 export const PortfolioStockCard: React.FC<{
   stock: PortfolioStock;
@@ -74,7 +75,7 @@ export const PortfolioStockCard: React.FC<{
         {stock.change.toFixed(2)}%
       </Text>
       <View style={styles.price_owned}>
-        <Text style={styles.price}>${stock.price.toFixed(2)}</Text>
+        <Text style={styles.price}>{formatter.format(stock.price)}</Text>
         <Text style={styles.owned}>{stock.quantity} owned</Text>
       </View>
     </Pressable>

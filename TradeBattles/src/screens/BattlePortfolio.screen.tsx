@@ -32,13 +32,10 @@ export const BattlePortfolio: React.FC = () => {
             el.price = res.data.close ? res.data.close : res.data.latestPrice;
             el.change = ((el.price - el.averageCost) / el.averageCost) * 100;
             el.quote = res.data;
-            el.change > 0
-              ? setNonLockedGainLoss(
-                  prevstate => prevstate + el.price * el.quantity,
-                )
-              : setNonLockedGainLoss(
-                  prevstate => (prevstate -= el.price * el.quantity),
-                );
+            setNonLockedGainLoss(
+              prevstate =>
+                (prevstate += (el.price - el.averageCost) * el.quantity),
+            );
             el.quantity > 0 && portfolio.push(el);
             setCurrentUserPortfolio(portfolio);
           });

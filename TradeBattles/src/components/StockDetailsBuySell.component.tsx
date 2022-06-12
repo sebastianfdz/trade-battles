@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import {ApiClient} from '../services/ApiClient.service';
 import {PurchaseOrderInitializer} from '../shared/EmptyInitializers';
+import {formatter} from '../shared/Methods';
 import {theme} from '../shared/themes';
 import {BuySellProps} from '../shared/Types';
 import {CustomModal} from './CustomModal';
@@ -169,7 +170,9 @@ export const StockDetailsBuySell: React.FC<BuySellProps> = props => {
               purchaseOrder.ticker
             } stock${purchaseOrder.quantity > 1 ? 's' : ''} ${
               purchaseOrder.action === 'BUY' ? 'added to' : 'sold from'
-            } your portfolio at a price of $${purchaseOrder.price}`}
+            } your portfolio at a price of ${formatter.format(
+              purchaseOrder.price,
+            )}`}
             viewable={succesfulPurchaseModal}
             setViewable={setSuccesfulPurchaseModal}
           />
