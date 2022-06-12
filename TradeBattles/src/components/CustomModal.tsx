@@ -33,6 +33,7 @@ export const CustomModal: React.FC<{
   // <LottieView source={confettiSrc} autoPlay />
 
   console.warn(text);
+  const modalIsAPositiveResponse = text.includes('Success');
   return (
     <View style={styles.centeredView}>
       <Modal
@@ -44,6 +45,12 @@ export const CustomModal: React.FC<{
         }}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
+            {modalIsAPositiveResponse ? (
+              <LottieView source={correctTransactionSrc} autoPlay />
+            ) : (
+              // <LottieView source={confettiSrc} autoPlay  />
+              <LottieView source={incorrectTransactionSrc} autoPlay />
+            )}
             <Text style={styles.modalText}>{text}</Text>
             <Pressable
               style={[styles.button, styles.buttonClose]}

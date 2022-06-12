@@ -81,28 +81,22 @@ export const StockDetailsBuySell: React.FC<BuySellProps> = props => {
       : setCantBuySellZeroModal(true);
   };
 
-  const pseudobuyOrder = () => {
-    // Check that quantity id > 0
-    // Users has enough money to buy the amount
-    // if both are true -> make api call : else set cantbuyzero or not enough money respectively
-  };
-
   const handleSellOrder = () => {
     quantitySelected > quantityAvailable
       ? setCantSellModal(true)
       : quantitySelected <= 0
       ? setCantBuySellZeroModal(true)
-      : ApiClient.postTransaction({
+      : (ApiClient.postTransaction({
           ...buySellApiBody,
           action: 'SELL',
         }),
-      setPurchaseOrder({
-        ...purchaseOrderBody,
-        action: 'SELL',
-      }),
-      setSuccesfulPurchaseModal(true),
-      setQuantityAvailable(prevstate => prevstate - quantitySelected),
-      setQuantitySelected(0);
+        setPurchaseOrder({
+          ...purchaseOrderBody,
+          action: 'SELL',
+        }),
+        setSuccesfulPurchaseModal(true),
+        setQuantityAvailable(prevstate => prevstate - quantitySelected),
+        setQuantitySelected(0));
   };
 
   return (
@@ -185,9 +179,9 @@ export const StockDetailsBuySell: React.FC<BuySellProps> = props => {
         )}
         {succesfulPurchaseModal && (
           <CustomModal
-            text={`${purchaseOrder.quantity} ${purchaseOrder.ticker} stock${
-              purchaseOrder.quantity > 1 ? 's' : ''
-            } ${
+            text={`Success! ${purchaseOrder.quantity} ${
+              purchaseOrder.ticker
+            } stock${purchaseOrder.quantity > 1 ? 's' : ''} ${
               purchaseOrder.action === 'BUY' ? 'added to' : 'sold from'
             } your portfolio at a price of $${purchaseOrder.price}`}
             viewable={succesfulPurchaseModal}

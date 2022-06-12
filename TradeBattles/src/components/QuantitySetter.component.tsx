@@ -24,7 +24,6 @@ export const QuantitySetter: React.FC<{
         <Pressable
           onPress={() => {
             setQuantitySelected(prevState => {
-              console.warn(prevState);
               return prevState + 1;
             });
           }}
