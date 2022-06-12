@@ -24,6 +24,9 @@ export const CustomModal: React.FC<{
         }}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
+            <Text style={{fontSize: 20, fontWeight: '800'}}>
+              {modalIsAPositiveResponse ? 'Succes' : 'Unsuccesful'}
+            </Text>
             <View style={{width: 160, height: 160}}>
               {modalIsAPositiveResponse ? (
                 <>
@@ -33,7 +36,7 @@ export const CustomModal: React.FC<{
                     loop={false}
                   />
 
-                  <LottieView source={confettiSrc} autoPlay loop={false} />
+                  <LottieView source={confettiSrc} autoPlay />
                 </>
               ) : (
                 // <LottieView source={confettiSrc} autoPlay  />
@@ -44,7 +47,9 @@ export const CustomModal: React.FC<{
                 />
               )}
             </View>
-            <Text style={styles.modalText}>{text}</Text>
+            <Text style={styles.modalText}>
+              {modalIsAPositiveResponse ? text.split('!')[1] : text}
+            </Text>
             <Pressable
               style={[styles.button, styles.buttonClose]}
               onPress={() => setViewable(false)}>

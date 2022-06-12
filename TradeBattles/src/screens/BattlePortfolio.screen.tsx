@@ -11,33 +11,9 @@ import {RouteProp, useRoute} from '@react-navigation/native';
 import {PortfolioInitializer} from '../shared/EmptyInitializers';
 import {StockSearch} from '../components/StockSearch.component';
 
-type BattlePortfolioContext = {
-  currentUserPortfolio: PortfolioStock[];
-  handleSetPortfolio: React.Dispatch<React.SetStateAction<PortfolioStock[]>>;
-};
-
-const BattlePortfolioContext = createContext<BattlePortfolioContext>({
-  currentUserPortfolio: PortfolioInitializer,
-  handleSetPortfolio: () => {},
-});
-
 export const BattlePortfolio: React.FC = () => {
   const [currentUserPortfolio, setCurrentUserPortfolio] =
     useState<PortfolioStock[]>(PortfolioInitializer);
-
-  // const BattlePortfolioProvider: React.FC<any> = ({children}) => {
-  //   const [user, setUser] = useState<User>(initialUser);
-
-  //   const handleSetUser = (user: User) => {
-  //     setUser(user);
-  //   };
-
-  //   return (
-  //     <UserContext.Provider value={{user, handleSetUser}}>
-  //       {children}
-  //     </UserContext.Provider>
-  //   );
-  // };
 
   const route = useRoute<RouteProp<RootStackParamList, 'BattlePortfolio'>>();
 
@@ -54,7 +30,7 @@ export const BattlePortfolio: React.FC = () => {
             el.price = res.data.close ? res.data.close : res.data.latestPrice;
             el.change = ((el.price - el.averageCost) / el.averageCost) * 100;
             el.quote = res.data;
-            portfolio.push(el);
+            el.quantity > 0 && portfolio.push(el);
             setCurrentUserPortfolio(portfolio);
           });
         });
@@ -90,20 +66,16 @@ export const BattlePortfolio: React.FC = () => {
           <View style={{flex: 1}}>
             <FlatList
               showsVerticalScrollIndicator={false}
-              data={
-                currentUserPortfolio.length ? currentUserPortfolio : undefined
-              }
-              renderItem={({item}: {item: PortfolioStock}) => {
-                return (
-                  <PortfolioStockCard
-                    battleid={battle.battle_id}
-                    userid={user_id}
-                    stock={item}
-                    currentUserPortfolio={currentUserPortfolio}
-                    setCurrentUserPortfolio={setCurrentUserPortfolio}
-                  />
-                );
-              }}
+              data={currentUserPortfolio}
+              renderItem={({item}: {item: PortfolioStock}) => (
+                <PortfolioStockCard
+                  battleid={battle.battle_id}
+                  userid={user_id}
+                  stock={item}
+                  currentUserPortfolio={currentUserPortfolio}
+                  setCurrentUserPortfolio={setCurrentUserPortfolio}
+                />
+              )}
             />
           </View>
         )}
@@ -111,5 +83,3 @@ export const BattlePortfolio: React.FC = () => {
     </View>
   );
 };
-
-export const useUserContext = () => useContext(BattlePortfolioContext);
