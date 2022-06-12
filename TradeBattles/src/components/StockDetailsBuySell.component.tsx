@@ -68,7 +68,6 @@ export const StockDetailsBuySell: React.FC<BuySellProps> = props => {
         setSuccesfulPurchaseModal(true),
         setQuantityAvailable(prevstate => prevstate + quantitySelected),
         setQuantitySelected(0),
-        setBuySellViewable(false),
         setCurrentUserPortfolio(prevState => [
           ...prevState,
           {
@@ -99,7 +98,6 @@ export const StockDetailsBuySell: React.FC<BuySellProps> = props => {
         setSuccesfulPurchaseModal(true),
         setQuantityAvailable(prevstate => prevstate - quantitySelected),
         setQuantitySelected(0));
-    setBuySellViewable(false);
   };
 
   return (
