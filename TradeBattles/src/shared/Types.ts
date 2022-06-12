@@ -49,6 +49,10 @@ export type RootStackParamList = {
     average_cost: number;
     battle_id: string;
     user_id: string;
+    currentUserPortfolio: PortfolioStock[];
+    setCurrentUserPortfolio: React.Dispatch<
+      React.SetStateAction<PortfolioStock[]>
+    >;
   };
   MyBattles: {
     user_id: string;

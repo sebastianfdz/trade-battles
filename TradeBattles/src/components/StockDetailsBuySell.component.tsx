@@ -12,7 +12,7 @@ import {
 import {ApiClient} from '../services/ApiClient.service';
 import {PurchaseOrderInitializer} from '../shared/EmptyInitializers';
 import {theme} from '../shared/themes';
-import {Stock} from '../shared/Types';
+import {PortfolioStock, Stock} from '../shared/Types';
 import {CustomModal} from './CustomModal';
 const closeIconSrc = require('../../assets/icons/close_icon_black.png');
 
@@ -24,6 +24,10 @@ export const StockDetailsBuySell: React.FC<{
   setQuantitySelected: React.Dispatch<React.SetStateAction<number>>;
   setQuantityAvailable: React.Dispatch<React.SetStateAction<number>>;
   setBuySellViewable: React.Dispatch<React.SetStateAction<boolean>>;
+  setCurrentUserPortfolio: React.Dispatch<
+    React.SetStateAction<PortfolioStock[]>
+  >;
+  currentUserPortfolio: PortfolioStock[];
   buySellViewable: boolean;
   stock: Stock;
   battle_id: string;
@@ -35,6 +39,8 @@ export const StockDetailsBuySell: React.FC<{
   setQuantitySelected,
   setQuantityAvailable,
   setBuySellViewable,
+  setCurrentUserPortfolio,
+  currentUserPortfolio,
   buySellViewable,
   stock,
   battle_id,
@@ -200,7 +206,19 @@ export const StockDetailsBuySell: React.FC<{
                     setQuantityAvailable(
                       prevstate => prevstate + quantitySelected,
                     ),
-                    setQuantitySelected(0))
+                    setQuantitySelected(0),
+                    console.warn(currentUserPortfolio),
+                    setCurrentUserPortfolio(prevState => [
+                      ...prevState,
+                      {
+                        price: price > 0 ? price : stock.latestPrice,
+                        symbol: stock.symbol,
+                        change: 0,
+                        quantity: quantitySelected,
+                        averageCost: price > 0 ? price : stock.latestPrice,
+                        quote: stock,
+                      },
+                    ]))
                   : setCantBuySellZeroModal(true)
               }>
               <Text style={[styles.button_text, {color: 'white'}]}>Buy</Text>

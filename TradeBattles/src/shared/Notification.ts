@@ -7,9 +7,12 @@ const showNotification = (title: string, message: string) => {
   });
 };
 
-const handleScheduleNotification = (title: string, message: string) => {
-  const date = new Date();
-  date.setSeconds(date.getSeconds() + 5);
+const handleScheduleNotification = (
+  title: string,
+  message: string,
+  timestamp: number,
+) => {
+  const date = new Date(timestamp);
   PushNotificationIOS.scheduleLocalNotification({
     alertTitle: title,
     alertBody: message,

@@ -21,7 +21,7 @@ export const BattleCard: React.FC<{
         });
       }}
       style={styles.container}>
-      <BattleCardHeader battle_name={battle.battle_name} />
+      <BattleCardHeader battle={battle} />
 
       <Text>Current user: {userContext.user.name}</Text>
       {battle.battle_members.map(member => {

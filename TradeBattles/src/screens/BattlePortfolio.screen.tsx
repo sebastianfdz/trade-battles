@@ -18,7 +18,9 @@ export const BattlePortfolio: React.FC = () => {
   const route = useRoute<RouteProp<RootStackParamList, 'BattlePortfolio'>>();
 
   const {battle, user_id} = route.params;
-
+  const battleHasStarted = Number(battle.start_date_timestamp) < Date.now();
+  const startDate = new Date(Number(battle.start_date_timestamp)).toString();
+  const endDate = new Date(Number(battle.end_date_timestamp)).toString();
   useEffect(() => {
     const setPortfolio = async () => {
       await ApiClient.getUserPortfolio(user_id, battle.battle_id).then(res => {
@@ -41,10 +43,22 @@ export const BattlePortfolio: React.FC = () => {
   return (
     <View style={{flex: 1}}>
       <GoBack />
+      <View style={{alignSelf: 'center'}}>
+        {battleHasStarted ? (
+          <Text>Battle ends on {endDate.split('GMT')[0]}</Text>
+        ) : (
+          <Text>Battle starts on {startDate.split('GMT')[0]}</Text>
+        )}
+      </View>
       <View
         style={{flex: 1, backgroundColor: theme.light_mode_white, padding: 10}}>
         <BattlePortfolioHeader battle={battle} />
-        <StockSearch battle_id={battle.battle_id} user_id={user_id} />
+        <StockSearch
+          battle_id={battle.battle_id}
+          user_id={user_id}
+          currentUserPortfolio={currentUserPortfolio}
+          setCurrentUserPortfolio={setCurrentUserPortfolio}
+        />
 
         {currentUserPortfolio[0].price === 0 ? (
           <Text style={{alignSelf: 'center'}}>Loading...</Text> // TODO -> Refactor to spinner
@@ -61,6 +75,8 @@ export const BattlePortfolio: React.FC = () => {
                     battleid={battle.battle_id}
                     userid={user_id}
                     stock={item}
+                    currentUserPortfolio={currentUserPortfolio}
+                    setCurrentUserPortfolio={setCurrentUserPortfolio}
                   />
                 );
               }}

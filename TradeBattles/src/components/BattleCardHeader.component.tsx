@@ -2,13 +2,14 @@ import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 
 import {theme} from '../shared/themes';
+import {Battle} from '../shared/Types';
 
 export const BattleCardHeader: React.FC<{
-  battle_name: string;
-}> = ({battle_name}) => {
+  battle: Battle;
+}> = ({battle}) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.header_small}>{battle_name}</Text>
+      <Text style={styles.header_small}>{battle.battle_name}</Text>
       <View style={styles.value_of_portfolio}>
         <Text
           style={{

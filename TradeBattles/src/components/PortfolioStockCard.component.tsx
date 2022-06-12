@@ -17,10 +17,21 @@ export const PortfolioStockCard: React.FC<{
   stock: PortfolioStock;
   battleid: string;
   userid: string;
-}> = ({stock, battleid, userid}) => {
+  currentUserPortfolio: PortfolioStock[];
+  setCurrentUserPortfolio: React.Dispatch<
+    React.SetStateAction<PortfolioStock[]>
+  >;
+}> = ({
+  stock,
+  battleid,
+  userid,
+  currentUserPortfolio,
+  setCurrentUserPortfolio,
+}) => {
   const navigation = useNavigation<ProfileScreenNavigationProp>();
 
   const width = Dimensions.get('window').width;
+  console.warn(currentUserPortfolio);
   return (
     <Pressable
       style={styles.container}
@@ -31,6 +42,8 @@ export const PortfolioStockCard: React.FC<{
           average_cost: stock.averageCost,
           battle_id: battleid,
           user_id: userid,
+          currentUserPortfolio,
+          setCurrentUserPortfolio,
         });
         showNotification(
           'Battle time is near..',

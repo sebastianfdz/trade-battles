@@ -8,7 +8,7 @@ import {
   Pressable,
   Dimensions,
 } from 'react-native';
-import {Stock} from '../shared/Types';
+import {PortfolioStock, Stock} from '../shared/Types';
 import {stockListForSearch} from '../stockListForSearch';
 import {StockInitializer} from '../shared/EmptyInitializers';
 import {ApiClient} from '../services/ApiClient.service';
@@ -18,10 +18,14 @@ import {theme} from '../shared/themes';
 import {CustomModal} from './CustomModal';
 
 const SEARCH_TERM_WIDTH = Dimensions.get('window').width * 0.8;
-export const StockSearch: React.FC<{battle_id: string; user_id: string}> = ({
-  battle_id,
-  user_id,
-}) => {
+export const StockSearch: React.FC<{
+  battle_id: string;
+  user_id: string;
+  currentUserPortfolio: PortfolioStock[];
+  setCurrentUserPortfolio: React.Dispatch<
+    React.SetStateAction<PortfolioStock[]>
+  >;
+}> = ({battle_id, user_id, currentUserPortfolio, setCurrentUserPortfolio}) => {
   const [search, setSearch] = useState('');
   const [badSearch, setBadSearch] = useState(false);
   const navigation = useNavigation<ProfileScreenNavigationProp>();
@@ -47,6 +51,7 @@ export const StockSearch: React.FC<{battle_id: string; user_id: string}> = ({
           onChangeText={currentSearch => handleSearch(currentSearch)}
           style={styles.input}
           placeholder="Search stock market..."
+          value={search}
         />
         <Pressable
           style={{
@@ -65,6 +70,8 @@ export const StockSearch: React.FC<{battle_id: string; user_id: string}> = ({
                     average_cost: 0, // TODO -> Refactor to be dynamic with api call
                     battle_id,
                     user_id,
+                    currentUserPortfolio,
+                    setCurrentUserPortfolio,
                   });
               })
               .catch(error => {
@@ -94,6 +101,7 @@ export const StockSearch: React.FC<{battle_id: string; user_id: string}> = ({
             return (
               <Pressable
                 onPress={() => {
+                  setSearch('');
                   let stock: Stock = StockInitializer;
                   ApiClient.getQuote(item.ticker).then(res => {
                     (stock = res.data),
@@ -103,6 +111,8 @@ export const StockSearch: React.FC<{battle_id: string; user_id: string}> = ({
                         average_cost: 0, // TODO -> Refactor to be dynamic with api call
                         battle_id,
                         user_id,
+                        currentUserPortfolio,
+                        setCurrentUserPortfolio,
                       });
                   });
                 }}
