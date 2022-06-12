@@ -12,7 +12,7 @@ import {
 import {ApiClient} from '../services/ApiClient.service';
 import {PurchaseOrderInitializer} from '../shared/EmptyInitializers';
 import {theme} from '../shared/themes';
-import {PortfolioStock, Stock, BuySellProps} from '../shared/Types';
+import {BuySellProps} from '../shared/Types';
 import {CustomModal} from './CustomModal';
 import {QuantitySetter} from './QuantitySetter.component';
 const closeIconSrc = require('../../assets/icons/close_icon_black.png');
@@ -109,16 +109,10 @@ export const StockDetailsBuySell: React.FC<BuySellProps> = props => {
           setBuySellViewable(!buySellViewable);
         }}>
         <View style={styles.buy_sell_modal_container}>
-          {/* ------------ Cross Icon ---------------*/}
           <Pressable onPress={() => setBuySellViewable(false)}>
             <Image style={styles.close_icon} source={closeIconSrc} />
           </Pressable>
-
-          {/* ------------ Top container (total amount and quantity header)  ---------------*/}
-
           <View style={{alignItems: 'center'}}>
-            {/* ------------ Total amount header ---------------*/}
-
             <View style={styles.total_amount}>
               <Text style={{fontSize: 17}}>TOTAL: </Text>
               <Text style={{alignSelf: 'center', fontSize: 30}}>
@@ -128,22 +122,14 @@ export const StockDetailsBuySell: React.FC<BuySellProps> = props => {
                 ).toFixed(2)}
               </Text>
             </View>
-            {/* ------------ Quantity setter ---------------*/}
-
             <QuantitySetter
               quantitySelected={quantitySelected}
               setQuantitySelected={setQuantitySelected}
             />
           </View>
-
-          {/* ------------ Available to sell ---------------*/}
-
           <Text style={{alignSelf: 'center'}}>
             {quantityAvailable} available to sell
           </Text>
-
-          {/* ------------  Buy Sell Buttons ---------------*/}
-
           <View style={styles.buysell_button_container}>
             <Pressable
               onPress={handleSellOrder}

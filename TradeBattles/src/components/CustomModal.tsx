@@ -11,27 +11,6 @@ export const CustomModal: React.FC<{
   setViewable: React.Dispatch<React.SetStateAction<boolean>>;
   text: string;
 }> = ({viewable = false, setViewable, text}) => {
-  // const [isValid, setIsValid] = useState(false);
-
-  // useEffect(() => {
-  //   const invalidTransaction =
-  //     text === 'Cannot sell more stocks than you own.' ||
-  //     text === 'You must select at least one stock';
-
-  //   if (invalidTransaction === false) {
-  //     console.log(text);
-  //     setIsValid(true);
-  //   } else {
-  //     setIsValid(false);
-  //   }
-  // }, []);
-
-  // console.warn(text, viewable, invalidTransaction);
-  // console.warn(text);
-  // <LottieView source={incorrectTransactionSrc} autoPlay />
-  // <LottieView source={correctTransactionSrc} autoPlay />
-  // <LottieView source={confettiSrc} autoPlay />
-
   console.warn(text);
   const modalIsAPositiveResponse = text.includes('Success');
   return (
@@ -45,12 +24,26 @@ export const CustomModal: React.FC<{
         }}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            {modalIsAPositiveResponse ? (
-              <LottieView source={correctTransactionSrc} autoPlay />
-            ) : (
-              // <LottieView source={confettiSrc} autoPlay  />
-              <LottieView source={incorrectTransactionSrc} autoPlay />
-            )}
+            <View style={{width: 160, height: 160}}>
+              {modalIsAPositiveResponse ? (
+                <>
+                  <LottieView
+                    source={correctTransactionSrc}
+                    autoPlay
+                    loop={false}
+                  />
+
+                  <LottieView source={confettiSrc} autoPlay loop={false} />
+                </>
+              ) : (
+                // <LottieView source={confettiSrc} autoPlay  />
+                <LottieView
+                  source={incorrectTransactionSrc}
+                  autoPlay
+                  loop={false}
+                />
+              )}
+            </View>
             <Text style={styles.modalText}>{text}</Text>
             <Pressable
               style={[styles.button, styles.buttonClose]}
