@@ -38,6 +38,7 @@ export const StockDetailsBuySell: React.FC<BuySellProps> = props => {
   const [cantBuySellZeroModal, setCantBuySellZeroModal] = useState(false);
   const [succesfulPurchaseModal, setSuccesfulPurchaseModal] = useState(false);
   const [purchaseOrder, setPurchaseOrder] = useState(PurchaseOrderInitializer);
+  const [marketClosedModal, setMarketClosedModal] = useState(false);
 
   const buySellApiBody = {
     battle_id,
@@ -57,7 +58,10 @@ export const StockDetailsBuySell: React.FC<BuySellProps> = props => {
 
   const handleBuyOrder = () => {
     quantitySelected > 0
-      ? (ApiClient.postTransaction({
+      ? // !stock.isUSMarketOpen
+        //   ? setMarketClosedModal(true)
+        //   :
+        (ApiClient.postTransaction({
           ...buySellApiBody,
           action: 'BUY',
         }),
@@ -87,7 +91,10 @@ export const StockDetailsBuySell: React.FC<BuySellProps> = props => {
       ? setCantSellModal(true)
       : quantitySelected <= 0
       ? setCantBuySellZeroModal(true)
-      : (ApiClient.postTransaction({
+      : // !stock.isUSMarketOpen
+        // ? setMarketClosedModal(true)
+        // :
+        (ApiClient.postTransaction({
           ...buySellApiBody,
           action: 'SELL',
         }),
@@ -149,33 +156,35 @@ export const StockDetailsBuySell: React.FC<BuySellProps> = props => {
 
         {/* ------------  Hidden Custom Modals ---------------*/}
 
-        {cantSellModal && (
-          <CustomModal
-            text="Cannot sell more stocks than you own."
-            viewable={cantSellModal}
-            setViewable={setCantSellModal}
-          />
-        )}
-        {cantBuySellZeroModal && (
-          <CustomModal
-            text="You must select at least one stock"
-            viewable={cantBuySellZeroModal}
-            setViewable={setCantBuySellZeroModal}
-          />
-        )}
-        {succesfulPurchaseModal && (
-          <CustomModal
-            text={`Success! ${purchaseOrder.quantity} ${
-              purchaseOrder.ticker
-            } stock${purchaseOrder.quantity > 1 ? 's' : ''} ${
-              purchaseOrder.action === 'BUY' ? 'added to' : 'sold from'
-            } your portfolio at a price of ${formatter.format(
-              purchaseOrder.price,
-            )}`}
-            viewable={succesfulPurchaseModal}
-            setViewable={setSuccesfulPurchaseModal}
-          />
-        )}
+        <CustomModal
+          text="Cannot sell more stocks than you own."
+          viewable={cantSellModal}
+          setViewable={setCantSellModal}
+        />
+
+        <CustomModal
+          text="You must select at least one stock"
+          viewable={cantBuySellZeroModal}
+          setViewable={setCantBuySellZeroModal}
+        />
+
+        <CustomModal
+          text="Market is closed, try again later."
+          viewable={marketClosedModal}
+          setViewable={setMarketClosedModal}
+        />
+
+        <CustomModal
+          text={`Success! ${purchaseOrder.quantity} ${
+            purchaseOrder.ticker
+          } stock${purchaseOrder.quantity > 1 ? 's' : ''} ${
+            purchaseOrder.action === 'BUY' ? 'added to' : 'sold from'
+          } your portfolio at a price of ${formatter.format(
+            purchaseOrder.price,
+          )}`}
+          viewable={succesfulPurchaseModal}
+          setViewable={setSuccesfulPurchaseModal}
+        />
       </Modal>
     </View>
   );
