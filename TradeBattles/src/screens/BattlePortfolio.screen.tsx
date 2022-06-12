@@ -21,6 +21,8 @@ export const BattlePortfolio: React.FC = () => {
   const battleHasStarted = Number(battle.start_date_timestamp) < Date.now();
   const startDate = new Date(Number(battle.start_date_timestamp)).toString();
   const endDate = new Date(Number(battle.end_date_timestamp)).toString();
+  const [nonLockedGainLoss, setNonLockedGainLoss] = useState(0);
+
   useEffect(() => {
     const setPortfolio = async () => {
       await ApiClient.getUserPortfolio(user_id, battle.battle_id).then(res => {
@@ -30,6 +32,13 @@ export const BattlePortfolio: React.FC = () => {
             el.price = res.data.close ? res.data.close : res.data.latestPrice;
             el.change = ((el.price - el.averageCost) / el.averageCost) * 100;
             el.quote = res.data;
+            el.change > 0
+              ? setNonLockedGainLoss(
+                  prevstate => prevstate + el.price * el.quantity,
+                )
+              : setNonLockedGainLoss(
+                  prevstate => (prevstate -= el.price * el.quantity),
+                );
             el.quantity > 0 && portfolio.push(el);
             setCurrentUserPortfolio(portfolio);
           });
@@ -39,7 +48,6 @@ export const BattlePortfolio: React.FC = () => {
 
     setPortfolio();
   }, []);
-
   return (
     <View style={{flex: 1}}>
       <GoBack />
@@ -50,9 +58,14 @@ export const BattlePortfolio: React.FC = () => {
           <Text>Battle starts on {startDate.split('GMT')[0]}</Text>
         )}
       </View>
+
       <View
         style={{flex: 1, backgroundColor: theme.light_mode_white, padding: 10}}>
-        <BattlePortfolioHeader battle={battle} />
+        <BattlePortfolioHeader
+          battle={battle}
+          currentGainLoss={nonLockedGainLoss}
+        />
+
         <StockSearch
           battle_id={battle.battle_id}
           user_id={user_id}

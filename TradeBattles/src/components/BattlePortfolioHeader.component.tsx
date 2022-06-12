@@ -3,12 +3,21 @@ import {Text, View, StyleSheet} from 'react-native';
 import {theme} from '../shared/themes';
 import {Battle} from '../shared/Types';
 
-export const BattlePortfolioHeader: React.FC<{battle: Battle}> = ({battle}) => {
+export const BattlePortfolioHeader: React.FC<{
+  battle: Battle;
+  currentGainLoss: number;
+}> = ({battle, currentGainLoss}) => {
+  const formatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+  });
   return (
     <View style={styles.container}>
       <View style={styles.portfolio_header_container}>
         <Text style={styles.title}>{battle.battle_name}</Text>
-        <Text style={styles.available_capital}>$98,348.34</Text>
+        <Text style={styles.available_capital}>
+          {formatter.format(100000 + currentGainLoss)}
+        </Text>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Text style={styles.return_money}>$8,233.92</Text>
           <View style={styles.return_container}>
