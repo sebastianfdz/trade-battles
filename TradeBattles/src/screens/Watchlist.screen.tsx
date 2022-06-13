@@ -1,10 +1,10 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 
-export const ActivityFeed = () => {
+export const WatchList = () => {
   return (
     <View style={styles.container}>
-      <Text>NEEWS FEED SCREEN</Text>
+      <Text>WATCHLIST SCREEN</Text>
     </View>
   );
 };
