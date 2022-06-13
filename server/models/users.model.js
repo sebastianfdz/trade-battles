@@ -126,10 +126,16 @@ exports.updateProfit = async (user_id, current_profit, battle_id) => {
 	return user;
 };
 
-exports.updateWatchlist = async (user_id, watchlist) => {
-	console.log("inside update watchlist", watchlist);
-	const user = await pool.query(
-		`UPDATE ${table_name} SET watchlist = array_append(watchlist, '${watchlist.stock}') WHERE user_id  = '${user_id}'`
-	);
-	return user;
+exports.updateWatchlist = async (user_id, watchlistStock) => {
+	console.log("inside update watchlist", watchlistStock);
+	const user = await this.getUser(user_id);
+	const isInWatchlist = user[0].watchlist.includes(watchlistStock.stock);
+
+	isInWatchlist
+		? await pool.query(
+				`UPDATE ${table_name} SET watchlist = array_remove(watchlist, '${watchlistStock.stock}') WHERE user_id  = '${user_id}'`
+		  )
+		: await pool.query(
+				`UPDATE ${table_name} SET watchlist = array_append(watchlist, '${watchlistStock.stock}') WHERE user_id  = '${user_id}'`
+		  );
 };
