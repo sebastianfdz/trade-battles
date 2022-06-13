@@ -32,7 +32,7 @@ export const WatchlistStockCard: React.FC<{stock: Stock}> = ({stock}) => {
             uri: `https://storage.googleapis.com/iexcloud-hl37opg/api/logos/${stock.symbol}.png`,
           }}
         />
-        <Text>{stock.symbol}</Text>
+        <Text style={{color: theme.colorPrimary}}>{stock.symbol}</Text>
         <View
           style={{
             padding: 4,
@@ -43,7 +43,7 @@ export const WatchlistStockCard: React.FC<{stock: Stock}> = ({stock}) => {
             {(stock.changePercent * 100).toFixed(2)}%
           </Text>
         </View>
-        <Text style={{fontWeight: '600'}}>
+        <Text style={{fontWeight: '600', color: theme.colorPrimary}}>
           {formatter.format(
             stock.iexRealtimePrice ? stock.iexRealtimePrice : stock.latestPrice,
           )}

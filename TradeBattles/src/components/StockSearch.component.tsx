@@ -45,6 +45,7 @@ export const StockSearch: React.FC<{
           onChangeText={currentSearch => handleSearch(currentSearch)}
           style={styles.input}
           placeholder="Search stock market..."
+          placeholderTextColor={theme.colorPrimary}
           value={search}
         />
         <Pressable

@@ -176,6 +176,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     marginTop: 20,
     marginBottom: -25,
+    color: theme.colorPrimary,
   },
   create_battle_button: {
     width: 40,

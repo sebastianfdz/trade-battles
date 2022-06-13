@@ -40,10 +40,10 @@ export const BattleCard: React.FC<{
               source={{uri: member.photo}}
             />
             <View>
-              <Text style={{fontWeight: 'bold'}}>
+              <Text style={{fontWeight: 'bold', color: theme.colorPrimary}}>
                 {member.first_name} {member.last_name}
               </Text>
-              <Text>
+              <Text style={styles.text}>
                 Current Profit:{' '}
                 {formatter.format(
                   member.current_gains_losses[String(battle.battle_id)]
@@ -73,4 +73,5 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
     shadowOpacity: 0.2,
   },
+  text: {color: theme.colorPrimary},
 });

@@ -16,10 +16,10 @@ export const Settings = () => {
         style={{
           fontSize: 40,
           fontWeight: '600',
-          marginRight: 'auto',
+          // marginRight: 'auto',
           paddingHorizontal: 20,
         }}>
-        Settings
+        My Account
       </Text>
       <View
         style={{
@@ -45,7 +45,6 @@ export const Settings = () => {
           {userContext.user.name}
         </Text>
       </View>
-      {/* <Text>email: {userContext.user.email}</Text> */}
 
       <Pressable
         onPress={() => {

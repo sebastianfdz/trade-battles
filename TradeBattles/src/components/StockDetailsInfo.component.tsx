@@ -145,6 +145,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontWeight: '800',
     marginLeft: 12,
+    color: theme.colorPrimary,
   },
   logo: {
     width: 40,
@@ -156,6 +157,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     marginBottom: 20,
     alignSelf: 'center',
+    color: theme.colorPrimary,
   },
   change_container: {
     flexDirection: 'column',

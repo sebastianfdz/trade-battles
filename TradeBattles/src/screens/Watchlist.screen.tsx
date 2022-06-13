@@ -12,6 +12,7 @@ export const WatchList = () => {
           fontWeight: '600',
           marginTop: 100,
           marginBottom: 30,
+          color: theme.colorPrimary,
         }}>
         Watchlist
       </Text>

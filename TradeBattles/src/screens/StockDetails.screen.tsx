@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   trade_button_text: {
-    color: 'white',
+    color: theme.light_mode_white,
     fontSize: 20,
     fontWeight: '800',
     textAlign: 'center',

@@ -71,4 +71,5 @@ export const UserInitializer = {
   photo: '',
   familyName: '',
   givenName: '',
+  watchlist: [],
 };
