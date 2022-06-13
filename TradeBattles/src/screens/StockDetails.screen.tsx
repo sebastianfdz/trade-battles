@@ -35,6 +35,13 @@ export const StockDetails: React.FC = () => {
   const [buySellViewable, setBuySellViewable] = useState(false);
 
   useEffect(() => {
+    ApiClient.getUserById(user_id).then(
+      res =>
+        res.data[0].watchlist.includes(stock.symbol) && setIsInWatchlist(true),
+    );
+  }, []);
+
+  useEffect(() => {
     // const fetchPrice = async () => {
     //   await ApiClient.getQuote(stock.symbol).then(res => {
     //     setPrice(res.data.iexRealtimePrice);
@@ -51,6 +58,7 @@ export const StockDetails: React.FC = () => {
       <GoBack />
       <Pressable
         onPress={() => {
+          ApiClient.updateUserWatchlist(user_id, stock.symbol);
           setIsInWatchlist(!isInWatchlist);
         }}>
         <Image

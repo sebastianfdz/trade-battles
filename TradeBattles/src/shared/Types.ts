@@ -73,6 +73,7 @@ export type User = {
   photo: string | null;
   familyName: string | null;
   givenName: string | null;
+  watchlist: string[];
 };
 
 export type Battle = {

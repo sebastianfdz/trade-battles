@@ -119,4 +119,11 @@ export const ApiClient = {
     );
     return user;
   },
+
+  updateUserWatchlist: async (user_id: string, stock: string) => {
+    const user = await axios.patch(`${baseUrl}/users/watchlist/${user_id}`, {
+      stock: stock,
+    });
+    return user;
+  },
 };
