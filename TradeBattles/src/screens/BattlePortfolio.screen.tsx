@@ -7,7 +7,7 @@ import {theme} from '../shared/themes';
 import {BattlePortfolioHeader} from '../components/BattlePortfolioHeader.component';
 import {GoBack} from '../components/GoBack.component';
 import type {RootStackParamList} from '../shared/Types';
-import {RouteProp, useRoute} from '@react-navigation/native';
+import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
 import {PortfolioInitializer} from '../shared/EmptyInitializers';
 import {StockSearch} from '../components/StockSearch.component';
 
@@ -16,6 +16,7 @@ export const BattlePortfolio: React.FC = () => {
     useState<PortfolioStock[]>(PortfolioInitializer);
 
   const route = useRoute<RouteProp<RootStackParamList, 'BattlePortfolio'>>();
+  const navigation = useNavigation();
 
   const {battle, user_id} = route.params;
   const battleHasStarted = Number(battle.start_date_timestamp) < Date.now();
@@ -53,6 +54,7 @@ export const BattlePortfolio: React.FC = () => {
       ApiClient.updateUserProfit(user_id, profit, battle.battle_id);
     }, 3000);
   }, []);
+
   return (
     <View style={{flex: 1}}>
       <GoBack />

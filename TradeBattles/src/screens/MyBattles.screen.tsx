@@ -31,9 +31,7 @@ export const MyBattles: React.FC = () => {
   const userContext = useUserContext();
 
   useEffect(() => {
-    ApiClient.getMyBattles(
-      userContext.user.id ? userContext.user.id : '110660774589450165950',
-    )
+    ApiClient.getMyBattles(userContext.user.id)
       .then(res => setMyBattles(res.data))
       .catch(error => setNoBattles(true));
   }, []);
