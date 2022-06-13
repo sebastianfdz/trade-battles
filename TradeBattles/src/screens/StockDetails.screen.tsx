@@ -9,8 +9,11 @@ import {StockDetailsInfo} from '../components/StockDetailsInfo.component';
 import {StockDetailsBuySell} from '../components/StockDetailsBuySell.component';
 import {GoBack} from '../components/GoBack.component';
 import {theme} from '../shared/themes';
+const greyStarSrc = require('../../assets/icons/star_grey_icon.png');
+const yellowStarSrc = require('../../assets/icons/star_yellow_icon.png');
 
 export const StockDetails: React.FC = () => {
+  const [isInWatchlist, setIsInWatchlist] = useState(false);
   const route = useRoute<RouteProp<RootStackParamList, 'BuySellStock'>>();
   const {
     stock,
@@ -46,6 +49,22 @@ export const StockDetails: React.FC = () => {
   return (
     <View style={{backgroundColor: theme.light_mode_white}}>
       <GoBack />
+      <Pressable
+        onPress={() => {
+          setIsInWatchlist(!isInWatchlist);
+        }}>
+        <Image
+          style={{
+            width: 35,
+            height: 35,
+            marginLeft: 'auto',
+            marginRight: 35,
+            marginTop: -50,
+            marginBottom: 40,
+          }}
+          source={isInWatchlist ? yellowStarSrc : greyStarSrc}
+        />
+      </Pressable>
       <View style={styles.container}>
         <StockDetailsInfo
           stock={stock}
