@@ -63,3 +63,12 @@ export const PurchaseOrderInitializer = {
   price: 0,
   action: '',
 };
+
+export const UserInitializer = {
+  id: 'DEFAULT',
+  name: '',
+  email: '',
+  photo: '',
+  familyName: '',
+  givenName: '',
+};

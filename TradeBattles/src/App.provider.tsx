@@ -1,4 +1,5 @@
 import React, {useState, useContext, createContext} from 'react';
+import {UserInitializer} from './shared/EmptyInitializers';
 import {User} from './shared/Types';
 
 type UserContextType = {
@@ -6,22 +7,13 @@ type UserContextType = {
   handleSetUser: (user: User) => void;
 };
 
-const initialUser = {
-  id: 'DEFAULT',
-  name: '',
-  email: '',
-  photo: '',
-  familyName: '',
-  givenName: '',
-};
-
 const UserContext = createContext<UserContextType>({
-  user: initialUser,
+  user: UserInitializer,
   handleSetUser: () => {},
 });
 
 export const UserProvider: React.FC<any> = ({children}) => {
-  const [user, setUser] = useState<User>(initialUser);
+  const [user, setUser] = useState<User>(UserInitializer);
 
   const handleSetUser = (user: User) => {
     setUser(user);

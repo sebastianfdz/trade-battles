@@ -2,10 +2,11 @@ import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {StackNavigator} from './AppStackNavigator.navigation';
 import {theme} from '../shared/themes';
-import {HomeIcon} from '../components/BottomTabIcons.component';
+import {HomeIcon, SettingsIcon} from '../components/BottomTabIcons.component';
 import {CreateBattle} from './CreateBattle.screen';
 import {ActivityFeed} from './ActivityFeed.screen';
 import {PushNotification} from 'react-native';
+import {Settings} from './Settings.screen';
 
 const BottomTabs = createBottomTabNavigator();
 export const BottomTabsNavigator: React.FC = () => {
@@ -32,12 +33,14 @@ export const BottomTabsNavigator: React.FC = () => {
               return <HomeIcon color={theme.light_mode_white} size={30} />;
             case 'ActivityFeed':
               return <HomeIcon color={theme.light_mode_white} size={40} />;
+            case 'Settings':
+              return <SettingsIcon color={theme.light_mode_white} size={40} />;
           }
         },
       })}>
       <BottomTabs.Screen name="StackNavigator" component={StackNavigator} />
-      {/* <BottomTabs.Screen name="CreateBattle" component={CreateBattle} />
-      <BottomTabs.Screen name="ActivityFeed" component={ActivityFeed} /> */}
+      <BottomTabs.Screen name="Settings" component={Settings} />
+      {/* <BottomTabs.Screen name="ActivityFeed" component={ActivityFeed} /> */}
     </BottomTabs.Navigator>
   );
 };

@@ -6,6 +6,7 @@ import {BattleCardHeader} from './BattleCardHeader.component';
 import {Battle, BattleMember} from '../shared/Types';
 import {useNavigation} from '@react-navigation/native';
 import {ProfileScreenNavigationProp} from '../shared/Types';
+import {formatter} from '../shared/Methods';
 
 export const BattleCard: React.FC<{
   battle: Battle;
@@ -44,10 +45,11 @@ export const BattleCard: React.FC<{
               </Text>
               <Text>
                 Current Profit:{' '}
-                {member.current_gains_losses[String(battle.battle_id)]
-                  ? member.current_gains_losses[String(battle.battle_id)]
-                  : 0}
-                {/* {JSON.parse(member.current_gains_losses).battle_id} */}
+                {formatter.format(
+                  member.current_gains_losses[String(battle.battle_id)]
+                    ? member.current_gains_losses[String(battle.battle_id)]
+                    : 0,
+                )}
               </Text>
             </View>
           </View>
