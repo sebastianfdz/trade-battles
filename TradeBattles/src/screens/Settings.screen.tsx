@@ -59,6 +59,7 @@ export const Settings = () => {
           fontWeight: '600',
           paddingHorizontal: 20,
           fontFamily: theme.fontFamilyBold,
+          color: theme.colorPrimary,
         }}>
         My Account
       </Text>
@@ -72,6 +73,7 @@ export const Settings = () => {
             fontSize: 20,
             fontWeight: '400',
             fontFamily: theme.fontFamilyRegular,
+            color: theme.colorPrimary,
           }}>
           {userContext.user.name}
         </Text>

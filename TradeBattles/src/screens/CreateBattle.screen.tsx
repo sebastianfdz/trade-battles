@@ -153,6 +153,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     marginTop: 15,
     fontFamily: theme.fontFamilyBold,
+    color: theme.colorPrimary,
   },
   add_button: {
     backgroundColor: theme.colorPrimary,

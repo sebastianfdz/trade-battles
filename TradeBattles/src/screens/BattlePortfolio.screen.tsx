@@ -59,11 +59,21 @@ export const BattlePortfolio: React.FC = () => {
       <GoBack />
       <View style={{alignSelf: 'center'}}>
         {battleHasStarted ? (
-          <Text style={{fontFamily: theme.fontFamilyRegular, fontSize: 12}}>
+          <Text
+            style={{
+              fontFamily: theme.fontFamilyRegular,
+              fontSize: 12,
+              color: theme.colorPrimary,
+            }}>
             Battle ends on {endDate.split('GMT')[0]}
           </Text>
         ) : (
-          <Text style={{fontFamily: theme.fontFamilyRegular, fontSize: 12}}>
+          <Text
+            style={{
+              fontFamily: theme.fontFamilyRegular,
+              fontSize: 12,
+              color: theme.colorPrimary,
+            }}>
             Battle starts on {startDate.split('GMT')[0]}
           </Text>
         )}
