@@ -20,6 +20,7 @@ export const CustomInput: React.FC<CustomInputProps> = ({
       <TextInput
         value={value}
         onChangeText={setValue}
+        placeholderTextColor={theme.colorPrimary}
         placeholder={placeholder}
         style={styles.input}
         secureTextEntry={secureTextEntry}

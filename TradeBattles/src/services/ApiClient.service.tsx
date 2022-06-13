@@ -10,8 +10,8 @@ import type {User} from '../shared/Types';
 import type {Transaction, GraphPoint} from '../shared/Types';
 
 const port = 3000;
-// const baseUrl = `http://192.168.1.142:${port}`;
-const baseUrl = `http://localhost:${port}`;
+const baseUrl = `http://192.168.1.142:${port}`;
+// const baseUrl = `http://localhost:${port}`;
 export const ApiClient = {
   getMyBattles: async (user_id: string) => {
     const myBattles = await axios.get(

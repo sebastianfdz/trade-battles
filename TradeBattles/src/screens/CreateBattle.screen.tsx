@@ -143,7 +143,11 @@ export const CreateBattle = () => {
                 endDate.getTime(),
                 battleName,
               ),
-              setSuccessfulCreate(true))
+              setSuccessfulCreate(true),
+              setAddedMembers([]),
+              setBattleName(''),
+              setEndDate(new Date()),
+              setStartDate(new Date()))
             : setErrorMessage(true);
         }}
         style={{
@@ -167,7 +171,7 @@ export const CreateBattle = () => {
       <CustomModal
         viewable={successfulCreate}
         setViewable={setSuccessfulCreate}
-        text="The battle has been succesfully created"
+        text="Success! The battle has been succesfully created"
       />
     </View>
   );
