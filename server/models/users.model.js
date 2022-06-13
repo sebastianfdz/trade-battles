@@ -16,7 +16,7 @@ exports.getUser = async (id) => {
 exports.createUser = async (user) => {
 	console.log("inside create");
 
-	const sql = `INSERT INTO ${table_name} (user_id, first_name, last_name, photo, email, transactions, battles) VALUES ($1,$2,$3,$4,$5,$6,$7)`;
+	const sql = `INSERT INTO ${table_name} (user_id, first_name, last_name, photo, email, transactions, battles, current_gains_losses) VALUES ($1,$2,$3,$4,$5,$6,$7,$8)`;
 	const values = [
 		user.id ? user.id : v4(),
 		user.givenName,
@@ -25,6 +25,7 @@ exports.createUser = async (user) => {
 		user.email,
 		[],
 		[],
+		{},
 	];
 	pool.query(sql, values);
 	return user;
@@ -37,7 +38,7 @@ exports.getUserPortfolio = async (user_id, battle_id) => {
 	);
 	let transactionsArray = transactions.rows;
 
-	console.log(transactionsArray);
+	// console.log(transactionsArray);
 
 	const userPortfolio = [];
 	const uniqueSymbols = {};
@@ -48,7 +49,7 @@ exports.getUserPortfolio = async (user_id, battle_id) => {
 		}
 	}
 
-	console.log(Object.keys(uniqueSymbols));
+	// console.log(Object.keys(uniqueSymbols));
 
 	let stock = {
 		price: 0,
@@ -63,7 +64,7 @@ exports.getUserPortfolio = async (user_id, battle_id) => {
 	let currentSymbol = Object.keys(uniqueSymbols)[key];
 	for (let i = 0; i < transactionsArray.length; i++) {
 		let currentStock = transactionsArray[i];
-		console.log(currentStock);
+		// console.log(currentStock);
 		if (currentStock.symbol !== currentSymbol) {
 			// stock changed...
 			// push stock to userPortfolio
@@ -87,7 +88,7 @@ exports.getUserPortfolio = async (user_id, battle_id) => {
 		if (currentStock.action === "BUY") {
 			let tempQuantity = stock.quantity;
 			stock.quantity += Number(currentStock.quantity);
-			console.log(stock.symbol, stock.quantity);
+			// console.log(stock.symbol, stock.quantity);
 			let tempAvCost = stock.averageCost;
 
 			stock.averageCost =
@@ -96,7 +97,7 @@ exports.getUserPortfolio = async (user_id, battle_id) => {
 				stock.quantity;
 		} else {
 			stock.quantity -= Number(currentStock.quantity);
-			console.log(stock.symbol, stock.quantity);
+			// console.log(stock.symbol, stock.quantity);
 			stock.gain_loss +=
 				(currentStock.price - stock.averageCost) * currentStock.quantity; // TODO -> CHECK NUMBERS
 		}
@@ -116,3 +117,19 @@ exports.addBattleToUser = async (id, battle) => {
 	return user;
 };
 exports.deleteUser = async (id) => {};
+
+exports.updateProfit = async (user_id, current_profit, battle_id) => {
+	console.log("inside update profit", current_profit);
+	const user = await pool.query(
+		`UPDATE ${table_name} SET current_gains_losses = current_gains_losses || '{"${battle_id}":${current_profit.gain_loss}}' WHERE user_id  = '${user_id}'`
+	);
+	return user;
+};
+
+exports.updateWatchlist = async (user_id, watchlist) => {
+	console.log("inside update watchlist", watchlist);
+	const user = await pool.query(
+		`UPDATE ${table_name} SET watchlist = array_append(watchlist, '${watchlist.stock}') WHERE user_id  = '${user_id}'`
+	);
+	return user;
+};

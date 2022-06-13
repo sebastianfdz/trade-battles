@@ -30,6 +30,8 @@ router.put(
 	"/users/add/battle/:user_id/:battle_id",
 	users_controller.addBattleToUser
 );
+router.patch("/users/profit/:user_id/:battle_id", users_controller.patchProfit);
+router.patch("/users/watchlist/:user_id", users_controller.patchWatchlist);
 router.delete("/users/:id", users_controller.deleteUser);
 router.get(
 	"/users/portfolio/:user_id/:battle_id",

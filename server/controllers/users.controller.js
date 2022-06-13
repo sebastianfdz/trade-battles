@@ -68,3 +68,32 @@ exports.getUserPortfolio = async (req, res) => {
 		res.sendStatus(500);
 	}
 };
+
+exports.patchProfit = async (req, res) => {
+	try {
+		const user = await users_model.updateProfit(
+			req.params["user_id"],
+			req.body,
+			req.params["battle_id"]
+		);
+		res.send({ status: "Update succesful" });
+		res.status(200);
+	} catch (error) {
+		console.error(error);
+		res.sendStatus(500);
+	}
+};
+
+exports.patchWatchlist = async (req, res) => {
+	try {
+		const user = await users_model.updateWatchlist(
+			req.params["user_id"],
+			req.body
+		);
+		res.send({ status: "Update succesful" });
+		res.status(200);
+	} catch (error) {
+		console.error(error);
+		res.sendStatus(500);
+	}
+};
