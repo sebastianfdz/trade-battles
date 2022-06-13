@@ -33,14 +33,15 @@ export const ApiClient = {
   },
 
   getUserById: async (id: string) => {
-    const user = await axios.get<User>(`${baseUrl}/users/${id}`);
+    const user = await axios.get<User[]>(`${baseUrl}/users/${id}`);
     return user;
   },
 
   handleSignIn: async (user: User) => {
     const dbUser = await ApiClient.getUserById(user.id);
 
-    if (!dbUser.data) {
+    console.warn(dbUser.data, 'HANDLE SIGN IN');
+    if (dbUser.data.length === 0) {
       ApiClient.createUser(user);
       console.warn('User succesfully created');
     } else {

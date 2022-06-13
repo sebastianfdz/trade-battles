@@ -46,7 +46,9 @@ export const CreateBattle = () => {
   };
   return (
     <View style={styles.container}>
-      {/* <GoBack /> */}
+      <View style={{marginRight: 'auto'}}>
+        <GoBack />
+      </View>
       <Text style={styles.title}>Battle Name</Text>
       <CustomInput
         value={battleName}
@@ -175,10 +177,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     backgroundColor: theme.light_mode_white,
   },
-  title: {fontSize: 20, fontWeight: '600', marginBottom: 15, marginTop: 10},
+  title: {fontSize: 20, fontWeight: '600', marginBottom: 15, marginTop: 30},
   add_button: {
     backgroundColor: theme.colorPrimary,
     width: 45,

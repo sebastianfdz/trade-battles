@@ -17,20 +17,25 @@ import {BattleCard} from '../components/BattleCard.component';
 import {useUserContext} from '../App.provider';
 import {useNavigation} from '@react-navigation/native';
 import {ProfileScreenNavigationProp} from '../shared/Types';
+import LottieView from 'lottie-react-native';
 
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
 const BATTLE_CONTAINER = width;
+const pointingArrowSrc = require('../../assets/lotties/pointing_arrow.json');
 
 export const MyBattles: React.FC = () => {
   const [myBattles, setMyBattles] = useState<Battle[]>([]);
+  const [noBattles, setNoBattles] = useState(false);
 
   const userContext = useUserContext();
 
   useEffect(() => {
     ApiClient.getMyBattles(
       userContext.user.id ? userContext.user.id : '110660774589450165950',
-    ).then(res => setMyBattles(res.data));
+    )
+      .then(res => setMyBattles(res.data))
+      .catch(error => setNoBattles(true));
   }, []);
 
   const scrollX = React.useRef(new Animated.Value(0)).current;
@@ -59,58 +64,87 @@ export const MyBattles: React.FC = () => {
           +
         </Text>
       </Pressable>
+      {noBattles && (
+        <View
+          style={{
+            transform: [{rotate: '180deg'}],
+            paddingHorizontal: 60,
+            marginLeft: 'auto',
+            width: 70,
+            height: 70,
+          }}>
+          <LottieView source={pointingArrowSrc} autoPlay />
+        </View>
+      )}
       <Text style={styles.header}>My Battles</Text>
-      <Animated.FlatList
-        onScroll={Animated.event(
-          [{nativeEvent: {contentOffset: {x: scrollX}}}],
-          {
-            useNativeDriver: true,
-          },
-        )}
-        horizontal={true}
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{
-          paddingTop: 100,
-          paddingBottom: 100,
-          marginHorizontal: (width - BATTLE_CONTAINER) / 2,
-        }}
-        decelerationRate={0}
-        snapToInterval={BATTLE_CONTAINER}
-        onMomentumScrollEnd={scrollListener}
-        scrollEventThrottle={16}
-        data={myBattles}
-        renderItem={({item, index}) => {
-          const inputRange = [
-            (index - 1) * BATTLE_CONTAINER,
-            index * BATTLE_CONTAINER,
-            (index + 1) * BATTLE_CONTAINER,
-          ];
 
-          const outputRange = [0, -30, 0];
-          const translateY = scrollX.interpolate({
-            inputRange,
-            outputRange,
-          });
-          return (
-            <View
-              key={item.battle_id}
-              style={{width: BATTLE_CONTAINER, height: height * 0.5}}>
-              <Animated.View
-                style={{
-                  marginHorizontal: 15,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  transform: [{translateY}],
-                }}>
-                <BattleCard
-                  key={item.battle_id + item.battle_members}
-                  battle={item}
-                />
-              </Animated.View>
-            </View>
-          );
-        }}
-      />
+      {noBattles ? (
+        <View style={{alignItems: 'center', justifyContent: 'center'}}>
+          <Text
+            style={{
+              color: theme.colorPrimary,
+              fontSize: 30,
+              fontWeight: '300',
+              textAlign: 'center',
+              marginTop: '40%',
+              paddingHorizontal: 30,
+            }}>
+            You currently have no battles, create one with the top right button!
+          </Text>
+        </View>
+      ) : (
+        <Animated.FlatList
+          onScroll={Animated.event(
+            [{nativeEvent: {contentOffset: {x: scrollX}}}],
+            {
+              useNativeDriver: true,
+            },
+          )}
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{
+            paddingTop: 100,
+            paddingBottom: 100,
+            marginHorizontal: (width - BATTLE_CONTAINER) / 2,
+          }}
+          decelerationRate={0}
+          snapToInterval={BATTLE_CONTAINER}
+          onMomentumScrollEnd={scrollListener}
+          scrollEventThrottle={16}
+          data={myBattles}
+          renderItem={({item, index}) => {
+            const inputRange = [
+              (index - 1) * BATTLE_CONTAINER,
+              index * BATTLE_CONTAINER,
+              (index + 1) * BATTLE_CONTAINER,
+            ];
+
+            const outputRange = [0, -30, 0];
+            const translateY = scrollX.interpolate({
+              inputRange,
+              outputRange,
+            });
+            return (
+              <View
+                key={item.battle_id}
+                style={{width: BATTLE_CONTAINER, height: height * 0.5}}>
+                <Animated.View
+                  style={{
+                    marginHorizontal: 15,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    transform: [{translateY}],
+                  }}>
+                  <BattleCard
+                    key={item.battle_id + item.battle_members}
+                    battle={item}
+                  />
+                </Animated.View>
+              </View>
+            );
+          }}
+        />
+      )}
       <View style={{marginTop: -100, marginBottom: 35, flexDirection: 'row'}}>
         {myBattles.map((dot, index) => {
           const backgroundColor =
