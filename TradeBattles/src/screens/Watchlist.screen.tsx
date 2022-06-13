@@ -9,10 +9,11 @@ export const WatchList = () => {
       <Text
         style={{
           fontSize: 30,
-          fontWeight: '600',
+          fontWeight: '700',
           marginTop: 100,
           marginBottom: 30,
           color: theme.colorPrimary,
+          fontFamily: theme.fontFamilyBold,
         }}>
         Watchlist
       </Text>

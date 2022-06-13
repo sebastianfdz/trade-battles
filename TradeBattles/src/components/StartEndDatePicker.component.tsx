@@ -73,5 +73,6 @@ const styles = StyleSheet.create({
   button_text: {
     fontSize: 15,
     fontWeight: '700',
+    fontFamily: theme.fontFamilyRegular,
   },
 });

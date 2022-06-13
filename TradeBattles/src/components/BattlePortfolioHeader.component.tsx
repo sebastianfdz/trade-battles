@@ -29,7 +29,11 @@ export const BattlePortfolioHeader: React.FC<{
             </Text>
             <View
               style={[styles.return_container, {backgroundColor: returnColor}]}>
-              <Text style={{color: 'white', fontWeight: '600'}}>
+              <Text
+                style={{
+                  color: 'white',
+                  fontWeight: '700',
+                }}>
                 {((currentGainLoss / 100000) * 100).toFixed(2)}%
               </Text>
             </View>
@@ -45,7 +49,12 @@ export const BattlePortfolioHeader: React.FC<{
             alignItems: 'center',
             justifyContent: 'center',
           }}>
-          <Text style={{fontWeight: '300', marginRight: 10}}>
+          <Text
+            style={{
+              fontWeight: '400',
+              marginRight: 10,
+              fontFamily: theme.fontFamilyLight,
+            }}>
             Capital available:
           </Text>
           <Text style={styles.capital_available}>$35,213.99</Text>
@@ -75,6 +84,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 30,
+    fontFamily: theme.fontFamilyLight,
     marginBottom: 10,
     fontWeight: '200',
     color: theme.colorPrimary,
@@ -92,7 +102,7 @@ const styles = StyleSheet.create({
   },
   capital_available: {
     fontSize: 20,
-    fontWeight: '600',
+    fontWeight: '700',
     color: theme.colorPrimary,
   },
   total_value_container: {

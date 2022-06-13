@@ -12,12 +12,9 @@ const Stack = createNativeStackNavigator<LoginStackParamList>();
 
 export const Navigation: React.FC = () => {
   const userContext = useUserContext();
-  // console.warn(userContext.user.id, 'INITIAL USER FROM NAVIGATION');
-
   const navigation = useNavigation<LoginScreenNavigationProp>();
 
   useEffect(() => {
-    // hangle login logout usercontext change
     navigation.navigate('Home');
   }, [userContext]);
 

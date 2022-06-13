@@ -69,7 +69,12 @@ export const StockSearch: React.FC<{
                 setBadSearch(true);
               });
           }}>
-          <Text style={{fontWeight: 'bold', color: theme.light_mode_white}}>
+          <Text
+            style={{
+              fontWeight: '800',
+              color: theme.light_mode_white,
+              fontFamily: theme.fontFamilyBold,
+            }}>
             Search
           </Text>
         </Pressable>
@@ -139,9 +144,11 @@ const styles = StyleSheet.create({
     height: 50,
     alignSelf: 'center',
     textAlign: 'center',
-    fontSize: 17,
+    fontSize: 15,
     backgroundColor: theme.stockCardBackground,
     color: theme.colorPrimary,
+    fontWeight: '400',
+    fontFamily: theme.fontFamilyLight,
   },
   search_button: {
     backgroundColor: theme.colorPrimary,
@@ -167,9 +174,10 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   stock_company_name: {
-    fontSize: 15,
+    fontSize: 12,
     marginLeft: 5,
     marginBottom: 5,
     color: theme.colorPrimary,
+    fontFamily: theme.fontFamilyRegular,
   },
 });

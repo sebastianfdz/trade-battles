@@ -64,7 +64,13 @@ export const StockDetails: React.FC = () => {
           <Text style={styles.trade_button_text}>Trade</Text>
         </Pressable>
 
-        <Text style={{fontSize: 12, textAlign: 'center', marginTop: 5}}>
+        <Text
+          style={{
+            fontSize: 12,
+            textAlign: 'center',
+            marginTop: 5,
+            fontFamily: theme.fontFamilyRegular,
+          }}>
           Your average cost per share: ${average_cost.toFixed(2)}
         </Text>
 
@@ -111,9 +117,10 @@ const styles = StyleSheet.create({
   },
   trade_button_text: {
     color: theme.light_mode_white,
-    fontSize: 20,
-    fontWeight: '800',
+    fontSize: 19,
+    fontWeight: '900',
     textAlign: 'center',
+    fontFamily: theme.fontFamilyBold,
   },
   watchlist_star: {
     marginLeft: 'auto',

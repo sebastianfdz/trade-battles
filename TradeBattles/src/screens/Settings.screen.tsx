@@ -22,32 +22,32 @@ export const Settings = () => {
   const circleCircumference = 2 * Math.PI * radius;
   const circleRef = useRef<any>();
   const animatedValue = useRef(new Animated.Value(0)).current;
-  const animation = (toValue: number) => {
-    return Animated.timing(animatedValue, {
-      toValue,
-      duration,
-      delay,
-      useNativeDriver: true,
-    }).start(() => {
-      animation(toValue === 0 ? percentage : 0);
-    });
-  };
+  // const animation = (toValue: number) => {
+  //   return Animated.timing(animatedValue, {
+  //     toValue,
+  //     duration,
+  //     delay,
+  //     useNativeDriver: true,
+  //   }).start(() => {
+  //     animation(toValue === 0 ? percentage : 0);
+  //   });
+  // };
 
-  useEffect(() => {
-    animation(percentage);
+  // useEffect(() => {
+  //   animation(percentage);
 
-    animatedValue.addListener(v => {
-      if (circleRef?.current) {
-        const maxPercentage = (100 * v.value) / max;
-        const strokeDashOffset =
-          circleCircumference - (circleCircumference * maxPercentage) / 100;
+  //   animatedValue.addListener(v => {
+  //     if (circleRef?.current) {
+  //       const maxPercentage = (100 * v.value) / max;
+  //       const strokeDashOffset =
+  //         circleCircumference - (circleCircumference * maxPercentage) / 100;
 
-        circleRef.current.setNativeProps({
-          strokeDashOffset,
-        });
-      }
-    });
-  });
+  //       circleRef.current.setNativeProps({
+  //         strokeDashOffset,
+  //       });
+  //     }
+  //   });
+  // });
   return (
     <View style={styles.container}>
       <View style={{marginRight: 'auto'}}>
@@ -57,32 +57,22 @@ export const Settings = () => {
         style={{
           fontSize: 40,
           fontWeight: '600',
-          // marginRight: 'auto',
           paddingHorizontal: 20,
+          fontFamily: theme.fontFamilyBold,
         }}>
         My Account
       </Text>
-      <View
-        style={{
-          backgroundColor: theme.greyPrimary,
-          padding: 20,
-          borderRadius: 15,
-          justifyContent: 'center',
-          alignItems: 'center',
-          marginTop: 50,
-          shadowColor: 'grey',
-          shadowOffset: {
-            width: 0,
-            height: 1,
-          },
-          shadowRadius: 1,
-          shadowOpacity: 0.3,
-        }}>
+      <View style={styles.user_info_header}>
         <Image
           style={{width: 50, height: 50, borderRadius: 50, marginBottom: 20}}
           source={{uri: userContext.user.photo ? userContext.user.photo : ''}}
         />
-        <Text style={{fontSize: 25, fontWeight: '300'}}>
+        <Text
+          style={{
+            fontSize: 20,
+            fontWeight: '400',
+            fontFamily: theme.fontFamilyRegular,
+          }}>
           {userContext.user.name}
         </Text>
       </View>
@@ -128,7 +118,12 @@ export const Settings = () => {
           marginTop: 'auto',
           marginBottom: 100,
         }}>
-        <Text style={{color: theme.light_mode_white, fontWeight: '600'}}>
+        <Text
+          style={{
+            color: theme.light_mode_white,
+            fontWeight: '800',
+            fontFamily: theme.fontFamilyBold,
+          }}>
           Logout
         </Text>
       </Pressable>
@@ -142,5 +137,20 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     backgroundColor: theme.light_mode_white,
+  },
+  user_info_header: {
+    backgroundColor: theme.greyPrimary,
+    padding: 20,
+    borderRadius: 15,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 50,
+    shadowColor: 'grey',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowRadius: 1,
+    shadowOpacity: 0.3,
   },
 });

@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useContext, createContext} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, FlatList} from 'react-native';
 import {PortfolioStockCard} from '../components/PortfolioStockCard.component';
 import {PortfolioStock} from '../shared/Types';
@@ -7,7 +7,7 @@ import {theme} from '../shared/themes';
 import {BattlePortfolioHeader} from '../components/BattlePortfolioHeader.component';
 import {GoBack} from '../components/GoBack.component';
 import type {RootStackParamList} from '../shared/Types';
-import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
+import {RouteProp, useRoute} from '@react-navigation/native';
 import {PortfolioInitializer} from '../shared/EmptyInitializers';
 import {StockSearch} from '../components/StockSearch.component';
 
@@ -16,7 +16,6 @@ export const BattlePortfolio: React.FC = () => {
     useState<PortfolioStock[]>(PortfolioInitializer);
 
   const route = useRoute<RouteProp<RootStackParamList, 'BattlePortfolio'>>();
-  const navigation = useNavigation();
 
   const {battle, user_id} = route.params;
   const battleHasStarted = Number(battle.start_date_timestamp) < Date.now();
@@ -25,27 +24,27 @@ export const BattlePortfolio: React.FC = () => {
   const [nonLockedGainLoss, setNonLockedGainLoss] = useState(0);
   let profit = 0;
 
-  useEffect(() => {
-    const setPortfolio = async () => {
-      await ApiClient.getUserPortfolio(user_id, battle.battle_id).then(res => {
-        const portfolio: PortfolioStock[] = [];
-        res.data.forEach(el => {
-          ApiClient.getQuote(el.symbol).then(res => {
-            el.price = res.data.close ? res.data.close : res.data.latestPrice;
-            el.change = ((el.price - el.averageCost) / el.averageCost) * 100;
-            el.quote = res.data;
-            profit += (el.price - el.averageCost) * el.quantity;
-            setNonLockedGainLoss(
-              prevstate =>
-                (prevstate += (el.price - el.averageCost) * el.quantity),
-            );
-            el.quantity > 0 && portfolio.push(el);
-            setCurrentUserPortfolio(portfolio);
-          });
+  const setPortfolio = async () => {
+    await ApiClient.getUserPortfolio(user_id, battle.battle_id).then(res => {
+      const portfolio: PortfolioStock[] = [];
+      res.data.forEach(el => {
+        ApiClient.getQuote(el.symbol).then(res => {
+          el.price = res.data.close ? res.data.close : res.data.latestPrice;
+          el.change = ((el.price - el.averageCost) / el.averageCost) * 100;
+          el.quote = res.data;
+          profit += (el.price - el.averageCost) * el.quantity;
+          setNonLockedGainLoss(
+            prevstate =>
+              (prevstate += (el.price - el.averageCost) * el.quantity),
+          );
+          el.quantity > 0 && portfolio.push(el);
+          setCurrentUserPortfolio(portfolio);
         });
       });
-    };
+    });
+  };
 
+  useEffect(() => {
     setPortfolio();
   }, []);
 
@@ -60,9 +59,13 @@ export const BattlePortfolio: React.FC = () => {
       <GoBack />
       <View style={{alignSelf: 'center'}}>
         {battleHasStarted ? (
-          <Text>Battle ends on {endDate.split('GMT')[0]}</Text>
+          <Text style={{fontFamily: theme.fontFamilyRegular, fontSize: 12}}>
+            Battle ends on {endDate.split('GMT')[0]}
+          </Text>
         ) : (
-          <Text>Battle starts on {startDate.split('GMT')[0]}</Text>
+          <Text style={{fontFamily: theme.fontFamilyRegular, fontSize: 12}}>
+            Battle starts on {startDate.split('GMT')[0]}
+          </Text>
         )}
       </View>
 

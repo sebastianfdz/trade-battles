@@ -146,6 +146,7 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     marginLeft: 12,
     color: theme.colorPrimary,
+    fontFamily: theme.fontFamilyBold,
   },
   logo: {
     width: 40,
@@ -168,7 +169,8 @@ const styles = StyleSheet.create({
   },
   change_text: {
     fontSize: 15,
-    marginBottom: 5,
+    marginBottom: 6,
+    fontFamily: theme.fontFamilyRegular,
   },
   logo_ticker_header: {
     flexDirection: 'row',

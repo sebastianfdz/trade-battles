@@ -40,5 +40,8 @@ const styles = StyleSheet.create({
     borderRadius: 7,
     marginVertical: 7,
   },
-  input: {},
+  input: {
+    fontFamily: theme.fontFamilyRegular,
+    fontSize: 12,
+  },
 });

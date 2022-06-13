@@ -31,7 +31,12 @@ export const CustomModal: React.FC<{
         }}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <Text style={{fontSize: 20, fontWeight: '800'}}>
+            <Text
+              style={{
+                fontSize: 20,
+                fontWeight: '800',
+                fontFamily: theme.fontFamilyBold,
+              }}>
               {modalIsAPositiveResponse ? 'Succes' : 'Unsuccesful'}
             </Text>
             <View style={{width: 160, height: 160}}>
@@ -103,12 +108,13 @@ const styles = StyleSheet.create({
   },
   textStyle: {
     color: 'white',
-    fontWeight: 'bold',
     textAlign: 'center',
+    fontFamily: theme.fontFamilyBold,
   },
   modalText: {
     marginBottom: 15,
     textAlign: 'center',
     fontSize: 15,
+    fontFamily: theme.fontFamilyRegular,
   },
 });

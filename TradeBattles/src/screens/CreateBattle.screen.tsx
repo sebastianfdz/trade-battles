@@ -20,20 +20,36 @@ export const CreateBattle = () => {
   const [errorMessage, setErrorMessage] = useState(false);
   const [successfulCreate, setSuccessfulCreate] = useState(false);
 
+  const getMembers = async () => {
+    ApiClient.getAllUsers().then(res => {
+      setMembers(res.data);
+    });
+  };
+
   useEffect(() => {
     setStartDate(new Date(Date.now()));
     setEndDate(new Date(Date.now()));
   }, []);
 
   useEffect(() => {
-    const getMembers = async () => {
-      ApiClient.getAllUsers().then(res => {
-        setMembers(res.data);
-      });
-    };
-
     getMembers();
   }, []);
+
+  const handleCreate = () => {
+    formIsValid()
+      ? (ApiClient.createBattle(
+          addedMembers.map(el => el.user_id),
+          startDate.getTime(),
+          endDate.getTime(),
+          battleName,
+        ),
+        setSuccessfulCreate(true),
+        setAddedMembers([]),
+        setBattleName(''),
+        setEndDate(new Date()),
+        setStartDate(new Date()))
+      : setErrorMessage(true);
+  };
 
   const formIsValid = () => {
     return battleName.length > 0 &&
@@ -68,30 +84,10 @@ export const CreateBattle = () => {
           el.last_name.toLowerCase().includes(search.toLowerCase()) ||
           el.email.toLowerCase().includes(search.toLowerCase())) &&
         search.length ? (
-          <View
-            key={el.email}
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              width: '70%',
-              marginVertical: 2,
-            }}>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'flex-start',
-              }}>
-              <Image
-                style={{
-                  width: 30,
-                  height: 30,
-                  borderRadius: 50,
-                  marginRight: 10,
-                }}
-                source={{uri: el.photo}}
-              />
-              <Text>
+          <View key={el.email} style={styles.search_item_with_button_container}>
+            <View style={styles.search_item_container}>
+              <Image style={styles.search_photo} source={{uri: el.photo}} />
+              <Text style={styles.search_user_name}>
                 {el.first_name} {el.last_name}
               </Text>
             </View>
@@ -101,25 +97,18 @@ export const CreateBattle = () => {
                 setSearch('');
               }}
               style={styles.add_button}>
-              <Text
-                style={{
-                  color: theme.light_mode_white,
-                  fontSize: 12,
-                  fontWeight: '600',
-                }}>
-                ADD
-              </Text>
+              <Text style={styles.add_text}>ADD</Text>
             </Pressable>
           </View>
         ) : undefined,
       )}
 
-      <Text style={styles.title}>Select start and end dates</Text>
       <View style={{flexDirection: 'row'}}>
         {addedMembers.map(el => (
           <BattleMemberIcon key={el.email} photo={el.photo} />
         ))}
       </View>
+      <Text style={styles.title}>Select start and end dates</Text>
       <StartEndDatePicker
         setStartDate={setStartDate}
         setEndDate={setEndDate}
@@ -134,34 +123,8 @@ export const CreateBattle = () => {
         <Text>Battle will end on: {endDate.toDateString()}</Text>
       )}
 
-      <Pressable
-        onPress={() => {
-          formIsValid()
-            ? (ApiClient.createBattle(
-                addedMembers.map(el => el.user_id),
-                startDate.getTime(),
-                endDate.getTime(),
-                battleName,
-              ),
-              setSuccessfulCreate(true),
-              setAddedMembers([]),
-              setBattleName(''),
-              setEndDate(new Date()),
-              setStartDate(new Date()))
-            : setErrorMessage(true);
-        }}
-        style={{
-          backgroundColor: theme.colorPrimary,
-          width: '80%',
-          height: 50,
-          marginTop: 50,
-          justifyContent: 'center',
-          alignItems: 'center',
-          borderRadius: 12,
-        }}>
-        <Text style={{color: theme.light_mode_white, fontWeight: '700'}}>
-          CREATE
-        </Text>
+      <Pressable onPress={() => handleCreate()} style={styles.create_button}>
+        <Text style={styles.create_text}>CREATE</Text>
       </Pressable>
       <CustomModal
         viewable={errorMessage}
@@ -184,7 +147,13 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     backgroundColor: theme.light_mode_white,
   },
-  title: {fontSize: 20, fontWeight: '600', marginBottom: 15, marginTop: 30},
+  title: {
+    fontSize: 20,
+    fontWeight: '600',
+    marginBottom: 15,
+    marginTop: 15,
+    fontFamily: theme.fontFamilyBold,
+  },
   add_button: {
     backgroundColor: theme.colorPrimary,
     width: 45,
@@ -192,5 +161,48 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  add_text: {
+    color: theme.light_mode_white,
+    fontSize: 11,
+    fontWeight: '700',
+    fontFamily: theme.fontFamilyBold,
+  },
+  create_button: {
+    backgroundColor: theme.colorPrimary,
+    width: '80%',
+    height: 50,
+    marginTop: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 12,
+  },
+  create_text: {
+    color: theme.light_mode_white,
+    fontWeight: '900',
+    fontFamily: theme.fontFamilyBold,
+  },
+  search_photo: {
+    width: 30,
+    height: 30,
+    borderRadius: 50,
+    marginRight: 10,
+  },
+  search_item_container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+  },
+  search_user_name: {
+    color: theme.colorPrimary,
+    fontSize: 12,
+    fontFamily: theme.fontFamilyRegular,
+  },
+  search_item_with_button_container: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '70%',
+    marginVertical: 2,
+    backgroundColor: 'red',
   },
 });

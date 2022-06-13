@@ -139,7 +139,8 @@ export const StockDetailsBuySell: React.FC<BuySellProps> = props => {
               )}
             </View>
           </View>
-          <Text style={{alignSelf: 'center'}}>
+          <Text
+            style={{alignSelf: 'center', fontFamily: theme.fontFamilyRegular}}>
             {quantityAvailable} available to sell
           </Text>
           <View style={styles.buysell_button_container}>
@@ -206,12 +207,13 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 22,
     fontWeight: '600',
+    fontFamily: theme.fontFamilyBold,
   },
 
   buy_sell_modal_container: {
     flexDirection: 'column',
     marginTop: 250,
-    backgroundColor: 'white',
+    backgroundColor: theme.light_mode_white,
     alignSelf: 'center',
     borderRadius: 20,
     height: 300,

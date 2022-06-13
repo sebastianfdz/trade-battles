@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {FlatList, Text} from 'react-native';
+import {FlatList} from 'react-native';
 import {Stock} from '../shared/Types';
 import {StockInitializer} from '../shared/EmptyInitializers';
 import {useUserContext} from '../App.provider';

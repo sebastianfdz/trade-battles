@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  Pressable,
-  Dimensions,
-} from 'react-native';
+import {View, Text, StyleSheet, Image, Pressable} from 'react-native';
 import {theme} from '../shared/themes';
 import {PortfolioStock} from '../shared/Types';
 import {useNavigation} from '@react-navigation/native';
@@ -30,8 +23,6 @@ export const PortfolioStockCard: React.FC<{
   setCurrentUserPortfolio,
 }) => {
   const navigation = useNavigation<ProfileScreenNavigationProp>();
-
-  const width = Dimensions.get('window').width;
 
   return (
     <Pressable
@@ -100,6 +91,7 @@ const styles = StyleSheet.create({
 
   text: {
     color: theme.colorPrimary,
+    fontFamily: theme.fontFamilyRegular,
   },
   price: {
     color: theme.colorPrimary,
@@ -115,5 +107,7 @@ const styles = StyleSheet.create({
   owned: {
     fontSize: 12,
     color: theme.colorPrimary,
+    fontWeight: '400',
+    fontFamily: theme.fontFamilyLight,
   },
 });

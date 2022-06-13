@@ -12,34 +12,20 @@ export const WatchlistStockCard: React.FC<{stock: Stock}> = ({stock}) => {
     stock.change > 0 ? theme.primary_green : theme.primary_red;
   return (
     <View style={styles.container}>
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          borderBottomColor: theme.colorPrimary,
-          borderBottomWidth: 0.3,
-          padding: 10,
-        }}>
+      <View style={styles.stock_card_container}>
         <Image
-          style={{
-            width: 30,
-            height: 30,
-            resizeMode: 'contain',
-            borderRadius: 50,
-          }}
+          style={styles.logo}
           source={{
             uri: `https://storage.googleapis.com/iexcloud-hl37opg/api/logos/${stock.symbol}.png`,
           }}
         />
-        <Text style={{color: theme.colorPrimary}}>{stock.symbol}</Text>
+        <Text style={styles.ticker}>{stock.symbol}</Text>
         <View
-          style={{
-            padding: 4,
-            backgroundColor: return_color_day_change,
-            borderRadius: 5,
-          }}>
-          <Text style={{color: 'white', fontWeight: '600', fontSize: 12}}>
+          style={[
+            styles.return_container,
+            {backgroundColor: return_color_day_change},
+          ]}>
+          <Text style={{color: 'white', fontWeight: '700', fontSize: 12}}>
             {(stock.changePercent * 100).toFixed(2)}%
           </Text>
         </View>
@@ -60,9 +46,30 @@ export const WatchlistStockCard: React.FC<{stock: Stock}> = ({stock}) => {
 
 const styles = StyleSheet.create({
   container: {
-    // backgroundColor: 'red',
-    // margin: 5,
-    width: '80%',
+    width: '85%',
     alignSelf: 'center',
+  },
+  stock_card_container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderBottomColor: theme.colorPrimary,
+    borderBottomWidth: 0.3,
+    padding: 10,
+  },
+  logo: {
+    width: 30,
+    height: 30,
+    resizeMode: 'contain',
+    borderRadius: 50,
+  },
+  ticker: {
+    color: theme.colorPrimary,
+    fontWeight: '400',
+    fontFamily: theme.fontFamilyLight,
+  },
+  return_container: {
+    padding: 4,
+    borderRadius: 5,
   },
 });
