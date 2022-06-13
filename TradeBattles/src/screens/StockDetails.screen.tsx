@@ -62,14 +62,7 @@ export const StockDetails: React.FC = () => {
           setIsInWatchlist(!isInWatchlist);
         }}>
         <Image
-          style={{
-            width: 35,
-            height: 35,
-            marginLeft: 'auto',
-            marginRight: 35,
-            marginTop: -50,
-            marginBottom: 40,
-          }}
+          style={styles.watchlist_star}
           source={isInWatchlist ? yellowStarSrc : greyStarSrc}
         />
       </Pressable>
@@ -137,5 +130,13 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: '800',
     textAlign: 'center',
+  },
+  watchlist_star: {
+    width: 35,
+    height: 35,
+    marginLeft: 'auto',
+    marginRight: 35,
+    marginTop: -50,
+    marginBottom: 40,
   },
 });
