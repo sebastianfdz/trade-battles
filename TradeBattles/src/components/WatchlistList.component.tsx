@@ -33,6 +33,7 @@ export const WatchlistList = () => {
 
   return (
     <FlatList
+      style={{width: '100%'}}
       showsVerticalScrollIndicator={false}
       data={watchlist}
       renderItem={({item}: {item: Stock}) => (

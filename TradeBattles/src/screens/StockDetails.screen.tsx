@@ -9,11 +9,9 @@ import {StockDetailsInfo} from '../components/StockDetailsInfo.component';
 import {StockDetailsBuySell} from '../components/StockDetailsBuySell.component';
 import {GoBack} from '../components/GoBack.component';
 import {theme} from '../shared/themes';
-const greyStarSrc = require('../../assets/icons/star_grey_icon.png');
-const yellowStarSrc = require('../../assets/icons/star_yellow_icon.png');
+import {WishlistStarIcon} from '../components/WishlistStarIcon.component';
 
 export const StockDetails: React.FC = () => {
-  const [isInWatchlist, setIsInWatchlist] = useState(false);
   const route = useRoute<RouteProp<RootStackParamList, 'BuySellStock'>>();
   const {
     stock,
@@ -35,13 +33,6 @@ export const StockDetails: React.FC = () => {
   const [buySellViewable, setBuySellViewable] = useState(false);
 
   useEffect(() => {
-    ApiClient.getUserById(user_id).then(
-      res =>
-        res.data[0].watchlist.includes(stock.symbol) && setIsInWatchlist(true),
-    );
-  }, []);
-
-  useEffect(() => {
     // const fetchPrice = async () => {
     //   await ApiClient.getQuote(stock.symbol).then(res => {
     //     setPrice(res.data.iexRealtimePrice);
@@ -56,16 +47,9 @@ export const StockDetails: React.FC = () => {
   return (
     <View style={{backgroundColor: theme.light_mode_white}}>
       <GoBack />
-      <Pressable
-        onPress={() => {
-          ApiClient.updateUserWatchlist(user_id, stock.symbol);
-          setIsInWatchlist(!isInWatchlist);
-        }}>
-        <Image
-          style={styles.watchlist_star}
-          source={isInWatchlist ? yellowStarSrc : greyStarSrc}
-        />
-      </Pressable>
+      <View style={styles.watchlist_star}>
+        <WishlistStarIcon user_id={user_id} stock={stock} />
+      </View>
       <View style={styles.container}>
         <StockDetailsInfo
           stock={stock}
@@ -132,8 +116,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   watchlist_star: {
-    width: 35,
-    height: 35,
     marginLeft: 'auto',
     marginRight: 35,
     marginTop: -50,
