@@ -107,6 +107,8 @@ exports.getUserPortfolio = async (user_id, battle_id) => {
 		}
 	}
 
+	userPortfolio.sort((a, b) => a.symbol - b.symbol);
+	console.log(userPortfolio);
 	return userPortfolio;
 };
 

@@ -29,7 +29,7 @@ exports.getHistoricalData = async (
 	};
 	const startDate = convertDate(start_date);
 	const endDate = convertDate(end_date);
-	const url = `${PoligonApiBaseUrl}/${ticker.toUpperCase()}/range/${periodicity_unit}/${periodicity}/${startDate}/${endDate}?adjusted=true&sort=asc`;
+	const url = `${PoligonApiBaseUrl}/${ticker.toUpperCase()}/range/${periodicity_unit}/${periodicity}/${start_date}/${end_date}?adjusted=true&sort=asc`;
 	console.log(url);
 	const data = await fetch(url, {
 		method: "GET",
