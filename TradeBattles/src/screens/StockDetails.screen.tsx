@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
   watchlist_star: {
     marginLeft: 'auto',
     marginRight: 35,
-    marginTop: -50,
-    marginBottom: 40,
+    marginTop: -40,
+    marginBottom: 25,
   },
 });

@@ -1,5 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, Image, StyleSheet, Dimensions} from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  Dimensions,
+  Pressable,
+} from 'react-native';
 import {GraphPoint, Stock} from '../shared/Types';
 import {theme} from '../shared/themes';
 import LottieView from 'lottie-react-native';
@@ -8,6 +15,7 @@ const {
   ChartPath,
   ChartPathProvider,
   ChartYLabel,
+  ChartXLabel,
 } = require('@rainbow-me/animated-charts');
 import {ApiClient} from '../services/ApiClient.service';
 const spinnerSrc = require('../../assets/lotties/spinner.json');
@@ -29,19 +37,38 @@ export const StockDetailsInfo: React.FC<{
     {vw: -1, t: 0},
   ]);
 
+  function subtractDays(numOfDays: number, date = new Date()) {
+    date.setHours(date.getHours() - numOfDays * 24);
+    return date;
+  }
+  function subtractMonths(numOfMonths: number, date = new Date()) {
+    date.setMonth(date.getMonth() - numOfMonths);
+    return date;
+  }
+  function subtractYears(numOfYears: number, date = new Date()) {
+    date.setFullYear(date.getFullYear() - numOfYears);
+    return date;
+  }
+  const getHistoricals = async (timespan: number) => {
+    const now = subtractDays(1);
+    const oneYear = subtractYears(timespan);
+    const oneMonth = subtractMonths(1);
+    oneMonth.setHours(oneMonth.getHours() - 24);
+    const oneDay = now.getHours() - 24;
+    // const oneYearInMiliseconds = 31556952000;
+    // const oneMonthInMiliseconds = 2629800000;
+    // const oneDayInMiliseconds = 86400000;
+    await ApiClient.getHistoricalData(
+      stock.symbol,
+      'day',
+      timespan,
+      oneYear.getTime(),
+      now.getTime(),
+    ).then(res => setGraphPoints(res.data.results));
+  };
+
   useEffect(() => {
-    const getHistoricals = async () => {
-      const now = Date.now();
-      const oneYearInMiliseconds = 31556952000;
-      await ApiClient.getHistoricalData(
-        stock.symbol,
-        'day',
-        1,
-        now - oneYearInMiliseconds,
-        now,
-      ).then(res => setGraphPoints(res.data.results));
-    };
-    getHistoricals();
+    getHistoricals(1);
   }, []);
 
   const formatCurrency = (value: any) => {
@@ -51,6 +78,7 @@ export const StockDetailsInfo: React.FC<{
     }
     return `$${parseFloat(value).toFixed(2)}`;
   };
+
   const return_color_day_change =
     dayChange > 0 ? theme.primary_green : theme.primary_red;
   const return_color_ytd_change =
@@ -65,8 +93,12 @@ export const StockDetailsInfo: React.FC<{
       }}>
       <ChartPathProvider
         data={{
-          points: graphPoints.map(point => ({x: point.t, y: point.vw})),
+          points: graphPoints.map((point, index) => ({
+            x: point.t,
+            y: point.vw,
+          })),
           smoothingStrategy: 'bezier',
+          smoothingFactor: 0,
         }}>
         <View>
           <View style={styles.logo_ticker_header}>
@@ -134,6 +166,24 @@ export const StockDetailsInfo: React.FC<{
             }}
           />
         </View>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+            marginTop: 10,
+            marginBottom: -20,
+          }}>
+          <Pressable
+            style={styles.date_button}
+            onPress={() => getHistoricals(1)}>
+            <Text style={styles.date_text}>1Y</Text>
+          </Pressable>
+          <Pressable
+            style={styles.date_button}
+            onPress={() => getHistoricals(2)}>
+            <Text style={styles.date_text}>2Y</Text>
+          </Pressable>
+        </View>
       </ChartPathProvider>
     </View>
   );
@@ -176,11 +226,26 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: 15,
   },
   changes_row: {
     flexDirection: 'row',
     alignSelf: 'center',
   },
-  graph_container: {},
+  graph_container: {
+    // paddingHorizontal: 20,
+    // paddingRight: 20,
+    // marginLeft: -50,
+  },
+  date_button: {
+    paddingHorizontal: 7,
+    paddingVertical: 5,
+    backgroundColor: theme.greyPrimary,
+    margin: 5,
+    borderRadius: 5,
+  },
+  date_text: {
+    color: theme.colorPrimary,
+    fontFamily: theme.fontFamilyBold,
+  },
 });

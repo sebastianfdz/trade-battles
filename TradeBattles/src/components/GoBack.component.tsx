@@ -13,7 +13,11 @@ export const GoBack: React.FC = () => {
   return (
     <Pressable
       onPress={() => navigation.goBack()}
-      style={{marginTop: height * 0.06, padding: width * 0.05}}>
+      style={{
+        marginTop: height * 0.06,
+        paddingHorizontal: width * 0.05,
+        paddingVertical: 10,
+      }}>
       <Svg width={30} height={30} viewBox="0 0 200.223 373.254">
         <Path
           id="Path_12"
