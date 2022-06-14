@@ -10,18 +10,22 @@ export const WishlistStarIcon: React.FC<{
   user_id: string;
   stock: Stock;
   size?: number;
-}> = ({user_id, stock, size}) => {
-  let useeffectpassed = false;
+  setViewable?: React.Dispatch<React.SetStateAction<boolean>>;
+}> = ({user_id, stock, size, setViewable}) => {
   const [isInWatchlist, setIsInWatchlist] = useState(false);
   const [watchistModal, setWatchlistModal] = useState(false);
 
+  const getUser = async (user_id: string, symbol: string) => {
+    const user = await ApiClient.getUserById(user_id);
+    user.data[0].watchlist.includes(symbol)
+      ? setIsInWatchlist(true)
+      : setIsInWatchlist(false);
+  };
+
   useEffect(() => {
-    useeffectpassed = true;
-    ApiClient.getUserById(user_id).then(
-      res =>
-        res.data[0].watchlist.includes(stock.symbol) && setIsInWatchlist(true),
-    );
+    getUser(user_id, stock.symbol);
   }, []);
+
   return (
     <View>
       <Pressable
@@ -29,6 +33,7 @@ export const WishlistStarIcon: React.FC<{
           ApiClient.updateUserWatchlist(user_id, stock.symbol);
           setWatchlistModal(true);
           setIsInWatchlist(!isInWatchlist);
+          setViewable && setViewable(false);
         }}>
         <Image
           style={{width: size || 35, height: size || 35}}

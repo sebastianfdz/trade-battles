@@ -133,7 +133,7 @@ export const StockDetailsInfo: React.FC<{
           </View>
         </View>
 
-        <View style={styles.graph_container}>
+        <View>
           {graphPoints[0].vw > -1 ? (
             <ChartPath
               height={SCREEN_WIDTH / 2}
@@ -262,15 +262,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignSelf: 'center',
   },
-  graph_container: {
-    // paddingHorizontal: 20,
-    // paddingRight: 20,
-    // marginLeft: -50,
-  },
+
   date_button: {
     paddingHorizontal: 7,
     paddingVertical: 5,
-    // backgroundColor: theme.greyPrimary,
     margin: 5,
     borderRadius: 5,
   },

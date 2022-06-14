@@ -1,5 +1,5 @@
-import React from 'react';
-import {View, Image, Text, StyleSheet} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, Image, Text, StyleSheet, Pressable} from 'react-native';
 import {useUserContext} from '../App.provider';
 import {formatter} from '../shared/Methods';
 import {theme} from '../shared/themes';
@@ -7,11 +7,20 @@ import {Stock} from '../shared/Types';
 import {WishlistStarIcon} from './WishlistStarIcon.component';
 
 export const WatchlistStockCard: React.FC<{stock: Stock}> = ({stock}) => {
+  const [viewable, setViewable] = useState(true);
+  const [style, setStyle] = useState([styles.container, {}]);
   const userContext = useUserContext();
   const return_color_day_change =
     stock.change > 0 ? theme.primary_green : theme.primary_red;
+
+  useEffect(() => {
+    if (viewable === false) {
+      setStyle([styles.container, {display: 'none'}]);
+    }
+  }, [viewable]);
+
   return (
-    <View style={styles.container}>
+    <View style={style}>
       <View style={styles.stock_card_container}>
         <Image
           style={styles.logo}
@@ -38,6 +47,7 @@ export const WatchlistStockCard: React.FC<{stock: Stock}> = ({stock}) => {
           user_id={userContext.user.id}
           size={20}
           stock={stock}
+          setViewable={setViewable}
         />
       </View>
     </View>
