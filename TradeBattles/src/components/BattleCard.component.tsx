@@ -15,8 +15,8 @@ export const BattleCard: React.FC<{
   const navigation = useNavigation<ProfileScreenNavigationProp>();
   battle.battle_members = battle.battle_members.sort(
     (a, b) =>
-      a.current_gains_losses[battle.battle_id] -
-      b.current_gains_losses[battle.battle_id],
+      b.current_gains_losses[battle.battle_id] -
+      a.current_gains_losses[battle.battle_id],
   );
 
   return (

@@ -13,7 +13,7 @@ export const BattlePortfolioHeader: React.FC<{
   const [wait, setWait] = useState(false);
 
   useEffect(() => {
-    setTimeout(() => setWait(true), 1000);
+    setTimeout(() => setWait(true), 1500);
   }, []);
 
   const returnColor =
@@ -57,7 +57,10 @@ export const BattlePortfolioHeader: React.FC<{
             }}>
             Capital available:
           </Text>
-          <Text style={styles.capital_available}>$35,213.99</Text>
+          <Text style={styles.capital_available}>
+            {/* {formatter.format(Math.random() * 30000)} */}
+            $35,742.20
+          </Text>
         </View>
       </View>
     </View>

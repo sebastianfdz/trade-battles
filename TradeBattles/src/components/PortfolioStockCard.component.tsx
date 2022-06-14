@@ -37,11 +37,6 @@ export const PortfolioStockCard: React.FC<{
           currentUserPortfolio,
           setCurrentUserPortfolio,
         });
-
-        showNotification(
-          'Battle time is near..',
-          'Your battle starts in 1 day',
-        );
       }}>
       <View style={styles.logo_container}>
         <Image

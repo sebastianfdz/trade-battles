@@ -1,3 +1,4 @@
+import LottieView from 'lottie-react-native';
 import React, {useEffect, useState} from 'react';
 import {View, Image, Text, StyleSheet, Pressable} from 'react-native';
 import {useUserContext} from '../App.provider';
@@ -5,6 +6,7 @@ import {formatter} from '../shared/Methods';
 import {theme} from '../shared/themes';
 import {Stock} from '../shared/Types';
 import {WishlistStarIcon} from './WishlistStarIcon.component';
+const spinnerSrc = require('../../assets/lotties/spinner.json');
 
 export const WatchlistStockCard: React.FC<{stock: Stock}> = ({stock}) => {
   const [viewable, setViewable] = useState(true);
@@ -25,36 +27,51 @@ export const WatchlistStockCard: React.FC<{stock: Stock}> = ({stock}) => {
 
   return (
     <View style={style}>
-      <View style={styles.stock_card_container}>
-        <Image
-          style={styles.logo}
-          source={{
-            uri: `https://storage.googleapis.com/iexcloud-hl37opg/api/logos/${stock.symbol}.png`,
-          }}
-        />
-        <Text style={styles.ticker}>{stock.symbol}</Text>
-        <View
-          style={[
-            styles.return_container,
-            {backgroundColor: return_color_day_change},
-          ]}>
-          <Text style={{color: 'white', fontWeight: '700', fontSize: 12}}>
-            {(stock.changePercent * 100).toFixed(2)}%
+      {stock.companyName ? (
+        <View style={styles.stock_card_container}>
+          <Image
+            style={styles.logo}
+            source={{
+              uri: `https://storage.googleapis.com/iexcloud-hl37opg/api/logos/${stock.symbol}.png`,
+            }}
+          />
+          <Text style={styles.ticker}>{stock.symbol}</Text>
+          <View
+            style={[
+              styles.return_container,
+              {backgroundColor: return_color_day_change},
+            ]}>
+            <Text style={{color: 'white', fontWeight: '700', fontSize: 12}}>
+              {(stock.changePercent * 100).toFixed(2)}%
+            </Text>
+          </View>
+          <Text style={{fontWeight: '600', color: theme.colorPrimary}}>
+            {formatter.format(
+              stock.iexRealtimePrice
+                ? stock.iexRealtimePrice
+                : stock.latestPrice,
+            )}
           </Text>
+          <WishlistStarIcon
+            user_id={userContext.user.id}
+            size={20}
+            stock={stock}
+            // setViewable={setViewable}
+            defaultYellow={true}
+          />
         </View>
-        <Text style={{fontWeight: '600', color: theme.colorPrimary}}>
-          {formatter.format(
-            stock.iexRealtimePrice ? stock.iexRealtimePrice : stock.latestPrice,
-          )}
-        </Text>
-        <WishlistStarIcon
-          user_id={userContext.user.id}
-          size={20}
-          stock={stock}
-          // setViewable={setViewable}
-          defaultYellow={true}
-        />
-      </View>
+      ) : (
+        <View
+          style={{
+            width: 90,
+            height: 90,
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginLeft: 115,
+          }}>
+          <LottieView source={spinnerSrc} autoPlay loop={false} />
+        </View>
+      )}
     </View>
   );
 };
