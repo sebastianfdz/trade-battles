@@ -15,7 +15,6 @@ const {
   ChartPath,
   ChartPathProvider,
   ChartYLabel,
-  ChartXLabel,
 } = require('@rainbow-me/animated-charts');
 import {ApiClient} from '../services/ApiClient.service';
 const spinnerSrc = require('../../assets/lotties/spinner.json');
@@ -37,14 +36,14 @@ export const StockDetailsInfo: React.FC<{
     {vw: -1, t: 0},
   ]);
 
+  const [oneYearSelected, setOneYearSelected] = useState(true);
+  const [twoYearsSelected, setTwoYearsSelected] = useState(false);
+
   function subtractDays(numOfDays: number, date = new Date()) {
     date.setHours(date.getHours() - numOfDays * 24);
     return date;
   }
-  function subtractMonths(numOfMonths: number, date = new Date()) {
-    date.setMonth(date.getMonth() - numOfMonths);
-    return date;
-  }
+
   function subtractYears(numOfYears: number, date = new Date()) {
     date.setFullYear(date.getFullYear() - numOfYears);
     return date;
@@ -52,12 +51,6 @@ export const StockDetailsInfo: React.FC<{
   const getHistoricals = async (timespan: number) => {
     const now = subtractDays(1);
     const oneYear = subtractYears(timespan);
-    const oneMonth = subtractMonths(1);
-    oneMonth.setHours(oneMonth.getHours() - 24);
-    const oneDay = now.getHours() - 24;
-    // const oneYearInMiliseconds = 31556952000;
-    // const oneMonthInMiliseconds = 2629800000;
-    // const oneDayInMiliseconds = 86400000;
     await ApiClient.getHistoricalData(
       stock.symbol,
       'day',
@@ -174,14 +167,56 @@ export const StockDetailsInfo: React.FC<{
             marginBottom: -20,
           }}>
           <Pressable
-            style={styles.date_button}
-            onPress={() => getHistoricals(1)}>
-            <Text style={styles.date_text}>1Y</Text>
+            style={[
+              styles.date_button,
+              {
+                backgroundColor: oneYearSelected
+                  ? theme.colorPrimary
+                  : theme.greyPrimary,
+              },
+            ]}
+            onPress={() => {
+              getHistoricals(1),
+                setTwoYearsSelected(false),
+                setOneYearSelected(true);
+            }}>
+            <Text
+              style={[
+                styles.date_text,
+                {
+                  color: oneYearSelected
+                    ? theme.light_mode_white
+                    : theme.colorPrimary,
+                },
+              ]}>
+              1Y
+            </Text>
           </Pressable>
           <Pressable
-            style={styles.date_button}
-            onPress={() => getHistoricals(2)}>
-            <Text style={styles.date_text}>2Y</Text>
+            style={[
+              styles.date_button,
+              {
+                backgroundColor: twoYearsSelected
+                  ? theme.colorPrimary
+                  : theme.greyPrimary,
+              },
+            ]}
+            onPress={() => {
+              getHistoricals(2),
+                setOneYearSelected(false),
+                setTwoYearsSelected(true);
+            }}>
+            <Text
+              style={[
+                styles.date_text,
+                {
+                  color: twoYearsSelected
+                    ? theme.light_mode_white
+                    : theme.colorPrimary,
+                },
+              ]}>
+              2Y
+            </Text>
           </Pressable>
         </View>
       </ChartPathProvider>
@@ -240,12 +275,11 @@ const styles = StyleSheet.create({
   date_button: {
     paddingHorizontal: 7,
     paddingVertical: 5,
-    backgroundColor: theme.greyPrimary,
+    // backgroundColor: theme.greyPrimary,
     margin: 5,
     borderRadius: 5,
   },
   date_text: {
-    color: theme.colorPrimary,
     fontFamily: theme.fontFamilyBold,
   },
 });
