@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {View, Text, FlatList} from 'react-native';
+import React, {useEffect, useState, useCallback} from 'react';
+import {View, Text, FlatList, RefreshControl} from 'react-native';
 import {PortfolioStockCard} from '../components/PortfolioStockCard.component';
 import {PortfolioStock} from '../shared/Types';
 import {ApiClient} from '../services/ApiClient.service';
@@ -10,7 +10,12 @@ import type {RootStackParamList} from '../shared/Types';
 import {RouteProp, useRoute} from '@react-navigation/native';
 import {PortfolioInitializer} from '../shared/EmptyInitializers';
 import {StockSearch} from '../components/StockSearch.component';
+import LottieView from 'lottie-react-native';
+const spinnerSrc = require('../../assets/lotties/spinner.json');
 
+const wait = (timeout: number) => {
+  return new Promise(resolve => setTimeout(resolve, timeout));
+};
 export const BattlePortfolio: React.FC = () => {
   const [currentUserPortfolio, setCurrentUserPortfolio] =
     useState<PortfolioStock[]>(PortfolioInitializer);
@@ -22,26 +27,32 @@ export const BattlePortfolio: React.FC = () => {
   const startDate = new Date(Number(battle.start_date_timestamp)).toString();
   const endDate = new Date(Number(battle.end_date_timestamp)).toString();
   const [nonLockedGainLoss, setNonLockedGainLoss] = useState(0);
+  const [refreshing, setRefreshing] = useState(false);
+
   let profit = 0;
 
   const setPortfolio = async () => {
-    await ApiClient.getUserPortfolio(user_id, battle.battle_id).then(res => {
-      const portfolio: PortfolioStock[] = [];
-      res.data.forEach(el => {
-        ApiClient.getQuote(el.symbol).then(res => {
-          el.price = res.data.close ? res.data.close : res.data.latestPrice;
-          el.change = ((el.price - el.averageCost) / el.averageCost) * 100;
-          el.quote = res.data;
-          profit += (el.price - el.averageCost) * el.quantity;
-          setNonLockedGainLoss(
-            prevstate =>
-              (prevstate += (el.price - el.averageCost) * el.quantity),
-          );
-          el.quantity > 0 && portfolio.push(el);
-          setCurrentUserPortfolio(portfolio);
-        });
-      });
-    });
+    const portfolio: PortfolioStock[] = [];
+
+    const portfolioArray = await ApiClient.getUserPortfolio(
+      user_id,
+      battle.battle_id,
+    );
+
+    await Promise.all(
+      portfolioArray.data.map(async el => {
+        const quote = await ApiClient.getQuote(el.symbol);
+        el.price = quote.data.close ? quote.data.close : quote.data.latestPrice;
+        el.change = ((el.price - el.averageCost) / el.averageCost) * 100;
+        el.quote = quote.data;
+        profit += (el.price - el.averageCost) * el.quantity;
+        setNonLockedGainLoss(
+          prevstate => (prevstate += (el.price - el.averageCost) * el.quantity),
+        );
+        portfolio.push(el);
+      }),
+    );
+    setCurrentUserPortfolio(portfolio);
   };
 
   useEffect(() => {
@@ -52,6 +63,14 @@ export const BattlePortfolio: React.FC = () => {
     setTimeout(() => {
       ApiClient.updateUserProfit(user_id, profit, battle.battle_id);
     }, 3000);
+  }, []);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    wait(300).then(() => {
+      setPortfolio();
+      setRefreshing(false);
+    });
   }, []);
 
   return (
@@ -94,10 +113,21 @@ export const BattlePortfolio: React.FC = () => {
         />
 
         {currentUserPortfolio[0].price === 0 ? (
-          <Text style={{alignSelf: 'center'}}>Loading...</Text> // TODO -> Refactor to spinner
+          <View
+            style={{
+              width: 140,
+              height: 140,
+              padding: -10,
+              alignSelf: 'center',
+            }}>
+            <LottieView source={spinnerSrc} autoPlay loop={false} />
+          </View>
         ) : (
           <View style={{flex: 1}}>
             <FlatList
+              refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+              }
               showsVerticalScrollIndicator={false}
               data={currentUserPortfolio}
               renderItem={({item}: {item: PortfolioStock}) => (
