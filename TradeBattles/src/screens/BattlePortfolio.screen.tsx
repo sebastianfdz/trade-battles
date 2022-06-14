@@ -39,17 +39,21 @@ export const BattlePortfolio: React.FC = () => {
       battle.battle_id,
     );
 
+    // console.warn(portfolioArray);
     profit = 0;
     await Promise.all(
       portfolioArray.data.map(async el => {
+        // console.warn(el.symbol);
         const quote = await ApiClient.getQuote(el.symbol);
         el.price = quote.data.close ? quote.data.close : quote.data.latestPrice;
         el.change = ((el.price - el.averageCost) / el.averageCost) * 100;
         el.quote = quote.data;
         profit += (el.price - el.averageCost) * el.quantity;
-        portfolio.push(el);
+        el.quantity > 0 && portfolio.push(el);
       }),
     );
+    portfolio.sort((a, b) => a.symbol.charCodeAt(0) - b.symbol.charCodeAt(0));
+    // console.warn(portfolio.map(el => el.symbol));
     setCurrentUserPortfolio(portfolio);
     setNonLockedGainLoss(prevstate => (prevstate += profit));
   };
@@ -66,7 +70,7 @@ export const BattlePortfolio: React.FC = () => {
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    wait(300).then(() => {
+    wait(1000).then(() => {
       setPortfolio();
       setRefreshing(false);
     });
