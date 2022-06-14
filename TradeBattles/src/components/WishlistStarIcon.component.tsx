@@ -11,15 +11,20 @@ export const WishlistStarIcon: React.FC<{
   stock: Stock;
   size?: number;
   setViewable?: React.Dispatch<React.SetStateAction<boolean>>;
-}> = ({user_id, stock, size, setViewable}) => {
-  const [isInWatchlist, setIsInWatchlist] = useState(false);
+  defaultYellow?: boolean;
+}> = ({user_id, stock, size, setViewable, defaultYellow}) => {
+  const [isInWatchlist, setIsInWatchlist] = useState(defaultYellow);
   const [watchistModal, setWatchlistModal] = useState(false);
 
+  // dont render watchlist if it is empty
+
+  //memory leak or render loop
+
+  //usecaLLBACK USEMEMO
   const getUser = async (user_id: string, symbol: string) => {
     const user = await ApiClient.getUserById(user_id);
-    user.data[0].watchlist.includes(symbol)
-      ? setIsInWatchlist(true)
-      : setIsInWatchlist(false);
+    user.data[0].watchlist.includes(symbol) && setIsInWatchlist(true);
+    return user.data[0].watchlist;
   };
 
   useEffect(() => {

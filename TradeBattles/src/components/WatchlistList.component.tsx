@@ -11,25 +11,33 @@ export const WatchlistList = () => {
   const [watchlist, setWatchlist] = useState<Stock[]>([StockInitializer]);
 
   const getWatchlistArray = () => {
-    const array = ApiClient.getUserById(userContext.user.id).then(
-      res => res.data[0].watchlist,
-    );
+    const array = ApiClient.getUserById(userContext.user.id).then(res => {
+      // console.warn(res.data[0].watchlist, 'list component');
+      return res.data[0].watchlist;
+    });
     return array;
   };
 
   const fetchWatchlistStocks = async () => {
     let watchlistStocks: Stock[] = [];
     const array = await getWatchlistArray();
-    array.forEach(el =>
-      ApiClient.getQuote(el.toLowerCase()).then(res => {
-        watchlistStocks.push(res.data);
-        setWatchlist(watchlistStocks);
+    await Promise.all(
+      array.map(async el => {
+        const response = await ApiClient.getQuote(el.toLowerCase());
+        watchlistStocks.push(response.data);
       }),
     );
+    // console.warn(watchlistStocks, 'array');
+    setWatchlist(watchlistStocks);
   };
+
   useEffect(() => {
     fetchWatchlistStocks();
   }, []);
+
+  // useEffect(() => {
+  //   console.warn(watchlist.map(el => el.symbol));
+  // }, [watchlist]);
 
   return (
     <FlatList
