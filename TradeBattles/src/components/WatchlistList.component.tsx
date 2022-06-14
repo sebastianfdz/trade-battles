@@ -33,6 +33,9 @@ export const WatchlistList = () => {
       }),
     );
     // console.warn(watchlistStocks, 'array');
+    watchlistStocks.sort(
+      (a, b) => a.symbol.charCodeAt(0) - b.symbol.charCodeAt(0),
+    );
     setWatchlist(watchlistStocks);
   };
 
