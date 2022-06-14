@@ -39,17 +39,12 @@ export const StockDetailsInfo: React.FC<{
   const [oneYearSelected, setOneYearSelected] = useState(true);
   const [twoYearsSelected, setTwoYearsSelected] = useState(false);
 
-  function subtractDays(numOfDays: number, date = new Date()) {
-    date.setHours(date.getHours() - numOfDays * 24);
-    return date;
-  }
-
   function subtractYears(numOfYears: number, date = new Date()) {
     date.setFullYear(date.getFullYear() - numOfYears);
     return date;
   }
   const getHistoricals = async (timespan: number) => {
-    const now = subtractDays(1);
+    const now = new Date();
     const oneYear = subtractYears(timespan);
     await ApiClient.getHistoricalData(
       stock.symbol,
