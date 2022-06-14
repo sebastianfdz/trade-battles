@@ -1,53 +1,43 @@
-import React, {useEffect, useRef} from 'react';
-import {View, Text, StyleSheet, Image, Pressable, Animated} from 'react-native';
-import {useUserContext} from '../App.provider';
+import React, {useState} from 'react';
+import {View, Text, StyleSheet, Image, Pressable, Switch} from 'react-native';
+import {useThemeContext, useUserContext} from '../App.provider';
 import {GoBack} from '../components/GoBack.component';
-import {theme} from '../shared/themes';
 import {UserInitializer} from '../shared/EmptyInitializers';
-import Svg, {G, Circle} from 'react-native-svg';
 
-const percentage = 60;
-const radius = 40;
-const strokeWidth = 10;
-const duration = 500;
-const color = 'red';
-const delay = 20;
-const textColor = theme.colorPrimary;
-const max = 100;
-
-const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 export const Settings = () => {
+  const themeContext = useThemeContext();
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+      backgroundColor: themeContext.theme.light_mode_white,
+    },
+    user_info_header: {
+      backgroundColor: themeContext.theme.greyPrimary,
+      padding: 20,
+      borderRadius: 15,
+      marginBottom: 30,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginTop: 100,
+      shadowColor: 'grey',
+      shadowOffset: {
+        width: 0,
+        height: 1,
+      },
+      shadowRadius: 1,
+      shadowOpacity: 0.3,
+    },
+  });
   const userContext = useUserContext();
-  const halfCircle = radius + strokeWidth;
-  const circleCircumference = 2 * Math.PI * radius;
-  const circleRef = useRef<any>();
-  const animatedValue = useRef(new Animated.Value(0)).current;
-  // const animation = (toValue: number) => {
-  //   return Animated.timing(animatedValue, {
-  //     toValue,
-  //     duration,
-  //     delay,
-  //     useNativeDriver: true,
-  //   }).start(() => {
-  //     animation(toValue === 0 ? percentage : 0);
-  //   });
-  // };
 
-  // useEffect(() => {
-  //   animation(percentage);
+  const [isEnabled, setIsEnabled] = useState(false);
+  const toggleSwitch = () => {
+    themeContext.handleSetTheme(!themeContext.darkmode);
+    setIsEnabled(previousState => !previousState);
+  };
 
-  //   animatedValue.addListener(v => {
-  //     if (circleRef?.current) {
-  //       const maxPercentage = (100 * v.value) / max;
-  //       const strokeDashOffset =
-  //         circleCircumference - (circleCircumference * maxPercentage) / 100;
-
-  //       circleRef.current.setNativeProps({
-  //         strokeDashOffset,
-  //       });
-  //     }
-  //   });
-  // });
   return (
     <View style={styles.container}>
       <View style={{marginRight: 'auto'}}>
@@ -58,8 +48,8 @@ export const Settings = () => {
           fontSize: 40,
           fontWeight: '600',
           paddingHorizontal: 20,
-          fontFamily: theme.fontFamilyBold,
-          color: theme.colorPrimary,
+          fontFamily: themeContext.theme.fontFamilyBold,
+          color: themeContext.theme.colorPrimary,
         }}>
         My Account
       </Text>
@@ -72,59 +62,48 @@ export const Settings = () => {
           style={{
             fontSize: 20,
             fontWeight: '400',
-            fontFamily: theme.fontFamilyRegular,
-            color: theme.colorPrimary,
+            fontFamily: themeContext.theme.fontFamilyRegular,
+            color: themeContext.theme.colorPrimary,
           }}>
           {userContext.user.name}
         </Text>
       </View>
-      {/* <View>
-        <Svg
-          width={radius * 2}
-          height={radius * 2}
-          viewBox={`0 0 ${halfCircle * 2} ${halfCircle * 2}`}>
-          <G rotation={'-90'} origin={`${halfCircle}, ${halfCircle}`}>
-            <Circle
-              cy="50%"
-              cx="50%"
-              stroke={color}
-              strokeWidth={strokeWidth}
-              r={radius}
-              fill={'transparent'}
-              strokeOpacity={0.2}
-            />
-            <AnimatedCircle
-              ref={circleRef}
-              cy="50%"
-              cx="50%"
-              stroke={color}
-              strokeWidth={strokeWidth}
-              r={radius}
-              fill={'transparent'}
-              strokeDasharray={circleCircumference}
-              strokeDashoffset={circleCircumference}
-              strokeLinecap="round"
-            />
-          </G>
-        </Svg>
-      </View> */}
+      <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <Text
+          style={{
+            marginRight: 10,
+            fontSize: 15,
+            fontFamily: themeContext.theme.fontFamilyBold,
+            color: themeContext.theme.colorPrimary,
+          }}>
+          Dark mode
+        </Text>
+        <Switch
+          trackColor={{false: '#767577', true: '#81b0ff'}}
+          thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
+          ios_backgroundColor="#3e3e3e"
+          onValueChange={toggleSwitch}
+          value={isEnabled}
+        />
+      </View>
+
       <Pressable
         onPress={() => {
           userContext.handleSetUser(UserInitializer);
         }}
         style={{
-          backgroundColor: theme.colorPrimary,
+          backgroundColor: themeContext.theme.colorPrimary,
           paddingVertical: 15,
-          paddingHorizontal: 40,
+          paddingHorizontal: 90,
           borderRadius: 10,
-          marginTop: 'auto',
+          marginTop: 40,
           marginBottom: 100,
         }}>
         <Text
           style={{
-            color: theme.light_mode_white,
+            color: themeContext.theme.light_mode_white,
             fontWeight: '800',
-            fontFamily: theme.fontFamilyBold,
+            fontFamily: themeContext.theme.fontFamilyBold,
           }}>
           Logout
         </Text>
@@ -132,27 +111,3 @@ export const Settings = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    backgroundColor: theme.light_mode_white,
-  },
-  user_info_header: {
-    backgroundColor: theme.greyPrimary,
-    padding: 20,
-    borderRadius: 15,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 50,
-    shadowColor: 'grey',
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowRadius: 1,
-    shadowOpacity: 0.3,
-  },
-});

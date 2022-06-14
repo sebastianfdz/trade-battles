@@ -81,7 +81,7 @@ export const ApiClient = {
     const data = await axios.get<HistoricalData>(
       `${baseUrl}/quote/historical/data/${ticker}/${periodicity}/${periodicity_unit}/${start_date}/${end_date}`,
     );
-    console.log(data);
+    // console.log(data);
     return data;
   },
 

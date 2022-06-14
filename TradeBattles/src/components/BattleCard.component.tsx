@@ -45,8 +45,8 @@ export const BattleCard: React.FC<{
               <Image
                 key={member.user_id + member.photo}
                 style={{
-                  width: 30,
-                  height: 30,
+                  width: 40,
+                  height: 40,
                   borderRadius: 50,
                   marginRight: 10,
                 }}
@@ -63,7 +63,6 @@ export const BattleCard: React.FC<{
                   {member.first_name} {member.last_name}
                 </Text>
                 <Text style={styles.text}>
-                  Current Profit:{' '}
                   {formatter.format(
                     member.current_gains_losses[String(battle.battle_id)]
                       ? member.current_gains_losses[String(battle.battle_id)]

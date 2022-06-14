@@ -1,15 +1,19 @@
 import React from 'react';
-import {Pressable, Text} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {Navigation} from './screens/LoginStackNavigator.navigation';
-import {UserProvider} from './App.provider';
+import {UserProvider, ThemeProvider} from './App.provider';
+import {LogBox} from 'react-native';
+LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+LogBox.ignoreAllLogs(); //Ignore all log notifications
 
 export const App: React.FC = () => {
   return (
     <UserProvider>
-      <NavigationContainer>
-        <Navigation />
-      </NavigationContainer>
+      <ThemeProvider>
+        <NavigationContainer>
+          <Navigation />
+        </NavigationContainer>
+      </ThemeProvider>
     </UserProvider>
   );
 };

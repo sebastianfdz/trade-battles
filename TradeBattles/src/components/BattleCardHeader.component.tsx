@@ -57,7 +57,7 @@ export const BattleCardHeader: React.FC<{
 const styles = StyleSheet.create({
   container: {
     backgroundColor: theme.primary_yellow,
-    height: 110,
+    height: 90,
     borderTopStartRadius: 45,
     borderTopEndRadius: 45,
     marginBottom: 20,
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
   header_small: {
     fontSize: 25,
     fontWeight: '600',
-    marginTop: 25,
+    marginTop: 15,
     alignSelf: 'center',
     color: theme.colorPrimary,
     fontFamily: theme.fontFamilyBold,

@@ -41,7 +41,7 @@ export const StockDetails: React.FC = () => {
     //   });
     // };
     // fetchPrice();
-    // setInterval(() => fetchPrice(), 2000);
+    // setInterval(() => fetchPrice(), 1000);
   }, []);
 
   return (

@@ -7,21 +7,21 @@ import {Stock} from '../shared/Types';
 import {WishlistStarIcon} from './WishlistStarIcon.component';
 
 export const WatchlistStockCard: React.FC<{stock: Stock}> = ({stock}) => {
-  // const [viewable, setViewable] = useState(true);
+  const [viewable, setViewable] = useState(true);
   const [style, setStyle] = useState([styles.container, {}]);
   const userContext = useUserContext();
   const return_color_day_change =
     stock.change > 0 ? theme.primary_green : theme.primary_red;
 
-  // useEffect(() => {
-  //   if (viewable === false) {
-  //     setStyle([styles.container, {display: 'none'}]);
-  //   }
-  // }, [viewable]);
+  useEffect(() => {
+    if (viewable === false) {
+      setStyle([styles.container, {display: 'none'}]);
+    }
+  }, [viewable]);
 
-  // useEffect(() => {
-  //   console.warn(stock.symbol);
-  // }, [stock]);
+  useEffect(() => {
+    console.warn(stock.symbol);
+  }, [stock]);
 
   return (
     <View style={style}>
