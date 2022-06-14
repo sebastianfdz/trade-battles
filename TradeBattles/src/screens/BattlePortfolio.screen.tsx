@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useCallback} from 'react';
-import {View, Text, FlatList, RefreshControl} from 'react-native';
+import {View, Text, FlatList, RefreshControl, StyleSheet} from 'react-native';
 import {PortfolioStockCard} from '../components/PortfolioStockCard.component';
 import {PortfolioStock} from '../shared/Types';
 import {ApiClient} from '../services/ApiClient.service';
@@ -29,16 +29,17 @@ export const BattlePortfolio: React.FC = () => {
   const [nonLockedGainLoss, setNonLockedGainLoss] = useState(0);
   const [refreshing, setRefreshing] = useState(false);
 
-  let profit = 0;
+  let profit: number;
 
   const setPortfolio = async () => {
+    setNonLockedGainLoss(0);
     const portfolio: PortfolioStock[] = [];
-
     const portfolioArray = await ApiClient.getUserPortfolio(
       user_id,
       battle.battle_id,
     );
 
+    profit = 0;
     await Promise.all(
       portfolioArray.data.map(async el => {
         const quote = await ApiClient.getQuote(el.symbol);
@@ -46,13 +47,11 @@ export const BattlePortfolio: React.FC = () => {
         el.change = ((el.price - el.averageCost) / el.averageCost) * 100;
         el.quote = quote.data;
         profit += (el.price - el.averageCost) * el.quantity;
-        setNonLockedGainLoss(
-          prevstate => (prevstate += (el.price - el.averageCost) * el.quantity),
-        );
         portfolio.push(el);
       }),
     );
     setCurrentUserPortfolio(portfolio);
+    setNonLockedGainLoss(prevstate => (prevstate += profit));
   };
 
   useEffect(() => {
@@ -100,10 +99,14 @@ export const BattlePortfolio: React.FC = () => {
 
       <View
         style={{flex: 1, backgroundColor: theme.light_mode_white, padding: 10}}>
-        <BattlePortfolioHeader
-          battle={battle}
-          currentGainLoss={nonLockedGainLoss}
-        />
+        {refreshing ? (
+          <View style={styles.portfolio_header_container}></View>
+        ) : (
+          <BattlePortfolioHeader
+            battle={battle}
+            currentGainLoss={nonLockedGainLoss}
+          />
+        )}
 
         <StockSearch
           battle_id={battle.battle_id}
@@ -146,3 +149,21 @@ export const BattlePortfolio: React.FC = () => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  portfolio_header_container: {
+    alignSelf: 'center',
+    backgroundColor: theme.greyPrimary,
+    borderRadius: 20,
+    padding: 20,
+    width: '90%',
+    height: 150,
+    shadowColor: 'grey',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowRadius: 1,
+    shadowOpacity: 0.3,
+  },
+});
