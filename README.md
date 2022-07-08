@@ -53,6 +53,7 @@ Here are some screenshots of the app as well 😃.
 - Polygon.io handles the heavy lifting of fetching accurate, reliable and real-time financial data for developers to use on their applications.
 - Trade battles makes use of Polygon.io through a free API key that can be created on this link https://polygon.io/
 
+<!--
 ## Dependencies
 
 ## Intended Audience
@@ -62,8 +63,6 @@ Here are some screenshots of the app as well 😃.
 ## Screenshots of the app
 
 ## How to run a local copy of this app
-
-xcode
 
 For the app to work it needs two api keys that are inside /server/models/config
 
@@ -101,4 +100,4 @@ action: text
 symbol: text
 price: numeric
 quantity: numeric
-transaction_timestamp: text
+transaction_timestamp: text -->
