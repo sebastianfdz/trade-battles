@@ -34,10 +34,12 @@ I made a youtube video where I do a brief walkthrough of the app:
 
 Here are some screenshots of the app as well 😃.
 
-  <img src="./TradeBattles/assets/READMEImages/battle.png" alt="trade-battles-battle" width="100"/>
-  <img src="./TradeBattles/assets/READMEImages/portfolio.png" alt="trade-battles-portfolio" width="100"/>
-  <img src="./TradeBattles/assets/READMEImages/tsla.png" alt="trade-battles-stock" width="100"/>
-  <img src="./TradeBattles/assets/READMEImages/watchlist.png" alt="trade-battles-watchlist" width="100"/>
+<div>
+  <img src="./TradeBattles/assets/READMEImages/battle.png" alt="trade-battles-battle" width="200"/>
+  <img src="./TradeBattles/assets/READMEImages/portfolio.png" alt="trade-battles-portfolio" width="200"/>
+  <img src="./TradeBattles/assets/READMEImages/tsla.png" alt="trade-battles-stock" width="200"/>
+  <img src="./TradeBattles/assets/READMEImages/watchlist.png" alt="trade-battles-watchlist" width="200"/>
+</div>
 
 ## APIs Used
 
