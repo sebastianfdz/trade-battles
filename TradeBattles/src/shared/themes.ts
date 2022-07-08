@@ -1,4 +1,4 @@
-let darkmode = false;
+let darkmode = true;
 
 export const theme = {
   // colors

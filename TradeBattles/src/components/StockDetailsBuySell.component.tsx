@@ -12,6 +12,7 @@ import {
 import {ApiClient} from '../services/ApiClient.service';
 import {PurchaseOrderInitializer} from '../shared/EmptyInitializers';
 import {formatter} from '../shared/Methods';
+import {showNotification} from '../shared/Notification';
 import {theme} from '../shared/themes';
 import {BuySellProps} from '../shared/Types';
 import {CustomModal} from './CustomModal';
@@ -71,6 +72,14 @@ export const StockDetailsBuySell: React.FC<BuySellProps> = props => {
         setSuccesfulPurchaseModal(true),
         setQuantityAvailable(prevstate => prevstate + quantitySelected),
         setQuantitySelected(0),
+        setTimeout(
+          () =>
+            showNotification(
+              'Battle time is near..',
+              "'Codeworks Battle' starts in 1 day",
+            ),
+          10000,
+        ),
         setCurrentUserPortfolio(prevState => [
           ...prevState,
           {

@@ -33,15 +33,15 @@ export const StockDetails: React.FC = () => {
   const [buySellViewable, setBuySellViewable] = useState(false);
 
   useEffect(() => {
-    // const fetchPrice = async () => {
-    //   await ApiClient.getQuote(stock.symbol).then(res => {
-    //     setPrice(res.data.iexRealtimePrice);
-    //     setDayChange(res.data.changePercent);
-    //     setYtdChange(res.data.ytdChange);
-    //   });
-    // };
-    // fetchPrice();
-    // setInterval(() => fetchPrice(), 1000);
+    const fetchPrice = async () => {
+      await ApiClient.getQuote(stock.symbol).then(res => {
+        setPrice(res.data.iexRealtimePrice);
+        setDayChange(res.data.changePercent);
+        setYtdChange(res.data.ytdChange);
+      });
+    };
+    fetchPrice();
+    setInterval(() => fetchPrice(), 1000);
   }, []);
 
   return (

@@ -204,6 +204,5 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     width: '70%',
     marginVertical: 2,
-    backgroundColor: 'red',
   },
 });
