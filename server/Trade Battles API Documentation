@@ -1,99 +1,220 @@
-Trade Battles API Documentation
 
-baseurl: http://localhost:3000
+File created with Metamug
+Swagger(OPEN API) 3.0
 
+openapi: 3.0.0
+info:
+  title: Trade Battles Backend
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000
+  - url: http://127.0.0.1:3000
 
------------- Transactions ------------
-------------------------------------------------------------------
-Get all transactions
-------------------------------------------------------------------
-
-Endpoint: /transactions
-Method: GET
-
-------------------------------------------------------------------
-Get transactions by id
-------------------------------------------------------------------
-
-Endpoint: /transactions/:id
-Method: GET
-
-------------------------------------------------------------------
-Get transactions by battle id
-------------------------------------------------------------------
-
-Endpoint: /transactions/battle/:battle_id
-Method: GET
-
-------------------------------------------------------------------
-Create a transaction
-------------------------------------------------------------------
-
-Endpoint: /transactions
-Method: POST
-Body example:
-{
-		"battle_id":"70dd5705-1ba4-47fc-afef-867886e82cd4",
-		"user_id":"ee42d2f1-aa3c-416d-a032-882bd386279d",
-        "action":"SELL",
-		"symbol":"AAPL",
-		"price":"148.34",
-		"quantity":"15",
-}
-
-Parameters: {
-	battle_id : uuid (mandatory)
-	user_id : uuid (mandatory)
-	action: 'BUY' || 'SELL' (mandatory)
-	symbol: stock ticker string (mandatory)
-	price: number (mandatory)
-	quantity: number (mandatory)
-}
-
-------------------------------------------------------------------
-Delete transaction
-------------------------------------------------------------------
-
-Endpoint: /transactions/:id
-Method: DELETE
-
-
-
------------- Battles ------------
-
-
-------------------------------------------------------------------
-Get battles by user id
-------------------------------------------------------------------
-
-Endpoint: /battles/mybattles/:user_id
-Method: GET
-
-
-------------------------------------------------------------------
-Create a battle
-------------------------------------------------------------------
-
-Endpoint: /battles
-Method: POST
-Body example:
-{
-    "battle_members":["123abc","456def","246abc","246def","987abc"],
-	"start_date":"1654167395",
-	"end_date":"1656759395",
-	"battle_name":"My First Battle"
-}
-
-Parameters: {
-    "battle_members": user_id[] (mandatory)
-	"start_date": unix time timestamp (mandatory)
-	"end_date": unix time timestamp (mandatory)
-	"battle_name": string (mandatory)
-}
-
-
-
-
-
-
+paths:
+  /transactions/:
+    post:
+      summary: Post Transaction
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                battle_id: 65c823fa-de56-48f8-b4a0-3a94b5640b59
+                user_id: 'c2121dni0j1xf29802091hd0'
+                action: BUY
+                symbol: AAPL
+                price: 100.49
+                quantity: 40
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      summary: GetAll Transactions
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /transactions/{id}:
+    get:
+      summary: Get Transaction by id
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /transactions/battle/{battle_id}:
+    get:
+      summary: Get Transactions by Battle id
+      parameters:
+        - name: battle_id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /transactions/{transaction_id}:
+    delete:
+      summary: Delete transaction
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /battles/mybattles/{user_id}/:
+    get:
+      summary: Get Battles by user
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /battles/:
+    post:
+      summary: Post battle
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                battle_members:
+                  - '319ued0n1xiakxh982b0sa'
+                  - 'eqwnc3923h01pdnsx01wnu'
+                  - 'n2e890dhwqposmxq0paDVa'
+                  - 'dwflkn89adh0asklxnqsad'
+                  - 'wndailh0qsha091jpoasjp'
+                start_date: '1654167395'
+                end_date: '1656759395'
+                battle_name: The Buffets
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /users/:
+    get:
+      summary: Get all users
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    post:
+      summary: Create user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                givenName: Camila
+                familyName: Kosinska
+                photo: https://picsum.photos/200
+                email: ckosinska@dummydomain.com
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /users/{user_id}:
+    get:
+      summary: Get user by id
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /users/portfolio/{user_id}/{battle_id}:
+    get:
+      summary: Get user portfolio
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /quote/aapl:
+    get:
+      summary: Get Quote
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /users/add/battle/{user_id}/{battle_id}:
+    put:
+      summary: Add battle to user
+      requestBody:
+        content: {}
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /quote/historical/data/aapl/day/1/1591678369000/1654771321000:
+    get:
+      summary: Get Historical Data
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /battles/members/{battle_id}:
+    patch:
+      summary: Add user to battle
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                user_id: '319ued0n1xiakxh982b0sa'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /users/profit/{user_id}/{battle_id}:
+    patch:
+      summary: Update user's profit
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                gain_loss: 100
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /users/watchlist/{id}:
+    patch:
+      summary: Update user watchlist
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                stock: aapl
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
 
