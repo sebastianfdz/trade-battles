@@ -25,6 +25,7 @@ with the most profit will be the winner.
   <img src="https://cdn.worldvectorlogo.com/logos/express-109.svg" alt="express" width="100"/>
 </div
 >
+
 ## Demo <img src="https://cdn.worldvectorlogo.com/logos/youtube-3.svg" alt="express" width="15"/>
 
 I made a youtube video where I do a brief walkthrough of the app:
