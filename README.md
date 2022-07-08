@@ -11,16 +11,20 @@ with the most profit will be the winner.
 
 ### Front-end
 
+<div>
   <img src="https://cdn.worldvectorlogo.com/logos/typescript.svg" alt="typescript" width="60" />
   <img src="https://cdn.worldvectorlogo.com/logos/react-native-1.svg" alt="react-native" width="80"/>
+</div>
 
 ### Back-end
 
+<div>
   <img src="https://cdn.worldvectorlogo.com/logos/logo-javascript.svg" alt="javascript" width="60" />
   <img src="https://cdn.worldvectorlogo.com/logos/nodejs-icon.svg" alt="node" width="55"/>
   <img src="https://cdn.worldvectorlogo.com/logos/postgresql.svg" alt="postgres" width="60" />
   <img src="https://cdn.worldvectorlogo.com/logos/express-109.svg" alt="express" width="100"/>
-
+</div
+>
 ## Demo <img src="https://cdn.worldvectorlogo.com/logos/youtube-3.svg" alt="express" width="15"/>
 
 I made a youtube video where I do a brief walkthrough of the app:
