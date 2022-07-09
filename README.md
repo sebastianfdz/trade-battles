@@ -35,10 +35,7 @@ I made a youtube video where I do a brief walkthrough of the app:
 Here are some screenshots of the app as well 😃.
 
 <div>
-  <img src="./TradeBattles/assets/READMEImages/battle.png" alt="trade-battles-battle" width="200"/>
-  <img src="./TradeBattles/assets/READMEImages/portfolio.png" alt="trade-battles-portfolio" width="200"/>
-  <img src="./TradeBattles/assets/READMEImages/tsla.png" alt="trade-battles-stock" width="200"/>
-  <img src="./TradeBattles/assets/READMEImages/watchlist.png" alt="trade-battles-watchlist" width="200"/>
+  <img src="./TradeBattles/assets/READMEImages/trade-battles-hero-image.png" alt="trade-battles-battle" width="800"/>
 </div>
 
 ## APIs Used
@@ -52,6 +49,30 @@ Here are some screenshots of the app as well 😃.
 
 - Polygon.io handles the heavy lifting of fetching accurate, reliable and real-time financial data for developers to use on their applications.
 - Trade battles makes use of Polygon.io through a free API key that can be created on this link https://polygon.io/
+
+### How to use the API keys
+
+- These keys should be added to ./server/models/config.js
+
+## IOS Requirements
+
+- Installations
+
+  - Xcode
+
+- Files
+
+  - [GoogleService-info.plist](https://support.google.com/firebase/answer/7015592?hl=en#ios&zippy=%2Cin-this-article)
+
+- Configurations
+
+  - Signing & Capabilities
+    - Team (must be trusted or changed for build to run)
+  - Info
+    - URL Types
+      - Identifier (set to Bundle Identifier found in General)
+      - URL Schemes (set to value of REVERSED_CLIENT_ID found in GoogleService-info file)
+      - Role (Editor)
 
 <!--
 ## Dependencies
