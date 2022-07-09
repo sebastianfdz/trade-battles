@@ -3,7 +3,7 @@
 ## Description
 
 Trade Battles is an exhilarating game that will put your inner stock trader to the test. Create battles with your friends and
-figure out who is the best trader. Each of the contestants will start out with $100,000 USD that they will be able to use throughout
+figure out who is the best trader. Each of the contestants will start out with a chosen amount of capital that they will be able to use throughout
 the battle to buy and sell real-time stocks. The battle duration will be set by the battle creator and at the end of the battle the person
 with the most profit will be the winner.
 
@@ -31,8 +31,6 @@ with the most profit will be the winner.
 I made a youtube video where I do a brief walkthrough of the app:
 
 - https://www.youtube.com/watch?v=Mu79HIkxhPE
-
-Here are some screenshots of the app as well 😃.
 
 <div>
   <img src="./TradeBattles/assets/READMEImages/trade-battles-hero-image.png" alt="trade-battles-battle" width="800"/>
